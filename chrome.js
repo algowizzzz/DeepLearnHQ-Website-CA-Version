@@ -106,7 +106,7 @@
           ["AI Courses (SeekhoAI)", "learning-seekhoai.html"],
           ["Enterprise Training", "learning-enterprise-training.html"],
           ["Free Resources", "learning-resources.html"],
-          ["Blog", "blog.html"],
+          ["Blog", "/blogs/"],
         ]},
       ],
     },
@@ -255,7 +255,7 @@
           <ul>
             <li><a href="/courses">Courses &amp; Workshops</a></li>
             <li><a href="learning-enterprise-training.html">Enterprise Training</a></li>
-            <li><a href="blog.html">Blog</a></li>
+            <li><a href="/blogs/">Blog</a></li>
           </ul>
         </div>
         <div class="foot-col">
@@ -264,9 +264,6 @@
             <li><a href="about.html">About Us</a></li>
             <li><a href="about-how-we-work.html">How We Work</a></li>
             <li><a href="careers.html">Careers</a></li>
-            <li><a href="news.html">News</a></li>
-            <li><a href="press.html">Press</a></li>
-            <li><a href="events.html">Events</a></li>
             <li><a href="contact.html">Contact</a></li>
           </ul>
         </div>
