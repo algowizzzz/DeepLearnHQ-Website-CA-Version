@@ -303,10 +303,10 @@
   const firstScript = document.body.querySelector("script");
   if (firstScript) {
     document.body.insertBefore(footer, firstScript);
-    if (active !== "courses") document.body.insertBefore(sticky, firstScript);
+    if (active !== "courses" && active !== "learning") document.body.insertBefore(sticky, firstScript);
   } else {
     document.body.appendChild(footer);
-    if (active !== "courses") document.body.appendChild(sticky);
+    if (active !== "courses" && active !== "learning") document.body.appendChild(sticky);
   }
 
   /* ---- CTA pre-qualification modal ---- */
@@ -355,7 +355,7 @@
   // Timed auto-open: 10s → 30s → 1min → 5min after load.
   // Stops once a lead is captured; never interrupts an open modal or a page
   // where the inline form lives (contact) or the careers page (job-focused).
-  if (active !== "contact" && active !== "careers" && active !== "courses") {
+  if (active !== "contact" && active !== "careers" && active !== "courses" && active !== "learning") {
     const SCHEDULE = [10000, 30000, 60000, 300000];
     SCHEDULE.forEach((ms) => {
       setTimeout(() => {
