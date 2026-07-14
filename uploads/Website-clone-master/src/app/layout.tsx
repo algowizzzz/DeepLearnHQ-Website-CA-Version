@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     title: "AI-Native Software Studio | DeepLearnHQ",
     description:
       "DeepLearnHQ is an AI-native software studio offering strategy, AI solutions, software development, data analytics, cloud, QA, and modernization services. Plus AI education through SeekhoAI.",
-    url: "https://www.deeplearnhq.com/",
+    url: "https://www.deeplearnhq.ca/",
     siteName: "DeepLearnHQ",
     type: "website",
     locale: "en_US",
