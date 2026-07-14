@@ -1,4 +1,20 @@
 /* ============================================================
+   Google Analytics 4 — deeplearnhq.ca dedicated stream (G-154Y1RBED7)
+   Injected here so it loads on every page via the shared chrome.
+   ============================================================ */
+(function () {
+  var GA_ID = "G-154Y1RBED7";
+  var s = document.createElement("script");
+  s.async = true;
+  s.src = "https://www.googletagmanager.com/gtag/js?id=" + GA_ID;
+  document.head.appendChild(s);
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function () { dataLayer.push(arguments); };
+  gtag("js", new Date());
+  gtag("config", GA_ID);
+})();
+
+/* ============================================================
    DeepLearnHQ — shared site chrome (nav + mega-menus + footer)
    One source of truth, injected on every page.
    Set document.body.dataset.page to highlight the active link.
