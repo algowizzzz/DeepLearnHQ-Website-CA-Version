@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>You're enrolled — The Complete AI Bootcamp | DeepLearnHQ</title>
+<meta name="description" content="Enrollment confirmed. Your access instructions have been emailed." />
+<link rel="icon" type="image/png" href="/assets/logo-mark.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/styles.css" />
+<link rel="stylesheet" href="/inner.css" />
+<style>
+  .ty-wrap{min-height:62vh;display:flex;align-items:center}
+  .ty-in{max-width:660px;margin:0 auto;text-align:center}
+  .ty-check{width:76px;height:76px;margin:0 auto 26px;border-radius:50%;display:grid;place-items:center;
+    background:radial-gradient(circle at 30% 30%, rgba(62,207,142,.35), rgba(62,207,142,.08));border:1px solid rgba(62,207,142,.5)}
+  .ty-check svg{width:38px;height:38px;stroke:#3ECf8e}
+  .ty-in h1{font-family:"Space Grotesk",sans-serif;font-size:clamp(2rem,5vw,3rem);line-height:1.05;margin:6px 0 16px}
+  .ty-email{margin:30px auto 0;max-width:560px;border:1px solid rgba(255,255,255,.12);border-radius:18px;
+    padding:26px 28px;background:rgba(255,255,255,.03);text-align:left;display:flex;gap:18px;align-items:flex-start}
+  .ty-email .ico{font-size:1.7rem;line-height:1}
+  .ty-email h2{font-family:"Space Grotesk",sans-serif;font-size:1.15rem;margin-bottom:6px}
+  .ty-email p{opacity:.78;line-height:1.55;font-size:.97rem}
+  .ty-steps{list-style:none;padding:0;margin:30px auto 0;max-width:560px;text-align:left;counter-reset:s;display:flex;flex-direction:column;gap:14px}
+  .ty-steps li{counter-increment:s;padding-left:44px;position:relative;line-height:1.5}
+  .ty-steps li::before{content:counter(s);position:absolute;left:0;top:-2px;width:28px;height:28px;border-radius:50%;
+    display:grid;place-items:center;font-family:"Space Grotesk",sans-serif;font-size:.9rem;font-weight:700;color:#fff;
+    background:linear-gradient(135deg,#2E7DF6,#7C45E8,#F02E9C)}
+  .ty-support{opacity:.62;font-size:.9rem;margin-top:30px}
+  .ty-support a{color:inherit}
+</style>
+</head>
+<body data-page="learning">
+
+<section class="section ty-wrap" data-screen-label="Enrollment confirmed">
+  <div class="hero-aura"></div>
+  <div class="hero-grid"></div>
+  <div class="wrap">
+    <div class="ty-in">
+      <div class="ty-check">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+      </div>
+      <span class="eyebrow" style="justify-content:center;display:inline-flex">Enrollment confirmed</span>
+      <h1>You're in. Welcome to the <span class="grad-text">bootcamp.</span></h1>
+      <p class="lead" style="margin:0 auto;max-width:560px">Your spot in The Complete AI Bootcamp is confirmed. Everything you need to get started is on its way.</p>
+
+      <div class="ty-email">
+        <span class="ico">📧</span>
+        <div>
+          <h2>Your access instructions have been emailed.</h2>
+          <p>Check your inbox for an email with your login and access link. It usually arrives within a few minutes — if you don't see it, check your <strong>spam or promotions</strong> folder.</p>
+        </div>
+      </div>
+
+      <ol class="ty-steps">
+        <li>Open the email titled <em>"Your DeepLearnHQ AI Bootcamp access"</em> and click your access link.</li>
+        <li>Save the link — you have <strong>lifetime access</strong>, so you can return any time.</li>
+        <li>Start with Module 1: <em>Write prompts that actually work</em>. You'll have a win in your first session.</li>
+      </ol>
+
+      <div class="cta-actions" style="justify-content:center;margin-top:34px">
+        <a href="/blogs/" class="btn btn-grad">Read the guides while you wait
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a href="/courses/" class="btn btn-ghost-d">Back to the course</a>
+      </div>
+
+      <p class="ty-support">Didn't get the email within 10 minutes? Reach us at <a href="mailto:info@deeplearnhq.tech">info@deeplearnhq.tech</a> and we'll sort it out right away.</p>
+    </div>
+  </div>
+</section>
+
+<script src="/leadform.js"></script>
+<script src="/chrome.js"></script>
+<script src="/main.js"></script>
+<script src="/heroscene.js"></script>
+<script>
+  /* Fire a GA4 conversion signal when a buyer lands on the confirmation page.
+     Mark "course_enroll_success" as a Key event in GA4 Admin to track enrollments. */
+  if (window.gtag) window.gtag('event', 'course_enroll_success', { method: 'stripe_payment_link' });
+</script>
+</body>
+</html>
