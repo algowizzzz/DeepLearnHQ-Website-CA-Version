@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PropertyOS — Property Management Platform | DeepLearnHQ</title>
+<meta name="description" content="A microservices-based property management platform covering tenant records, lease management, rent tracking, document generation, and multi-user collaboration." />
+<meta property="og:title" content="PropertyOS — Property Management Platform | DeepLearnHQ" />
+<meta property="og:description" content="A microservices-based property management platform covering tenant records, lease management, rent tracking, document generation, and multi-user collaboration." />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="DeepLearnHQ" />
+<meta property="og:image" content="https://www.deeplearnhq.com/assets/og-image.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="PropertyOS — Property Management Platform | DeepLearnHQ" />
+<meta name="twitter:description" content="A microservices-based property management platform covering tenant records, lease management, rent tracking, document generation, and multi-user collaboration." />
+<meta name="twitter:image" content="https://www.deeplearnhq.com/assets/og-image.png" />
+<link rel="icon" type="image/png" href="assets/logo-mark.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="inner.css" />
+</head>
+<body data-page="work">
+<section class="page-hero split-hero" data-screen-label="PropertyOS Hero">
+  <div class="hero-aura"></div><div class="hero-grid"></div>
+  <div class="wrap page-hero-in">
+    <div>
+      <div class="cs-breadcrumb"><a href="work.html">Work</a> <span class="sep">/</span> <span>Real Estate &amp; PropTech</span></div>
+      <span class="cs-tag">Property Management Platform</span>
+      <h1><span class="grad-text">PropertyOS</span></h1>
+      <p class="lead">A microservices-based property management platform covering tenant records, lease management, rent tracking, document generation, and multi-user collaboration.</p>
+      <div class="page-hero-cta"><a href="contact.html" class="btn btn-grad">Start a similar project <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a href="work.html" class="btn btn-ghost-d">All case studies</a></div>
+    </div>
+    <div class="terminal reveal d1" aria-hidden="true">
+      <div class="terminal-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="ttl">deeplearnhq — microrealestate-property-management</span></div>
+      <div class="terminal-body">
+<span class="ln"><span class="pr">$</span> <span class="cmd">dlhq case "PropertyOS"</span></span>
+<span class="ln mut">  client: Real Estate Client</span>
+<span class="ln mut">  industry: Real Estate &amp; PropTech</span>
+<span class="ln"><span class="ok">  ✓</span> Units Supported: <span class="acc">5–500</span></span>
+<span class="ln"><span class="ok">  ✓</span> Document Automation: <span class="acc">Full Suite</span></span>
+<span class="ln mut">  stack: JavaScript · TypeScript · MongoDB</span>
+<span class="ln"><span class="pr">$</span> <span class="cmd">status</span> <span class="ok">shipped</span> <span class="cursor"></span></span>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section" style="padding-top:0">
+  <div class="wrap"><div class="cs-metricbar reveal"><div class="m"><div class="v grad">5–500</div><div class="k">Units Supported</div></div><div class="m"><div class="v">Full Suite</div><div class="k">Document Automation</div></div><div class="m"><div class="v grad">Microservices</div><div class="k">Architecture</div></div><div class="m"><div class="v">$0/unit</div><div class="k">Platform Cost</div></div></div></div>
+</section>
+<section class="section" style="padding-top:24px">
+  <div class="wrap">
+    <div class="cs-body">
+      <div class="cs-main">
+        <div class="cs-block reveal"><h2>Overview</h2><p>PropertyOS is a complete, self-hostable property management system for independent landlords and small property management companies. It centralizes tenant onboarding, lease creation, rent payment tracking, automated document generation, owner-tenant communication, and multi-user team collaboration — replacing the combination of spreadsheets, Gmail, and consumer-grade apps that most landlords use to manage their portfolios. It addresses the practical gap between expensive enterprise property management software and manual workflows.</p></div>
+        <div class="cs-block reveal"><h2>The Challenge</h2><p>Independent landlords and small property management companies managing 5–100 units typically operate with a patchwork of Excel spreadsheets, email chains, and disconnected consumer apps that don’t share data. Enterprise property management platforms — Yardi Voyager, AppFolio, Buildium — charge $1–5 per unit per month plus implementation fees, making them economically irrational for portfolios under 100 units. The result is that the vast majority of the rental market’s operational infrastructure runs on tools designed for completely different use cases, with no audit trail, no document automation, and no team visibility.</p></div>
+        <div class="cs-block reveal"><h2>What We Built</h2><p>PropertyOS implements a microservices architecture where tenant management, lease administration, document generation, and payment tracking run as independent services coordinated through Docker Compose. Each service owns its domain data, enabling independent scaling and maintenance. The tenant service manages profiles, contact history, and onboarding documents. The lease service handles contract creation with templated lease terms, renewal workflows, and expiration alerts. The document service generates lease agreements, rent receipts, and notice letters automatically. MongoDB’s document model fits property management data — irregular schemas across different property types, jurisdictions, and lease structures — naturally. Multi-user access with role-based permissions enables property managers, owners, and maintenance teams to see relevant information without seeing everything.</p></div>
+        <div class="cs-block reveal"><h2>Results</h2><ul><li><span class="dot"></span><span><strong>5–500</strong> — Units Supported. Right-sized for independent landlords to mid-size portfolios</span></li><li><span class="dot"></span><span><strong>Full Suite</strong> — Document Automation. Leases, receipts, notices — generated automatically</span></li><li><span class="dot"></span><span><strong>Microservices</strong> — Architecture. Independent, scalable service domains</span></li><li><span class="dot"></span><span><strong>$0/unit</strong> — Platform Cost. vs. $1–5/unit/month on enterprise platforms</span></li></ul></div>
+        
+      </div>
+      <aside class="cs-aside reveal d1">
+        <div class="ah"><h3>Project at a glance</h3></div>
+        <div class="ab">
+          <div class="arow"><div class="k2">Client</div><div class="v2">Real Estate Client</div></div>
+          <div class="arow"><div class="k2">Industry</div><div class="v2">Real Estate &amp; PropTech</div></div>
+          <div class="arow"><div class="k2">Units Supported</div><div class="v2">5–500</div></div><div class="arow"><div class="k2">Document Automation</div><div class="v2">Full Suite</div></div>
+          <div class="arow"><div class="k2">Stack</div><div class="stack2"><span>JavaScript</span><span>TypeScript</span><span>MongoDB</span><span>Docker</span><span>Node.js</span><span>Microservices</span><span>REST API</span></div></div>
+          <div class="arow"><a href="contact.html" class="btn btn-grad btn-sm">Build something like this <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+<section class="section alt">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">More Work</span><h2 class="h-sec">Related case studies.</h2></div>
+    <div class="cs-related"><a class="proj reveal" href="work-propdata.html"><div class="ind">Real Estate &amp; PropTech</div><h3>PropData — Real Estate Intelligence Pipeline</h3><p>PropData is a Python library providing programmatic, MLS-format access to real estate listing data from Realtor.com — ac…</p><div class="stack"><span>Python</span><span>Pandas</span><span>Pydantic</span></div></a>
+<a class="proj reveal" href="work-ccr-analytics-engine.html"><div class="ind">Financial Services &amp; FinTech</div><h3>CCR Analytics Engine — Counterparty Credit Risk Platform</h3><p>A Python-based counterparty credit risk analytics platform covering 90+ financial products and 16 risk calculators, full…</p><div class="stack"><span>Python</span><span>QuantLib</span><span>NumPy</span></div></a>
+<a class="proj reveal" href="work-mcp-intelligence-agent.html"><div class="ind">AI &amp; Machine Learning</div><h3>MCP Intelligence Agent — Financial Risk AI</h3><p>An AI-powered financial risk intelligence agent built with LangGraph and Claude Sonnet 4, connected to 163 tools via the…</p><div class="stack"><span>LangGraph</span><span>Claude Sonnet 4</span><span>Python</span></div></a></div>
+  </div>
+</section>
+<section class="section dark ink0 cta-band inner-cta" data-screen-label="PropertyOS CTA">
+  <div class="hero-aura"></div><div class="hero-grid"></div>
+  <div class="wrap cta-in">
+    <span class="eyebrow reveal" style="justify-content:center;display:inline-flex;margin-bottom:20px">Get Started</span>
+    <h2 class="reveal">Have a project like PropertyOS?</h2>
+    <p class="reveal d1">Tell us about your problem. We'll tell you honestly how we'd approach it — and whether we're the right team.</p>
+    <div class="cta-actions reveal d2"><a href="contact.html" class="btn btn-grad">Start a Project <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a href="work.html" class="btn btn-ghost-d">See all work</a></div>
+  </div>
+</section><script src="leadform.js"></script>
+<script src="chrome.js"></script>
+<script src="main.js"></script>
+<script src="heroscene.js"></script>
+</body>
+</html>

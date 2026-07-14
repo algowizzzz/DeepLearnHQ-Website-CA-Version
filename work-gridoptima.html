@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GridOptima — Power Systems Analysis &amp; Optimization | DeepLearnHQ</title>
+<meta name="description" content="A Python toolbox for simulating and optimizing modern energy systems — renewables, storage, sector coupling across electricity, heat, and hydrogen — for national-scale capacity planning." />
+<meta property="og:title" content="GridOptima — Power Systems Analysis &amp; Optimization | DeepLearnHQ" />
+<meta property="og:description" content="A Python toolbox for simulating and optimizing modern energy systems — renewables, storage, sector coupling across electricity, heat, and hydrogen — for national-scale capacity planning." />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="DeepLearnHQ" />
+<meta property="og:image" content="https://www.deeplearnhq.com/assets/og-image.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="GridOptima — Power Systems Analysis &amp; Optimization | DeepLearnHQ" />
+<meta name="twitter:description" content="A Python toolbox for simulating and optimizing modern energy systems — renewables, storage, sector coupling across electricity, heat, and hydrogen — for national-scale capacity planning." />
+<meta name="twitter:image" content="https://www.deeplearnhq.com/assets/og-image.png" />
+<link rel="icon" type="image/png" href="assets/logo-mark.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="inner.css" />
+</head>
+<body data-page="work">
+<section class="page-hero split-hero" data-screen-label="GridOptima Hero">
+  <div class="hero-aura"></div><div class="hero-grid"></div>
+  <div class="wrap page-hero-in">
+    <div>
+      <div class="cs-breadcrumb"><a href="work.html">Work</a> <span class="sep">/</span> <span>Energy &amp; Sustainability</span></div>
+      <span class="cs-tag">Power Systems Analysis &amp; Optimization</span>
+      <h1><span class="grad-text">GridOptima</span></h1>
+      <p class="lead">A Python toolbox for simulating and optimizing modern energy systems — renewables, storage, sector coupling across electricity, heat, and hydrogen — for national-scale capacity planning.</p>
+      <div class="page-hero-cta"><a href="contact.html" class="btn btn-grad">Start a similar project <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a href="work.html" class="btn btn-ghost-d">All case studies</a></div>
+    </div>
+    <div class="terminal reveal d1" aria-hidden="true">
+      <div class="terminal-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="ttl">deeplearnhq — pypsa-power-systems</span></div>
+      <div class="terminal-body">
+<span class="ln"><span class="pr">$</span> <span class="cmd">dlhq case "GridOptima"</span></span>
+<span class="ln mut">  client: Energy &amp; Utilities Client</span>
+<span class="ln mut">  industry: Energy &amp; Sustainability</span>
+<span class="ln"><span class="ok">  ✓</span> Sectors Modeled: <span class="acc">Multi</span></span>
+<span class="ln"><span class="ok">  ✓</span> Funding: <span class="acc">DFG</span></span>
+<span class="ln mut">  stack: Python · Pandas · NumPy</span>
+<span class="ln"><span class="pr">$</span> <span class="cmd">status</span> <span class="ok">shipped</span> <span class="cursor"></span></span>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section" style="padding-top:0">
+  <div class="wrap"><div class="cs-metricbar reveal"><div class="m"><div class="v grad">Multi</div><div class="k">Sectors Modeled</div></div><div class="m"><div class="v">DFG</div><div class="k">Funding</div></div><div class="m"><div class="v grad">JORS</div><div class="k">Publication</div></div><div class="m"><div class="v">HiGHS/CPLEX</div><div class="k">Solver Support</div></div></div></div>
+</section>
+<section class="section" style="padding-top:24px">
+  <div class="wrap">
+    <div class="cs-body">
+      <div class="cs-main">
+        <div class="cs-block reveal"><h2>Overview</h2><p>GridOptima is a Python toolbox for simulating and optimizing modern energy systems — from conventional generators and wind/solar farms to battery storage, sector-coupled heat networks, green hydrogen pipelines, and national capacity expansion planning. Developed in partnership with TU Berlin’s Department of Digital Transformation in Energy Systems and funded by the German Research Foundation, it is the standard tool for academic and institutional energy transition research across Europe.</p></div>
+        <div class="cs-block reveal"><h2>The Challenge</h2><p>Energy companies, grid operators, and governments making billion-dollar investment decisions in renewable capacity, transmission infrastructure, and hydrogen networks need rigorous scenario modeling tools. The energy transition is not just an electricity problem — heat networks, hydrogen, and transport electrification all interact. Legacy planning tools either model a single sector in isolation or require expensive commercial licenses (PLEXOS, GAMS) that limit research transparency and reproducibility. National energy transition plans that can’t be audited by independent researchers are a governance problem.</p></div>
+        <div class="cs-block reveal"><h2>What We Built</h2><p>GridOptima provides least-cost optimization across entire multi-sector energy systems in a single framework. The linopy optimization layer supports linear programming (LP) and mixed-integer programming (MIP) using HiGHS, CPLEX, or Gurobi solvers. NetworkX handles energy network topology for optimal power flow calculations. Multi-period investment optimization models capacity expansion over decades, not just dispatch in a single year. Sector coupling — connecting electricity, heat, and hydrogen networks — enables analysis of the full energy transition rather than isolated subsystems. Its peer-reviewed publication in the Journal of Open Research Software gives energy planners confidence in methodological rigor.</p></div>
+        <div class="cs-block reveal"><h2>Results</h2><ul><li><span class="dot"></span><span><strong>Multi</strong> — Sectors Modeled. Electricity, heat, hydrogen, transport — unified</span></li><li><span class="dot"></span><span><strong>DFG</strong> — Funding. German Research Foundation — institutional credibility</span></li><li><span class="dot"></span><span><strong>JORS</strong> — Publication. Peer-reviewed methodology — auditable science</span></li><li><span class="dot"></span><span><strong>HiGHS/CPLEX</strong> — Solver Support. Open and commercial solvers for any scale</span></li></ul></div>
+        
+      </div>
+      <aside class="cs-aside reveal d1">
+        <div class="ah"><h3>Project at a glance</h3></div>
+        <div class="ab">
+          <div class="arow"><div class="k2">Client</div><div class="v2">Energy &amp; Utilities Client</div></div>
+          <div class="arow"><div class="k2">Industry</div><div class="v2">Energy &amp; Sustainability</div></div>
+          <div class="arow"><div class="k2">Sectors Modeled</div><div class="v2">Multi</div></div><div class="arow"><div class="k2">Funding</div><div class="v2">DFG</div></div>
+          <div class="arow"><div class="k2">Stack</div><div class="stack2"><span>Python</span><span>Pandas</span><span>NumPy</span><span>SciPy</span><span>HiGHS Solver</span><span>NetworkX</span><span>linopy</span><span>Plotly</span></div></div>
+          <div class="arow"><a href="contact.html" class="btn btn-grad btn-sm">Build something like this <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+<section class="section alt">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">More Work</span><h2 class="h-sec">Related case studies.</h2></div>
+    <div class="cs-related"><a class="proj reveal" href="work-carbontrack.html"><div class="ind">Energy &amp; Sustainability</div><h3>CarbonTrack — ML Compute Emissions Monitor</h3><p>CarbonTrack is a Python library that automatically estimates and tracks CO2 emissions from computing hardware — GPU, CPU…</p><div class="stack"><span>Python</span><span>TypeScript</span><span>NVIDIA API</span></div></a>
+<a class="proj reveal" href="work-ccr-analytics-engine.html"><div class="ind">Financial Services &amp; FinTech</div><h3>CCR Analytics Engine — Counterparty Credit Risk Platform</h3><p>A Python-based counterparty credit risk analytics platform covering 90+ financial products and 16 risk calculators, full…</p><div class="stack"><span>Python</span><span>QuantLib</span><span>NumPy</span></div></a>
+<a class="proj reveal" href="work-mcp-intelligence-agent.html"><div class="ind">AI &amp; Machine Learning</div><h3>MCP Intelligence Agent — Financial Risk AI</h3><p>An AI-powered financial risk intelligence agent built with LangGraph and Claude Sonnet 4, connected to 163 tools via the…</p><div class="stack"><span>LangGraph</span><span>Claude Sonnet 4</span><span>Python</span></div></a></div>
+  </div>
+</section>
+<section class="section dark ink0 cta-band inner-cta" data-screen-label="GridOptima CTA">
+  <div class="hero-aura"></div><div class="hero-grid"></div>
+  <div class="wrap cta-in">
+    <span class="eyebrow reveal" style="justify-content:center;display:inline-flex;margin-bottom:20px">Get Started</span>
+    <h2 class="reveal">Have a project like GridOptima?</h2>
+    <p class="reveal d1">Tell us about your problem. We'll tell you honestly how we'd approach it — and whether we're the right team.</p>
+    <div class="cta-actions reveal d2"><a href="contact.html" class="btn btn-grad">Start a Project <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a href="work.html" class="btn btn-ghost-d">See all work</a></div>
+  </div>
+</section><script src="leadform.js"></script>
+<script src="chrome.js"></script>
+<script src="main.js"></script>
+<script src="heroscene.js"></script>
+</body>
+</html>

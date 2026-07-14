@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Work — Projects that ship | DeepLearnHQ</title>
+<meta name="description" content="AI products, data platforms, and full-stack systems — built from first principles and deployed to production across 11 industries." />
+<meta property="og:title" content="Work — Projects that ship | DeepLearnHQ" />
+<meta property="og:description" content="AI products, data platforms, and full-stack systems — built from first principles and deployed to production across 11 industries." />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="DeepLearnHQ" />
+<meta property="og:image" content="https://www.deeplearnhq.com/assets/og-image.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Work — Projects that ship | DeepLearnHQ" />
+<meta name="twitter:description" content="AI products, data platforms, and full-stack systems — built from first principles and deployed to production across 11 industries." />
+<meta name="twitter:image" content="https://www.deeplearnhq.com/assets/og-image.png" />
+<link rel="icon" type="image/png" href="assets/logo-mark.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="inner.css" />
+</head>
+<body data-page="work">
+
+<section class="page-hero split-hero" data-screen-label="Work Hero">
+  <div class="hero-aura"></div>
+  <div class="hero-grid"></div>
+  <div class="wrap page-hero-in">
+    <div>
+      <span class="eyebrow">Selected Work</span>
+      <h1>Projects that <span class="grad-text">ship.</span></h1>
+      <p class="lead">AI products, data platforms, and full-stack systems — built from first principles and deployed to production. We build our own tools and contribute to the open-source projects shaping each industry.</p>
+      <div class="page-hero-cta">
+        <a href="contact.html" class="btn btn-grad">Start a Project
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a href="industries.html" class="btn btn-ghost-d">By industry</a>
+      </div>
+    </div>
+    <div class="terminal reveal d1" aria-hidden="true">
+      <div class="terminal-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="ttl">deeplearnhq — portfolio</span></div>
+      <div class="terminal-body">
+<span class="ln"><span class="pr">$</span> <span class="cmd">dlhq ls --shipped</span></span>
+<span class="ln"><span class="ok">  ✓</span> 28 projects · 11 industries</span>
+<span class="ln mut">  finance · health · commerce · gov…</span>
+<span class="ln"><span class="ok">  ✓</span> NeurIPS / ICML cited</span>
+<span class="ln"><span class="ok">  ✓</span> 100+ governments · 42M+ learners</span>
+<span class="ln"><span class="pr">$</span> <span class="cmd">open case-studies</span> <span class="cursor"></span></span>
+      </div>
+    </div>
+  </div>
+  <div class="wrap" style="position:relative;z-index:2">
+    <div class="mini-stats">
+      <div class="ms"><div class="v grad" data-count="28">0</div><div class="k">Projects</div></div>
+      <div class="ms"><div class="v" data-count="11">0</div><div class="k">Industries</div></div>
+      <div class="ms"><div class="v" data-count="3">0</div><div class="k">Continents</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="filters reveal" id="filters"></div>
+    <div class="work-count reveal" id="workCount"></div>
+    <div class="proj-grid" id="projGrid"></div>
+  </div>
+</section>
+
+<section class="section dark ink0 cta-band inner-cta" data-screen-label="Work CTA">
+  <div class="hero-aura"></div>
+  <div class="hero-grid"></div>
+  <div class="wrap cta-in">
+    <span class="eyebrow reveal" style="justify-content:center;display:inline-flex;margin-bottom:20px">Let's Build</span>
+    <h2 class="reveal">Let's build something together.</h2>
+    <p class="reveal d1">Have a hard problem in your industry? We work with teams who want to ship real AI products — not slide decks.</p>
+    <div class="cta-actions reveal d2">
+      <a href="contact.html" class="btn btn-grad">Start a conversation
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a href="industries.html" class="btn btn-ghost-d">Industries we serve</a>
+    </div>
+  </div>
+</section>
+
+<script id="projects-data" type="application/json">
+[
+{"i":"Financial Services & FinTech","t":"CCR Analytics Engine","s":"Counterparty Credit Risk Platform","d":"A Python-based counterparty credit risk analytics platform covering 90+ financial products and 16 risk calculators, fully compliant with SA-CCR and Basel III/IV standards.","k":["Python","QuantLib","NumPy","Pandas"],"m":[["90+","Financial Products"],["16","Risk Calculators"]]},
+{"i":"AI & Machine Learning","t":"MCP Intelligence Agent","s":"Financial Risk AI","d":"An AI-powered financial risk intelligence agent built with LangGraph and Claude Sonnet 4, connected to 163 tools via the SAJHA MCP Server. Uses SSE streaming for real-time analysis.","k":["LangGraph","Claude Sonnet 4","Python","MCP"],"m":[["163","Tools Available"],["SSE","Real-Time"]]},
+{"i":"AI & Machine Learning","t":"OSFI CAR RAG Agent","s":"Regulatory Compliance AI","d":"A retrieval-augmented generation agent answering questions about OSFI's Capital Adequacy Requirements — Canada's primary banking capital regulation. Achieved a 0.805/1.0 quality score.","k":["LangGraph","Gemini 1.5 Pro","Python","RAG"],"m":[["0.805","Quality Score"],["RAG","Architecture"]]},
+{"i":"Healthcare & MedTech","t":"UrgentCareX","s":"Healthcare Urgent Care Platform","d":"A TypeScript/Vite web application converting Figma wireframes into a production-ready urgent care platform. Multiple design iterations shipped and live on Vercel.","k":["TypeScript","Vite","React","Figma"],"m":[["3","Design Iterations"],["Live","On Vercel"]]},
+{"i":"E-Commerce & Retail","t":"DoHuub","s":"Vendor Portal & B2B Marketplace","d":"A full-stack B2B vendor portal and marketplace platform built with TypeScript. Multiple production versions shipped live, each improving conversion and vendor retention from live usage data.","k":["TypeScript","React","Node.js","Supabase"],"m":[["B2B","Platform"],["Multi","Versions Shipped"]]},
+{"i":"Education & EdTech","t":"Education LMS","s":"Learning Management System","d":"A full-stack learning management system with Supabase backend, authentication, real-time messaging, and course management. Built with TypeScript and Vite.","k":["TypeScript","Vite","React","Supabase"],"m":[["Supabase","Backend"],["Full","LMS Features"]]},
+{"i":"AI & Machine Learning","t":"Neo4j + Pinecone RAG","s":"Hybrid AI Search","d":"A hybrid AI search and retrieval system combining a Neo4j graph database with Pinecone vector search, deployed on AWS. LangChain orchestrates queries needing both semantic understanding and relationship traversal.","k":["Python","Neo4j","Pinecone","LangChain"],"m":[["Hybrid","RAG"],["AWS","Deployed"]]},
+{"i":"Financial Services & FinTech","t":"SEC Filing Extraction","s":"Automated EDGAR Pipeline","d":"An automated Python pipeline for bulk extraction of 10-K and 10-Q filings from SEC EDGAR. Uses BeautifulSoup and pandas to parse, structure, and store financial disclosure data at scale.","k":["Python","BeautifulSoup","Pandas","SEC EDGAR"],"m":[["10-K/10-Q","Filing Types"],["At Scale","Bulk"]]},
+{"i":"Financial Services & FinTech","t":"FinData Terminal","s":"Unified Market Intelligence Platform","d":"A Bloomberg Terminal alternative consolidating proprietary, licensed, and public financial data into a single API-first layer. Accessed via Python SDK, REST API, Excel, or MCP servers for AI agents.","k":["Python","FastAPI","MCP","REST API"],"m":[["Active","Enterprise Tier"],["50+","Integrations"]]},
+{"i":"AI & Machine Learning","t":"QuantAI","s":"ML Quantitative Research Platform","d":"An AI-oriented quant research platform covering the full pipeline from data ingestion to live trading, with an autonomous RD-Agent LLM that generates and tests strategies. Cited in NeurIPS and ICML papers.","k":["Python","PyTorch","scikit-learn","Pandas"],"m":[["NeurIPS/ICML","Publications"],["14+","Data Sources"]]},
+{"i":"Healthcare & MedTech","t":"MedVision AI","s":"Medical Imaging Intelligence Platform","d":"The standard deep learning framework for medical imaging — CT, MRI, pathology, and endoscopy. Built on PyTorch with NVIDIA and King's College London, with a model zoo of pre-trained clinical bundles.","k":["Python","PyTorch","CUDA","Docker"],"m":[["PyTorch","Ecosystem"],["Clinical","Validated"]]},
+{"i":"Healthcare & MedTech","t":"ClinicalBase","s":"FHIR-Native Developer Platform","d":"A full-stack healthcare developer platform built on FHIR R4 — clinical data repository, SMART-on-FHIR auth, serverless bot framework, React component library, and full SDK. SOC 2-certified, HIPAA-ready.","k":["TypeScript","Node.js","FHIR R4","PostgreSQL"],"m":[["SOC 2","Compliance"],["FHIR R4","Standard"]]},
+{"i":"E-Commerce & Retail","t":"CommerceLab","s":"Modular Headless Commerce Engine","d":"A modular, API-first headless commerce engine for scenarios Shopify can't handle: B2B custom pricing, multi-vendor marketplaces, subscriptions, and PoS. Zero platform fees, full code ownership.","k":["TypeScript","Node.js","Next.js","PostgreSQL"],"m":[["Active","Enterprise"],["$0","Platform Fees"]]},
+{"i":"E-Commerce & Retail","t":"RetailGraph","s":"GraphQL Commerce Platform","d":"A GraphQL-first, headless commerce platform on Python and Django — designed as an API, not a monolith. Native multi-currency, multi-language, and multi-warehouse support for global retailers.","k":["Python","Django","GraphQL","React"],"m":[["Multi-Country","Global Scale"],["Omnichannel","Support"]]},
+{"i":"Education & EdTech","t":"LearnCore","s":"Enterprise Learning Management Platform","d":"An enterprise LMS and course authoring platform powering large-scale university and enterprise deployments worldwide. 42M+ learners served, 1.4M certificates awarded, contributors from MIT and Harvard.","k":["Python","Django","React","MySQL"],"m":[["42M+","Learners Served"],["1.4M","Certificates"]]},
+{"i":"Education & EdTech","t":"AcademyAI","s":"AI-Native Learning Management System","d":"A next-generation LMS: block-based content creation, real code execution with auto-grading in 30+ languages, collaborative whiteboards, AI assistance via Gemini and LlamaIndex, and Stripe monetization.","k":["TypeScript","Next.js","Python","FastAPI"],"m":[["Enterprise","Deployments"],["30+","Code Languages"]]},
+{"i":"Energy & Sustainability","t":"GridOptima","s":"Power Systems Analysis & Optimization","d":"A Python toolbox for simulating and optimizing modern energy systems — generators, wind/solar, battery storage, hydrogen, and capacity expansion planning. With TU Berlin, funded by the German Research Foundation.","k":["Python","Pandas","NumPy","SciPy"],"m":[["Multi","Sectors Modeled"],["DFG","Funding"]]},
+{"i":"Energy & Sustainability","t":"CarbonTrack","s":"ML Compute Emissions Monitor","d":"A Python library that estimates and tracks CO2 emissions from GPU, CPU, and RAM during ML training and inference. Maps hardware power draw to grid carbon intensity. Backed by Comet.ml, BCG GAMMA, and Mila.","k":["Python","TypeScript","NVIDIA API","Intel RAPL"],"m":[["105+","Contributors"],["MLflow/W&B","Integration"]]},
+{"i":"Manufacturing & Logistics","t":"FactoryOS","s":"Enterprise Resource Planning Platform","d":"A fully integrated ERP covering manufacturing, inventory, accounting, assets, projects, HR, payroll, and CRM. Built on a low-code layer, deployed in 75+ countries — a credible alternative to SAP and Oracle.","k":["Python","JavaScript","Vue.js","MariaDB"],"m":[["75+","Countries"],["57,600+","Commits"]]},
+{"i":"Manufacturing & Logistics","t":"ScheduleIQ","s":"Advanced Manufacturing Planning System","d":"A demand forecasting and advanced planning & scheduling system for manufacturers using constraint-based planning, time-series forecasting, and lean principles — capabilities mid-market makers were priced out of.","k":["C++","Python","Django","JavaScript"],"m":[["C++ Core","Planning Engine"],["APS","Market Category"]]},
+{"i":"Legal & RegTech","t":"SignFlow","s":"Digital Document Signing Platform","d":"A TypeScript-first document signing platform — a transparent, auditable DocuSign alternative. Multi-signer workflows, comprehensive audit trails, PDF annotation, and customizable signing experiences.","k":["TypeScript","Next.js","Prisma","PostgreSQL"],"m":[["<1 Hour","Deployment"],["Unlimited","Users"]]},
+{"i":"Legal & RegTech","t":"DocuVerify","s":"E-Signature & Compliance Platform","d":"A free, self-hostable e-signature platform with multi-signer PDF workflows, OTP verification, audit trails, REST API, and Zapier integration. ESIGN Act / eIDAS compliant, deployable with one Docker command.","k":["Node.js","JavaScript","React","MongoDB"],"m":[["Unlimited","Enterprise Users"],["ESIGN/eIDAS","Compliance"]]},
+{"i":"Real Estate & PropTech","t":"PropData","s":"Real Estate Intelligence Pipeline","d":"A Python library for MLS-format access to real estate listing data — active listings, sold comparables, rentals, and pending transactions. Native MCP server lets AI agents query in natural language.","k":["Python","Pandas","Pydantic","MCP"],"m":[["MLS Quality","Data Access"],["MCP Native","AI Ready"]]},
+{"i":"Real Estate & PropTech","t":"PropertyOS","s":"Property Management Platform","d":"A complete, self-hostable property management system for landlords and small firms — tenant onboarding, lease creation, rent tracking, document automation, and owner-tenant communication.","k":["JavaScript","TypeScript","MongoDB","Docker"],"m":[["5–500","Units Supported"],["Full Suite","Doc Automation"]]},
+{"i":"Marketing & Analytics","t":"InsightBoard","s":"Enterprise Business Intelligence Platform","d":"An enterprise BI and data visualization platform — born at Airbnb, used at Twitter, Netflix, and Lyft. Connects to 50+ SQL databases, 40+ chart types, a no-code builder, semantic layer, and RBAC.","k":["Python","Flask","React","SQLAlchemy"],"m":[["Global","Enterprise Adoption"],["50+","DB Connectors"]]},
+{"i":"Marketing & Analytics","t":"PulseAnalytics","s":"Product Analytics & LLM Observability","d":"An all-in-one product analytics platform replacing five SaaS tools — event analytics, session replay, feature flags, A/B testing, and CDP pipelines — in a single self-hostable deployment.","k":["Python","TypeScript","Rust","ClickHouse"],"m":[["5","SaaS Tools Replaced"],["Self-Hosted","Own Your Data"]]},
+{"i":"Government & Public Sector","t":"DataGov","s":"Open Data Management Platform","d":"The data management system powering open data portals for the US, Canada, the UK, Australia, Singapore, and 100+ governments worldwide — the global standard for government open data infrastructure.","k":["Python","PostgreSQL","Solr","Redis"],"m":[["100+","Governments"],["27,952+","Commits"]]},
+{"i":"Government & Public Sector","t":"CivicVoice","s":"Digital Civic Engagement Platform","d":"A participatory democracy framework born at Barcelona City Council. Adopted by Helsinki, Mexico City, the French government, and Quebec. Verified by the United Nations as a Digital Public Good.","k":["Ruby on Rails","JavaScript","PostgreSQL","Docker"],"m":[["DPG","UN-Verified"],["38,000","Reach"]]}
+]
+</script>
+
+<script src="leadform.js"></script>
+<script src="chrome.js"></script>
+<script src="main.js"></script>
+<script src="heroscene.js"></script>
+<script>
+(function () {
+  const data = JSON.parse(document.getElementById("projects-data").textContent);
+  const grid = document.getElementById("projGrid");
+  const filtersEl = document.getElementById("filters");
+  const countEl = document.getElementById("workCount");
+  const inds = ["All", ...Array.from(new Set(data.map((p) => p.i)))];
+  let activeFilter = "All";
+  const slugify = (s) => s.toLowerCase().replace(/&/g,"and").replace(/\+/g," plus ").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+
+  filtersEl.innerHTML = inds
+    .map((f) => `<button class="chip-f${f === "All" ? " active" : ""}" data-f="${f}">${f}</button>`)
+    .join("");
+
+  function render() {
+    const items = activeFilter === "All" ? data : data.filter((p) => p.i === activeFilter);
+    countEl.textContent = `Showing ${items.length} of ${data.length} projects`;
+    grid.innerHTML = items
+      .map(
+        (p) => `
+      <a class="proj" href="work-${slugify(p.t)}.html">
+        <div class="ind">${p.i}</div>
+        <h3>${p.t} — ${p.s}</h3>
+        <p>${p.d}</p>
+        <div class="stack">${p.k.map((x) => `<span>${x}</span>`).join("")}</div>
+        <div class="pm">${p.m.map((m) => `<div class="m"><div class="v">${m[0]}</div><div class="k">${m[1]}</div></div>`).join("")}</div>
+        <div class="proj-more">View case study <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      </a>`
+      )
+      .join("");
+  }
+
+  filtersEl.addEventListener("click", (e) => {
+    const btn = e.target.closest(".chip-f");
+    if (!btn) return;
+    activeFilter = btn.dataset.f;
+    filtersEl.querySelectorAll(".chip-f").forEach((c) => c.classList.toggle("active", c === btn));
+    render();
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

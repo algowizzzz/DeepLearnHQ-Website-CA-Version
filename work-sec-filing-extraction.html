@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SEC Filing Extraction — Automated EDGAR Pipeline | DeepLearnHQ</title>
+<meta name="description" content="An automated Python pipeline for bulk extraction of 10-K and 10-Q filings from SEC EDGAR using BeautifulSoup and pandas for structured financial data." />
+<meta property="og:title" content="SEC Filing Extraction — Automated EDGAR Pipeline | DeepLearnHQ" />
+<meta property="og:description" content="An automated Python pipeline for bulk extraction of 10-K and 10-Q filings from SEC EDGAR using BeautifulSoup and pandas for structured financial data." />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="DeepLearnHQ" />
+<meta property="og:image" content="https://www.deeplearnhq.com/assets/og-image.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="SEC Filing Extraction — Automated EDGAR Pipeline | DeepLearnHQ" />
+<meta name="twitter:description" content="An automated Python pipeline for bulk extraction of 10-K and 10-Q filings from SEC EDGAR using BeautifulSoup and pandas for structured financial data." />
+<meta name="twitter:image" content="https://www.deeplearnhq.com/assets/og-image.png" />
+<link rel="icon" type="image/png" href="assets/logo-mark.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="inner.css" />
+</head>
+<body data-page="work">
+<section class="page-hero split-hero" data-screen-label="SEC Filing Extraction Hero">
+  <div class="hero-aura"></div><div class="hero-grid"></div>
+  <div class="wrap page-hero-in">
+    <div>
+      <div class="cs-breadcrumb"><a href="work.html">Work</a> <span class="sep">/</span> <span>Financial Services &amp; FinTech</span></div>
+      <span class="cs-tag">Automated EDGAR Pipeline</span>
+      <h1>SEC Filing <span class="grad-text">Extraction</span></h1>
+      <p class="lead">An automated Python pipeline for bulk extraction of 10-K and 10-Q filings from SEC EDGAR using BeautifulSoup and pandas for structured financial data.</p>
+      <div class="page-hero-cta"><a href="contact.html" class="btn btn-grad">Start a similar project <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a href="work.html" class="btn btn-ghost-d">All case studies</a></div>
+    </div>
+    <div class="terminal reveal d1" aria-hidden="true">
+      <div class="terminal-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="ttl">deeplearnhq — sec-filing-extraction</span></div>
+      <div class="terminal-body">
+<span class="ln"><span class="pr">$</span> <span class="cmd">dlhq case "SEC Filing Extraction"</span></span>
+<span class="ln mut">  client: Internal / Financial Data</span>
+<span class="ln mut">  industry: Financial Services &amp; FinTech</span>
+<span class="ln"><span class="ok">  ✓</span> Filing Types: <span class="acc">10-K/10-Q</span></span>
+<span class="ln"><span class="ok">  ✓</span> Source: <span class="acc">SEC EDGAR</span></span>
+<span class="ln mut">  stack: Python · BeautifulSoup · Pandas</span>
+<span class="ln"><span class="pr">$</span> <span class="cmd">status</span> <span class="ok">shipped</span> <span class="cursor"></span></span>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section" style="padding-top:0">
+  <div class="wrap"><div class="cs-metricbar reveal"><div class="m"><div class="v grad">10-K/10-Q</div><div class="k">Filing Types</div></div><div class="m"><div class="v">SEC EDGAR</div><div class="k">Source</div></div><div class="m"><div class="v grad">Structured Data</div><div class="k">Output</div></div><div class="m"><div class="v">Automated</div><div class="k">Pipeline</div></div></div></div>
+</section>
+<section class="section" style="padding-top:24px">
+  <div class="wrap">
+    <div class="cs-body">
+      <div class="cs-main">
+        <div class="cs-block reveal"><h2>Overview</h2><p>An automated Python pipeline for bulk extraction of 10-K and 10-Q filings from SEC EDGAR. Uses BeautifulSoup and pandas to parse, structure, and store financial disclosure data at scale.</p></div>
+        <div class="cs-block reveal"><h2>The Challenge</h2><p>SEC EDGAR contains decades of financial filings, but accessing the data programmatically is cumbersome — EDGAR's interface is built for human browsing, not API consumption. Financial analysts and quant researchers processing large filing volumes across companies and time periods have no clean solution for bulk extraction and structured storage.</p></div>
+        <div class="cs-block reveal"><h2>What We Built</h2><p>Built an automated extraction pipeline targeting SEC EDGAR’s underlying file structure. BeautifulSoup parses HTML/XBRL filing documents, extracting key sections (MD&amp;A, financial statements, risk factors). Pandas structures the extracted data into clean DataFrames ready for analysis. The pipeline handles rate limiting, retry logic, and the varying formats across filing periods and company types.</p></div>
+        <div class="cs-block reveal"><h2>Results</h2><ul><li><span class="dot"></span><span><strong>10-K/10-Q</strong> — Filing Types. Annual and quarterly SEC filings extracted</span></li><li><span class="dot"></span><span><strong>SEC EDGAR</strong> — Source. Direct extraction from EDGAR's file system</span></li><li><span class="dot"></span><span><strong>Structured Data</strong> — Output. Clean pandas DataFrames ready for analysis</span></li><li><span class="dot"></span><span><strong>Automated</strong> — Pipeline. Bulk extraction with rate limiting and retry logic</span></li></ul></div>
+        
+      </div>
+      <aside class="cs-aside reveal d1">
+        <div class="ah"><h3>Project at a glance</h3></div>
+        <div class="ab">
+          <div class="arow"><div class="k2">Client</div><div class="v2">Internal / Financial Data</div></div>
+          <div class="arow"><div class="k2">Industry</div><div class="v2">Financial Services &amp; FinTech</div></div>
+          <div class="arow"><div class="k2">Filing Types</div><div class="v2">10-K/10-Q</div></div><div class="arow"><div class="k2">Source</div><div class="v2">SEC EDGAR</div></div>
+          <div class="arow"><div class="k2">Stack</div><div class="stack2"><span>Python</span><span>BeautifulSoup</span><span>Pandas</span><span>SEC EDGAR</span><span>XBRL</span><span>Data Engineering</span></div></div>
+          <div class="arow"><a href="contact.html" class="btn btn-grad btn-sm">Build something like this <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+<section class="section alt">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">More Work</span><h2 class="h-sec">Related case studies.</h2></div>
+    <div class="cs-related"><a class="proj reveal" href="work-ccr-analytics-engine.html"><div class="ind">Financial Services &amp; FinTech</div><h3>CCR Analytics Engine — Counterparty Credit Risk Platform</h3><p>A Python-based counterparty credit risk analytics platform covering 90+ financial products and 16 risk calculators, full…</p><div class="stack"><span>Python</span><span>QuantLib</span><span>NumPy</span></div></a>
+<a class="proj reveal" href="work-findata-terminal.html"><div class="ind">Financial Services &amp; FinTech</div><h3>FinData Terminal — Unified Market Intelligence Platform</h3><p>FinData Terminal is a unified financial data platform — a Bloomberg Terminal alternative that consolidates proprietary, …</p><div class="stack"><span>Python</span><span>FastAPI</span><span>MCP Protocol</span></div></a>
+<a class="proj reveal" href="work-quantai.html"><div class="ind">Financial Services &amp; FinTech</div><h3>QuantAI — Machine Learning Quantitative Research Platform</h3><p>QuantAI is an AI-oriented quantitative investment research platform covering the full quant pipeline from raw data inges…</p><div class="stack"><span>Python</span><span>PyTorch</span><span>scikit-learn</span></div></a></div>
+  </div>
+</section>
+<section class="section dark ink0 cta-band inner-cta" data-screen-label="SEC Filing Extraction CTA">
+  <div class="hero-aura"></div><div class="hero-grid"></div>
+  <div class="wrap cta-in">
+    <span class="eyebrow reveal" style="justify-content:center;display:inline-flex;margin-bottom:20px">Get Started</span>
+    <h2 class="reveal">Have a project like SEC Filing Extraction?</h2>
+    <p class="reveal d1">Tell us about your problem. We'll tell you honestly how we'd approach it — and whether we're the right team.</p>
+    <div class="cta-actions reveal d2"><a href="contact.html" class="btn btn-grad">Start a Project <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a href="work.html" class="btn btn-ghost-d">See all work</a></div>
+  </div>
+</section><script src="leadform.js"></script>
+<script src="chrome.js"></script>
+<script src="main.js"></script>
+<script src="heroscene.js"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+export { default as ServiceTemplate } from './ServiceTemplate';
+export { default as IndustryTemplate } from './IndustryTemplate';
+export { default as SolutionTemplate } from './SolutionTemplate';
+export { default as CaseStudyTemplate } from './CaseStudyTemplate';
+export { default as BlogPostTemplate } from './BlogPostTemplate';
+export { default as ArticleTemplate } from './ArticleTemplate';
+export { default as EventTemplate } from './EventTemplate';
+export { default as AuthorTemplate } from './AuthorTemplate';
+export { default as ListingTemplate } from './ListingTemplate';

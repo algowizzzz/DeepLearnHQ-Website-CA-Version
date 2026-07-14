@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CarbonTrack — ML Compute Emissions Monitor | DeepLearnHQ</title>
+<meta name="description" content="A Python library automating CO2 emissions tracking from ML training workloads — mapping GPU/CPU power draw to regional carbon intensity for ESG reporting and EU AI Act compliance." />
+<meta property="og:title" content="CarbonTrack — ML Compute Emissions Monitor | DeepLearnHQ" />
+<meta property="og:description" content="A Python library automating CO2 emissions tracking from ML training workloads — mapping GPU/CPU power draw to regional carbon intensity for ESG reporting and EU AI Act compliance." />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="DeepLearnHQ" />
+<meta property="og:image" content="https://www.deeplearnhq.com/assets/og-image.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="CarbonTrack — ML Compute Emissions Monitor | DeepLearnHQ" />
+<meta name="twitter:description" content="A Python library automating CO2 emissions tracking from ML training workloads — mapping GPU/CPU power draw to regional carbon intensity for ESG reporting and EU AI Act compliance." />
+<meta name="twitter:image" content="https://www.deeplearnhq.com/assets/og-image.png" />
+<link rel="icon" type="image/png" href="assets/logo-mark.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="inner.css" />
+</head>
+<body data-page="work">
+<section class="page-hero split-hero" data-screen-label="CarbonTrack Hero">
+  <div class="hero-aura"></div><div class="hero-grid"></div>
+  <div class="wrap page-hero-in">
+    <div>
+      <div class="cs-breadcrumb"><a href="work.html">Work</a> <span class="sep">/</span> <span>Energy &amp; Sustainability</span></div>
+      <span class="cs-tag">ML Compute Emissions Monitor</span>
+      <h1><span class="grad-text">CarbonTrack</span></h1>
+      <p class="lead">A Python library automating CO2 emissions tracking from ML training workloads — mapping GPU/CPU power draw to regional carbon intensity for ESG reporting and EU AI Act compliance.</p>
+      <div class="page-hero-cta"><a href="contact.html" class="btn btn-grad">Start a similar project <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a href="work.html" class="btn btn-ghost-d">All case studies</a></div>
+    </div>
+    <div class="terminal reveal d1" aria-hidden="true">
+      <div class="terminal-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="ttl">deeplearnhq — codecarbon-emissions-tracker</span></div>
+      <div class="terminal-body">
+<span class="ln"><span class="pr">$</span> <span class="cmd">dlhq case "CarbonTrack"</span></span>
+<span class="ln mut">  client: Sustainability &amp; AI Client</span>
+<span class="ln mut">  industry: Energy &amp; Sustainability</span>
+<span class="ln"><span class="ok">  ✓</span> Contributors: <span class="acc">105+</span></span>
+<span class="ln"><span class="ok">  ✓</span> Integration: <span class="acc">MLflow/W&amp;B</span></span>
+<span class="ln mut">  stack: Python · TypeScript · NVIDIA API</span>
+<span class="ln"><span class="pr">$</span> <span class="cmd">status</span> <span class="ok">shipped</span> <span class="cursor"></span></span>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section" style="padding-top:0">
+  <div class="wrap"><div class="cs-metricbar reveal"><div class="m"><div class="v grad">105+</div><div class="k">Contributors</div></div><div class="m"><div class="v">MLflow/W&amp;B</div><div class="k">Integration</div></div><div class="m"><div class="v grad">EU AI Act</div><div class="k">Compliance</div></div><div class="m"><div class="v">3 Lines</div><div class="k">Deployment</div></div></div></div>
+</section>
+<section class="section" style="padding-top:24px">
+  <div class="wrap">
+    <div class="cs-body">
+      <div class="cs-main">
+        <div class="cs-block reveal"><h2>Overview</h2><p>CarbonTrack is a Python library that automatically estimates and tracks CO2 emissions from computing hardware — GPU, CPU, and RAM — during machine learning training runs and inference workloads. It maps hardware power draw to regional electricity grid carbon intensity data, producing per-experiment emissions reports with a pip-installable decorator that adds three lines to any Python script. Backed by Comet.ml, BCG GAMMA, and Mila (Montreal Institute for Learning Algorithms), it has become the standard tool for ML carbon accounting.</p></div>
+        <div class="cs-block reveal"><h2>The Challenge</h2><p>AI and machine learning have become material contributors to corporate carbon footprints — a single large model training run can emit as much CO2 as five cars over their operational lifetimes. As EU AI Act requirements and SEC climate disclosure rules extend to scope 3 compute emissions, data science and ML teams need tooling to measure, attribute, and report the carbon cost of their models. Without measurement infrastructure, sustainability commitments are aspirational rather than auditable. Top ML conferences (NeurIPS, ICML) are increasingly requiring carbon disclosures in paper submissions.</p></div>
+        <div class="cs-block reveal"><h2>What We Built</h2><p>CarbonTrack works as a Python decorator or context manager — wrapping any training loop or inference pipeline with three lines of code. It reads hardware power draw via NVIDIA API (for GPUs), Intel RAPL (for CPUs), and DRAM energy counters. Regional carbon intensity data from hundreds of electricity grids worldwide converts energy consumption into CO2-equivalent emissions. Results export to CSV, integrate with MLflow and Weights &amp; Biases experiment tracking, and feed into a dashboard for cross-team benchmarking. For enterprise sustainability programs, the output feeds directly into scope 3 compute emissions reports for ESG disclosure.</p></div>
+        <div class="cs-block reveal"><h2>Results</h2><ul><li><span class="dot"></span><span><strong>105+</strong> — Contributors. Active community across industry and academia</span></li><li><span class="dot"></span><span><strong>MLflow/W&amp;B</strong> — Integration. Native experiment tracking platform support</span></li><li><span class="dot"></span><span><strong>EU AI Act</strong> — Compliance. Aligned with emerging compute carbon disclosure requirements</span></li><li><span class="dot"></span><span><strong>3 Lines</strong> — Deployment. pip install carbontrack — immediate measurement</span></li></ul></div>
+        
+      </div>
+      <aside class="cs-aside reveal d1">
+        <div class="ah"><h3>Project at a glance</h3></div>
+        <div class="ab">
+          <div class="arow"><div class="k2">Client</div><div class="v2">Sustainability &amp; AI Client</div></div>
+          <div class="arow"><div class="k2">Industry</div><div class="v2">Energy &amp; Sustainability</div></div>
+          <div class="arow"><div class="k2">Contributors</div><div class="v2">105+</div></div><div class="arow"><div class="k2">Integration</div><div class="v2">MLflow/W&amp;B</div></div>
+          <div class="arow"><div class="k2">Stack</div><div class="stack2"><span>Python</span><span>TypeScript</span><span>NVIDIA API</span><span>Intel RAPL</span><span>MLflow</span><span>Weights &amp; Biases</span><span>Docker</span><span>PostgreSQL</span></div></div>
+          <div class="arow"><a href="contact.html" class="btn btn-grad btn-sm">Build something like this <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+<section class="section alt">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">More Work</span><h2 class="h-sec">Related case studies.</h2></div>
+    <div class="cs-related"><a class="proj reveal" href="work-gridoptima.html"><div class="ind">Energy &amp; Sustainability</div><h3>GridOptima — Power Systems Analysis &amp; Optimization</h3><p>GridOptima is a Python toolbox for simulating and optimizing modern energy systems — from conventional generators and wi…</p><div class="stack"><span>Python</span><span>Pandas</span><span>NumPy</span></div></a>
+<a class="proj reveal" href="work-ccr-analytics-engine.html"><div class="ind">Financial Services &amp; FinTech</div><h3>CCR Analytics Engine — Counterparty Credit Risk Platform</h3><p>A Python-based counterparty credit risk analytics platform covering 90+ financial products and 16 risk calculators, full…</p><div class="stack"><span>Python</span><span>QuantLib</span><span>NumPy</span></div></a>
+<a class="proj reveal" href="work-mcp-intelligence-agent.html"><div class="ind">AI &amp; Machine Learning</div><h3>MCP Intelligence Agent — Financial Risk AI</h3><p>An AI-powered financial risk intelligence agent built with LangGraph and Claude Sonnet 4, connected to 163 tools via the…</p><div class="stack"><span>LangGraph</span><span>Claude Sonnet 4</span><span>Python</span></div></a></div>
+  </div>
+</section>
+<section class="section dark ink0 cta-band inner-cta" data-screen-label="CarbonTrack CTA">
+  <div class="hero-aura"></div><div class="hero-grid"></div>
+  <div class="wrap cta-in">
+    <span class="eyebrow reveal" style="justify-content:center;display:inline-flex;margin-bottom:20px">Get Started</span>
+    <h2 class="reveal">Have a project like CarbonTrack?</h2>
+    <p class="reveal d1">Tell us about your problem. We'll tell you honestly how we'd approach it — and whether we're the right team.</p>
+    <div class="cta-actions reveal d2"><a href="contact.html" class="btn btn-grad">Start a Project <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a href="work.html" class="btn btn-ghost-d">See all work</a></div>
+  </div>
+</section><script src="leadform.js"></script>
+<script src="chrome.js"></script>
+<script src="main.js"></script>
+<script src="heroscene.js"></script>
+</body>
+</html>

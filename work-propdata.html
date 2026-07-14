@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PropData — Real Estate Intelligence Pipeline | DeepLearnHQ</title>
+<meta name="description" content="A Python pipeline for MLS-format real estate data with AI agent support via MCP Protocol — enabling investment screening, automated valuation, and market analysis workflows." />
+<meta property="og:title" content="PropData — Real Estate Intelligence Pipeline | DeepLearnHQ" />
+<meta property="og:description" content="A Python pipeline for MLS-format real estate data with AI agent support via MCP Protocol — enabling investment screening, automated valuation, and market analysis workflows." />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="DeepLearnHQ" />
+<meta property="og:image" content="https://www.deeplearnhq.com/assets/og-image.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="PropData — Real Estate Intelligence Pipeline | DeepLearnHQ" />
+<meta name="twitter:description" content="A Python pipeline for MLS-format real estate data with AI agent support via MCP Protocol — enabling investment screening, automated valuation, and market analysis workflows." />
+<meta name="twitter:image" content="https://www.deeplearnhq.com/assets/og-image.png" />
+<link rel="icon" type="image/png" href="assets/logo-mark.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="inner.css" />
+</head>
+<body data-page="work">
+<section class="page-hero split-hero" data-screen-label="PropData Hero">
+  <div class="hero-aura"></div><div class="hero-grid"></div>
+  <div class="wrap page-hero-in">
+    <div>
+      <div class="cs-breadcrumb"><a href="work.html">Work</a> <span class="sep">/</span> <span>Real Estate &amp; PropTech</span></div>
+      <span class="cs-tag">Real Estate Intelligence Pipeline</span>
+      <h1><span class="grad-text">PropData</span></h1>
+      <p class="lead">A Python pipeline for MLS-format real estate data with AI agent support via MCP Protocol — enabling investment screening, automated valuation, and market analysis workflows.</p>
+      <div class="page-hero-cta"><a href="contact.html" class="btn btn-grad">Start a similar project <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a href="work.html" class="btn btn-ghost-d">All case studies</a></div>
+    </div>
+    <div class="terminal reveal d1" aria-hidden="true">
+      <div class="terminal-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="ttl">deeplearnhq — homeharvest-real-estate-data</span></div>
+      <div class="terminal-body">
+<span class="ln"><span class="pr">$</span> <span class="cmd">dlhq case "PropData"</span></span>
+<span class="ln mut">  client: PropTech &amp; Investment Client</span>
+<span class="ln mut">  industry: Real Estate &amp; PropTech</span>
+<span class="ln"><span class="ok">  ✓</span> Data Access: <span class="acc">MLS Quality</span></span>
+<span class="ln"><span class="ok">  ✓</span> AI Ready: <span class="acc">MCP Native</span></span>
+<span class="ln mut">  stack: Python · Pandas · Pydantic</span>
+<span class="ln"><span class="pr">$</span> <span class="cmd">status</span> <span class="ok">shipped</span> <span class="cursor"></span></span>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section" style="padding-top:0">
+  <div class="wrap"><div class="cs-metricbar reveal"><div class="m"><div class="v grad">MLS Quality</div><div class="k">Data Access</div></div><div class="m"><div class="v">MCP Native</div><div class="k">AI Ready</div></div><div class="m"><div class="v grad">5</div><div class="k">Output Formats</div></div><div class="m"><div class="v">4</div><div class="k">Listing Types</div></div></div></div>
+</section>
+<section class="section" style="padding-top:24px">
+  <div class="wrap">
+    <div class="cs-body">
+      <div class="cs-main">
+        <div class="cs-block reveal"><h2>Overview</h2><p>PropData is a Python library providing programmatic, MLS-format access to real estate listing data from Realtor.com — active listings, sold comparables, rental market data, and pending transactions. It outputs structured data as pandas DataFrames, Pydantic models, CSV, Excel, or JSON, with a native MCP (Model Context Protocol) server that enables AI agents to query real estate data in natural language as part of automated investment analysis workflows.</p></div>
+        <div class="cs-block reveal"><h2>The Challenge</h2><p>Real estate investors, analysts, and PropTech companies need programmatic access to MLS-quality listing data — but traditional MLS data access costs $500–5,000 per month and requires REALTOR® membership in most markets. Automated valuation models, investment screening tools, and market trend analysis platforms all depend on current, structured property data that is freely accessible to consumers through web interfaces but architecturally inaccessible to programmatic workflows. The gap between what a human can see on Realtor.com and what a data pipeline can consume has historically required expensive licensing to bridge.</p></div>
+        <div class="cs-block reveal"><h2>What We Built</h2><p>PropData targets the public-facing Realtor.com data layer and normalizes it into MLS-standard field schemas — the same field definitions REALTORS® use in their professional systems. Pydantic models provide type safety for every listing attribute: beds, baths, lot size, list price, days on market, price reductions, and geographic coordinates. Concurrent request handling enables fast bulk retrieval across large markets. The MCP Protocol integration is the forward-looking architectural decision: real estate AI agents built on Claude, GPT-4, or Gemini can call PropData as a tool, enabling natural language queries — “Find 3-bedroom homes sold in the last 90 days in ZIP 30303 under $500K” — that return structured data directly into the agent’s reasoning loop.</p></div>
+        <div class="cs-block reveal"><h2>Results</h2><ul><li><span class="dot"></span><span><strong>MLS Quality</strong> — Data Access. Same field schema as professional REALTOR® systems</span></li><li><span class="dot"></span><span><strong>MCP Native</strong> — AI Ready. Direct tool integration for LLM agent workflows</span></li><li><span class="dot"></span><span><strong>5</strong> — Output Formats. DataFrame, CSV, Excel, Pydantic, JSON</span></li><li><span class="dot"></span><span><strong>4</strong> — Listing Types. Active, sold, rental, pending — all markets</span></li></ul></div>
+        
+      </div>
+      <aside class="cs-aside reveal d1">
+        <div class="ah"><h3>Project at a glance</h3></div>
+        <div class="ab">
+          <div class="arow"><div class="k2">Client</div><div class="v2">PropTech &amp; Investment Client</div></div>
+          <div class="arow"><div class="k2">Industry</div><div class="v2">Real Estate &amp; PropTech</div></div>
+          <div class="arow"><div class="k2">Data Access</div><div class="v2">MLS Quality</div></div><div class="arow"><div class="k2">AI Ready</div><div class="v2">MCP Native</div></div>
+          <div class="arow"><div class="k2">Stack</div><div class="stack2"><span>Python</span><span>Pandas</span><span>Pydantic</span><span>MCP Protocol</span><span>Poetry</span><span>REST API</span><span>Data Engineering</span></div></div>
+          <div class="arow"><a href="contact.html" class="btn btn-grad btn-sm">Build something like this <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+<section class="section alt">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">More Work</span><h2 class="h-sec">Related case studies.</h2></div>
+    <div class="cs-related"><a class="proj reveal" href="work-propertyos.html"><div class="ind">Real Estate &amp; PropTech</div><h3>PropertyOS — Property Management Platform</h3><p>PropertyOS is a complete, self-hostable property management system for independent landlords and small property manageme…</p><div class="stack"><span>JavaScript</span><span>TypeScript</span><span>MongoDB</span></div></a>
+<a class="proj reveal" href="work-ccr-analytics-engine.html"><div class="ind">Financial Services &amp; FinTech</div><h3>CCR Analytics Engine — Counterparty Credit Risk Platform</h3><p>A Python-based counterparty credit risk analytics platform covering 90+ financial products and 16 risk calculators, full…</p><div class="stack"><span>Python</span><span>QuantLib</span><span>NumPy</span></div></a>
+<a class="proj reveal" href="work-mcp-intelligence-agent.html"><div class="ind">AI &amp; Machine Learning</div><h3>MCP Intelligence Agent — Financial Risk AI</h3><p>An AI-powered financial risk intelligence agent built with LangGraph and Claude Sonnet 4, connected to 163 tools via the…</p><div class="stack"><span>LangGraph</span><span>Claude Sonnet 4</span><span>Python</span></div></a></div>
+  </div>
+</section>
+<section class="section dark ink0 cta-band inner-cta" data-screen-label="PropData CTA">
+  <div class="hero-aura"></div><div class="hero-grid"></div>
+  <div class="wrap cta-in">
+    <span class="eyebrow reveal" style="justify-content:center;display:inline-flex;margin-bottom:20px">Get Started</span>
+    <h2 class="reveal">Have a project like PropData?</h2>
+    <p class="reveal d1">Tell us about your problem. We'll tell you honestly how we'd approach it — and whether we're the right team.</p>
+    <div class="cta-actions reveal d2"><a href="contact.html" class="btn btn-grad">Start a Project <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a href="work.html" class="btn btn-ghost-d">See all work</a></div>
+  </div>
+</section><script src="leadform.js"></script>
+<script src="chrome.js"></script>
+<script src="main.js"></script>
+<script src="heroscene.js"></script>
+</body>
+</html>
