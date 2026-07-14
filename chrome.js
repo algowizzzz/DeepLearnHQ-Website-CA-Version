@@ -268,6 +268,19 @@
   sticky.id = "stickyCta";
   sticky.innerHTML = `Start a Project ${ARROW}`;
 
+  /* ---- Make all chrome links root-absolute so the injected nav/footer work at
+     any URL depth (e.g. /blogs/<slug>/). Safe for root pages: /x.html === x.html there. ---- */
+  function absolutize(root) {
+    if (!root) return;
+    root.querySelectorAll("a[href],img[src]").forEach((el) => {
+      ["href", "src"].forEach((attr) => {
+        const v = el.getAttribute(attr);
+        if (v && !/^(https?:|tel:|mailto:|data:|\/|#)/.test(v)) el.setAttribute(attr, "/" + v);
+      });
+    });
+  }
+  [header, menu, footer, sticky].forEach(absolutize);
+
   /* ---- Mount ---- */
   document.body.insertAdjacentElement("afterbegin", menu);
   document.body.insertAdjacentElement("afterbegin", header);
@@ -365,6 +378,7 @@
           <button class="btn btn-ghost-l btn-sm" data-cc="decline">Decline</button>
           <button class="btn btn-grad btn-sm" data-cc="accept">Accept</button>
         </div>`;
+      absolutize(cb);
       document.body.appendChild(cb);
       requestAnimationFrame(() => cb.classList.add("show"));
       cb.addEventListener("click", (e) => {
