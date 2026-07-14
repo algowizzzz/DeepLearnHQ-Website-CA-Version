@@ -102,7 +102,7 @@
       title: "Learning", href: "learning.html",
       cols: [
         { cat: "Learn", items: [
-          ["Courses & Workshops", "learning-courses.html"],
+          ["Courses & Workshops", "/courses"],
           ["AI Courses (SeekhoAI)", "learning-seekhoai.html"],
           ["Enterprise Training", "learning-enterprise-training.html"],
           ["Free Resources", "learning-resources.html"],
@@ -253,7 +253,7 @@
         <div class="foot-col">
           <h4>Learn</h4>
           <ul>
-            <li><a href="learning-courses.html">Courses &amp; Workshops</a></li>
+            <li><a href="/courses">Courses &amp; Workshops</a></li>
             <li><a href="learning-enterprise-training.html">Enterprise Training</a></li>
             <li><a href="blog.html">Blog</a></li>
           </ul>
@@ -273,7 +273,7 @@
       </div>
       <div class="foot-bot">
         <div class="cp">© 2026 DeepLearnHQ Inc. All rights reserved.</div>
-        <div class="lk"><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms</a></div>
+        <div class="lk"><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms</a><a href="refund.html">Refund Policy</a></div>
       </div>
     </div>`;
 
@@ -303,10 +303,10 @@
   const firstScript = document.body.querySelector("script");
   if (firstScript) {
     document.body.insertBefore(footer, firstScript);
-    document.body.insertBefore(sticky, firstScript);
+    if (active !== "courses") document.body.insertBefore(sticky, firstScript);
   } else {
     document.body.appendChild(footer);
-    document.body.appendChild(sticky);
+    if (active !== "courses") document.body.appendChild(sticky);
   }
 
   /* ---- CTA pre-qualification modal ---- */
@@ -355,7 +355,7 @@
   // Timed auto-open: 10s → 30s → 1min → 5min after load.
   // Stops once a lead is captured; never interrupts an open modal or a page
   // where the inline form lives (contact) or the careers page (job-focused).
-  if (active !== "contact" && active !== "careers") {
+  if (active !== "contact" && active !== "careers" && active !== "courses") {
     const SCHEDULE = [10000, 30000, 60000, 300000];
     SCHEDULE.forEach((ms) => {
       setTimeout(() => {
