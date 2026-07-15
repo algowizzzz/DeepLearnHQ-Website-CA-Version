@@ -102,8 +102,8 @@
       title: "Learning", href: "learning.html",
       cols: [
         { cat: "Learn", items: [
-          ["Courses & Workshops", "/courses"],
-          ["AI Courses (SeekhoAI)", "learning-seekhoai.html"],
+          ["8-Week Bootcamp", "/courses"],
+          ["Free Masterclass", "/courses/free"],
           ["Enterprise Training", "learning-enterprise-training.html"],
           ["Free Resources", "learning-resources.html"],
           ["Blog", "/blogs/"],
@@ -253,7 +253,8 @@
         <div class="foot-col">
           <h4>Learn</h4>
           <ul>
-            <li><a href="/courses">Courses &amp; Workshops</a></li>
+            <li><a href="/courses">8-Week Bootcamp</a></li>
+            <li><a href="/courses/free">Free Masterclass</a></li>
             <li><a href="learning-enterprise-training.html">Enterprise Training</a></li>
             <li><a href="/blogs/">Blog</a></li>
           </ul>
@@ -368,7 +369,7 @@
 
   // Intercept CTA links to contact.html → open the modal (full page is the fallback).
   // Skip on the contact page itself, and respect data-no-modal opt-outs.
-  if (active !== "contact") {
+  if (active !== "contact" && active !== "courses" && active !== "learning") {
     document.addEventListener("click", (e) => {
       const a = e.target.closest("a[href]");
       if (!a) return;
