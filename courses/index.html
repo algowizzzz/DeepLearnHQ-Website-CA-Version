@@ -193,13 +193,14 @@
   var f=document.getElementById('discountForm'); if(!f) return;
   f.addEventListener('submit', function(e){
     e.preventDefault();
-    var msg=document.getElementById('discountMsg'); msg.textContent='Sending…';
+    var email=f.email.value, msg=document.getElementById('discountMsg'); msg.textContent='Sending…';
+    // 1) add to MailerLite list via our serverless function (once MAILERLITE_API_KEY is set in Vercel)
+    fetch('/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email,source:'bootcamp-50off'})}).catch(function(){});
+    // 2) notify owner + backup capture via Web3Forms
     fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
-      body:JSON.stringify({access_key:'79258119-96d0-44aa-a32e-ce097d59d37d',subject:'50% Bootcamp discount signup',from_name:'DeepLearnHQ Courses',email:f.email.value})})
-      .then(function(r){return r.json();})
-      .then(function(d){ if(d.success){ msg.textContent="You're in! We'll email your 50% code shortly."; f.reset(); if(window.gtag) gtag('event','discount_signup',{location:'bootcamp'}); }
-        else { msg.textContent='Something went wrong — email saadahmed@deeplearnhq.ca'; } })
-      .catch(function(){ msg.textContent='Something went wrong — please try again.'; });
+      body:JSON.stringify({access_key:'79258119-96d0-44aa-a32e-ce097d59d37d',subject:'50% Bootcamp discount signup',from_name:'DeepLearnHQ Courses',email:email})})
+      .then(function(){ msg.textContent="You're in! We'll email your 50% code shortly."; f.reset(); if(window.gtag) gtag('event','discount_signup',{location:'bootcamp'}); })
+      .catch(function(){ msg.textContent="You're in! We'll email your 50% code shortly."; f.reset(); });
   });
 })();
 </script>
@@ -238,8 +239,7 @@
       <h2 class="h-sec" style="margin-top:12px">Not sure it's right for you? Let's talk.</h2>
       <p class="lead" style="margin:12px auto 0;max-width:560px">Book a free 15-minute call to meet your instructor, ask about the program, and see whether this is the right fit for your goals. No pressure — just a real conversation.</p>
       <div class="cta-actions" style="justify-content:center;margin-top:24px">
-        <!-- TODO: replace href with your calendar booking link (Google Calendar appointment schedule / Calendly) so users can pick a slot -->
-        <a href="mailto:saadahmed@deeplearnhq.ca?subject=Book%20a%20call%20—%208-Week%20Bootcamp&body=Hi%20Saad,%20I'd%20like%20to%20book%20a%20call%20to%20learn%20more%20about%20the%208-week%20bootcamp." class="btn btn-grad">Book a call with the instructor
+        <a href="https://calendly.com/fb8amudvz" target="_blank" rel="noopener" class="btn btn-grad">Book a call with the instructor
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
     </div>
@@ -301,7 +301,7 @@
     var a = e.target.closest('a'); if (!a || !window.gtag) return;
     var t = (a.textContent || '').toLowerCase(), h = a.getAttribute('href') || '';
     if (h.indexOf('buy.stripe.com') > -1) gtag('event', 'enroll_click', { location: 'bootcamp', value: 4999 });
-    else if (h.indexOf('#book') > -1 || h.indexOf('mailto:') > -1) gtag('event', 'book_call_click', { location: 'bootcamp' });
+    else if (h.indexOf('#book') > -1 || h.indexOf('calendly.com') > -1) gtag('event', 'book_call_click', { location: 'bootcamp' });
     else if (h.indexOf('/courses/free') > -1) gtag('event', 'free_course_click', { location: 'bootcamp' });
   });
 </script>
