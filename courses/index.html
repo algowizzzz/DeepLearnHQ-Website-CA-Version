@@ -172,6 +172,38 @@
   </div>
 </section>
 
+<!-- 50% DISCOUNT SIGNUP -->
+<section class="section" id="discount" data-screen-label="Discount signup">
+  <div class="wrap">
+    <div style="max-width:640px;margin:0 auto;border:1px solid rgba(245,177,76,.42);border-radius:22px;padding:40px 34px;background:rgba(245,177,76,.06);text-align:center">
+      <span class="eyebrow" style="justify-content:center;display:inline-flex;color:#F5B14C">Limited offer</span>
+      <h2 class="h-sec" style="margin-top:12px">Get 50% off the 8-Week Bootcamp.</h2>
+      <p class="lead" style="margin:12px auto 22px;max-width:520px">Drop your email and we'll send you a code for <strong>50% off</strong> enrollment — plus first access when new dates open.</p>
+      <form id="discountForm" style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;max-width:480px;margin:0 auto">
+        <input type="email" name="email" required placeholder="you@email.com" style="flex:1 1 240px;padding:14px 18px;border-radius:999px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05);color:inherit;font:inherit" />
+        <button type="submit" class="btn btn-grad">Send my 50% code →</button>
+      </form>
+      <p id="discountMsg" style="margin-top:14px;font-size:.92rem;opacity:.8;min-height:1.2em"></p>
+      <p class="bc-note" style="margin-top:4px">No spam. Unsubscribe anytime.</p>
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  var f=document.getElementById('discountForm'); if(!f) return;
+  f.addEventListener('submit', function(e){
+    e.preventDefault();
+    var msg=document.getElementById('discountMsg'); msg.textContent='Sending…';
+    fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
+      body:JSON.stringify({access_key:'79258119-96d0-44aa-a32e-ce097d59d37d',subject:'50% Bootcamp discount signup',from_name:'DeepLearnHQ Courses',email:f.email.value})})
+      .then(function(r){return r.json();})
+      .then(function(d){ if(d.success){ msg.textContent="You're in! We'll email your 50% code shortly."; f.reset(); if(window.gtag) gtag('event','discount_signup',{location:'bootcamp'}); }
+        else { msg.textContent='Something went wrong — email saadahmed@deeplearnhq.ca'; } })
+      .catch(function(){ msg.textContent='Something went wrong — please try again.'; });
+  });
+})();
+</script>
+
 <!-- PRICING -->
 <section class="section alt" id="pricing" data-screen-label="Pricing">
   <div class="wrap">

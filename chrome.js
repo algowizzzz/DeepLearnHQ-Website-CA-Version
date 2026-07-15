@@ -198,11 +198,26 @@
     </div>`;
   }).join("");
 
+  /* ---- Course-site header/menu (treat /courses + /blogs as a separate "courses website") ---- */
+  const EDU = active === "courses" || active === "learning";
+  const eduLinks = [["Free Masterclass","/courses/free"],["8-Week Bootcamp","/courses"],["Blog","/blogs/"]]
+    .map(([l,h]) => `<div class="nav-item"><a class="nav-top" href="${h}">${l}</a></div>`).join("");
+  const eduMenu = [["Free Masterclass","/courses/free"],["8-Week Bootcamp","/courses"],["Blog","/blogs/"]]
+    .map(([l,h]) => `<div class="mm-group"><a class="m-top" href="${h}">${l}</a></div>`).join("");
+
   /* ---- Header ---- */
   const header = document.createElement("header");
   header.className = "nav";
   header.id = "nav";
-  header.innerHTML = `
+  header.innerHTML = EDU ? `
+    <div class="wrap nav-in">
+      <a href="/courses/free" class="nav-logo" aria-label="DeepLearnHQ courses"><img src="/assets/logo-white.png" alt="DeepLearnHQ" /></a>
+      <nav class="nav-links">${eduLinks}</nav>
+      <div class="nav-right">
+        <a href="/courses/free" class="btn btn-grad btn-sm">Get free access ${ARROW}</a>
+        <button class="nav-burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+      </div>
+    </div>` : `
     <div class="wrap nav-in">
       <a href="index.html" class="nav-logo" aria-label="DeepLearnHQ home"><img src="assets/logo-white.png" alt="DeepLearnHQ" /></a>
       <nav class="nav-links">${navLinks}</nav>
@@ -216,7 +231,9 @@
   const menu = document.createElement("div");
   menu.className = "mobile-menu";
   menu.id = "mobileMenu";
-  menu.innerHTML = `<div class="mm-panel">${menuGroups}<div class="mm-foot"><a href="tel:8442010286" class="nav-phone">(844) 201-0286</a><a href="contact.html" class="btn btn-grad">Get Started ${ARROW}</a></div></div>`;
+  menu.innerHTML = EDU
+    ? `<div class="mm-panel">${eduMenu}<div class="mm-foot"><a href="/courses/free" class="btn btn-grad">Get free access ${ARROW}</a></div></div>`
+    : `<div class="mm-panel">${menuGroups}<div class="mm-foot"><a href="tel:8442010286" class="nav-phone">(844) 201-0286</a><a href="contact.html" class="btn btn-grad">Get Started ${ARROW}</a></div></div>`;
 
   /* ---- Footer ---- */
   const footer = document.createElement("footer");
