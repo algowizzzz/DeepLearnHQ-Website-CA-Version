@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Which AI Should You Use? A Free 10-Second Picker (ChatGPT vs Claude vs Gemini vs Grok) 2026 | DeepLearnHQ</title>
+<meta name="description" content="Free tool: pick what you're trying to do and get the best AI for the job — ChatGPT, Claude, Gemini, Grok or Perplexity — with a plain-English why. Based on hands-on side-by-side tests." />
+<link rel="canonical" href="https://www.deeplearnhq.ca/tools/ai-picker/" />
+<meta property="og:title" content="Which AI Should You Use? — A Free 10-Second Picker" />
+<meta property="og:description" content="Pick your task, get the right AI tool (ChatGPT / Claude / Gemini / Grok / Perplexity) with a plain-English why. Free, no signup." />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="DeepLearnHQ" />
+<meta property="og:image" content="https://www.deeplearnhq.ca/assets/blog/ai-machine-learning.png" />
+<meta property="og:url" content="https://www.deeplearnhq.ca/tools/ai-picker/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Which AI Should You Use? — DeepLearnHQ" />
+<meta name="twitter:image" content="https://www.deeplearnhq.ca/assets/blog/ai-machine-learning.png" />
+<meta name="author" content="Saad Ahmed" />
+<link rel="icon" type="image/png" href="/assets/logo-mark.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/styles.css" />
+<link rel="stylesheet" href="/inner.css" />
+<style>
+  .ap-hero{padding:64px 0 20px}
+  .ap-hero .eyebrow{display:inline-flex;font:600 12px/1 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--t-ink-3);margin-bottom:14px}
+  .ap-hero h1{font:700 clamp(30px,5vw,50px)/1.06 var(--f-display);letter-spacing:-.02em;margin:0 0 14px;max-width:18ch}
+  .ap-hero p.lead{font-size:clamp(16px,2vw,19px);color:var(--t-ink-2);max-width:60ch;margin:0}
+  .ap-q{font:700 15px var(--f-display);color:var(--t-ink-2);margin:8px 0 14px}
+  .ap-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;padding:0 0 8px}
+  .ap-opt{cursor:pointer;text-align:left;border:1px solid var(--line-l);background:var(--paper-2);border-radius:var(--r);padding:18px 20px;font:600 16px/1.3 var(--f-body);color:var(--t-ink);display:flex;gap:12px;align-items:center;transition:.15s var(--ease)}
+  .ap-opt:hover{border-color:var(--violet);transform:translateY(-2px)}
+  .ap-opt.on{background:var(--grad);color:#fff;border-color:transparent}
+  .ap-opt .em{font-size:22px;line-height:1}
+  .ap-result{margin:22px 0 8px;padding:0;max-height:0;overflow:hidden;opacity:0;transition:.35s var(--ease)}
+  .ap-result.show{max-height:640px;opacity:1;padding:2px}
+  .ap-card{border:1px solid var(--line-l);border-radius:var(--r-lg);background:var(--grad-soft);padding:32px}
+  .ap-card .pick{font:700 12px var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--violet);margin-bottom:8px}
+  .ap-card h2{font:700 clamp(24px,4vw,34px)/1.05 var(--f-display);margin:0 0 12px}
+  .ap-card p{color:var(--t-ink-2);max-width:60ch;margin:0 0 18px;font-size:16px}
+  .ap-card .runner{font-size:14px;color:var(--t-ink-3);margin:0 0 18px}
+  .ap-cta{margin:26px 0 8px;padding:32px;border-radius:var(--r-lg);border:1px solid var(--line-l);background:var(--paper-2);text-align:center}
+  .ap-cta h2{font:700 clamp(20px,3vw,28px)/1.1 var(--f-display);margin:0 0 10px}
+  .ap-cta p{color:var(--t-ink-2);max-width:52ch;margin:0 auto 18px}
+</style>
+</head>
+<body data-page="learning">
+<section class="ap-hero" data-screen-label="AI Picker">
+  <div class="wrap">
+    <span class="eyebrow">Free tool · No signup</span>
+    <h1>Which AI should you use?</h1>
+    <p class="lead">They're close — but they win at different things. Pick what you're trying to do and get the right tool for the job, with a plain-English why. Based on our hands-on side-by-side tests.</p>
+  </div>
+</section>
+
+<section class="section" style="padding-top:6px">
+  <div class="wrap">
+    <p class="ap-q">👉 What are you mainly trying to do?</p>
+    <div class="ap-grid" id="apGrid">
+      <button class="ap-opt" type="button" data-key="writing"><span class="em">✍️</span>Serious writing &amp; editing</button>
+      <button class="ap-opt" type="button" data-key="coding"><span class="em">💻</span>Coding &amp; debugging</button>
+      <button class="ap-opt" type="button" data-key="speed"><span class="em">⚡</span>Quick everyday tasks (speed)</button>
+      <button class="ap-opt" type="button" data-key="research"><span class="em">🔎</span>Up-to-date research + sources</button>
+      <button class="ap-opt" type="button" data-key="google"><span class="em">📄</span>I live in Google (Docs/Gmail)</button>
+      <button class="ap-opt" type="button" data-key="realtime"><span class="em">🐦</span>Real-time / X / unfiltered takes</button>
+      <button class="ap-opt" type="button" data-key="images"><span class="em">🎨</span>Generating images</button>
+      <button class="ap-opt" type="button" data-key="budget"><span class="em">💸</span>On a budget (free tiers)</button>
+    </div>
+
+    <div class="ap-result" id="apResult">
+      <div class="ap-card">
+        <div class="pick">Your best match</div>
+        <h2 id="apTool">—</h2>
+        <p id="apWhy">—</p>
+        <p class="runner" id="apRunner"></p>
+        <a class="btn btn-grad" id="apLink" href="#">Read the full breakdown →</a>
+      </div>
+    </div>
+
+    <div class="ap-cta">
+      <h2>Not sure any single tool is enough?</h2>
+      <p>The real skill is knowing which tool to reach for — and how to prompt it well. Our free Generative AI Masterclass covers all of them, hands-on.</p>
+      <a class="btn btn-grad" href="/courses/free">Start the free Masterclass →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var REC = {
+    writing:  {tool:"Claude", why:"In our side-by-side writing tests, Claude edged ahead on craft, nuance, and following detailed instructions — the best pick for serious drafting and editing.", runner:"Runner-up: ChatGPT for faster, cleaner quick polish.", link:"/blogs/claude-vs-chatgpt/"},
+    coding:   {tool:"Claude (with ChatGPT close behind)", why:"Claude tends to go deeper on real coding and debugging problems; ChatGPT is quicker for small snippets and explanations. Both are excellent — use Claude for depth, ChatGPT for speed.", runner:"See our hands-on comparison for the specifics.", link:"/blogs/chatgpt-for-coding/"},
+    speed:    {tool:"ChatGPT", why:"For quick, everyday tasks — rewrites, explanations, instant answers — ChatGPT is the fastest and most forgiving. It's the best default to reach for.", runner:"Runner-up: Gemini if you're already in Google.", link:"/blogs/best-ai-chatbot/"},
+    research: {tool:"Perplexity", why:"When you need current, sourced answers with citations you can click, Perplexity is built for exactly that — less guessing, more references.", runner:"Runner-up: Gemini for up-to-date Google-grounded answers.", link:"/blogs/best-ai-tools/"},
+    google:   {tool:"Gemini", why:"If your work lives in Gmail, Docs, and Sheets, Gemini is native to that world — the least friction and best integration for Google users.", runner:"Runner-up: ChatGPT for standalone tasks.", link:"/blogs/gemini-vs-chatgpt/"},
+    realtime: {tool:"Grok", why:"Grok has live access to X and an edgier, less-filtered voice — handy for real-time takes and current chatter. Verify facts, as with any model.", runner:"Runner-up: Perplexity for sourced real-time research.", link:"/blogs/grok-vs-chatgpt/"},
+    images:   {tool:"Depends on your style", why:"Image tools trade off differently on realism, control, and price. Our breakdown ranks the best AI image generators by what you actually want to make.", runner:"", link:"/blogs/best-ai-image-generator/"},
+    budget:   {tool:"ChatGPT, Claude & Gemini free tiers", why:"You don't need to pay to start — ChatGPT, Claude, and Gemini all have genuinely capable free tiers. Pick one, get fluent, upgrade only if you hit limits.", runner:"See the best free ChatGPT alternatives compared.", link:"/blogs/chatgpt-alternatives/"}
+  };
+  var grid = document.getElementById('apGrid');
+  var result = document.getElementById('apResult');
+  var elTool = document.getElementById('apTool'), elWhy = document.getElementById('apWhy'),
+      elRunner = document.getElementById('apRunner'), elLink = document.getElementById('apLink');
+  grid.addEventListener('click', function(e){
+    var b = e.target.closest('.ap-opt'); if(!b) return;
+    grid.querySelectorAll('.ap-opt').forEach(function(x){ x.classList.toggle('on', x===b); });
+    var r = REC[b.getAttribute('data-key')]; if(!r) return;
+    elTool.textContent = r.tool; elWhy.textContent = r.why;
+    elRunner.textContent = r.runner || ''; elRunner.style.display = r.runner ? '' : 'none';
+    elLink.setAttribute('href', r.link);
+    result.classList.add('show');
+    if (window.gtag) gtag('event', 'ai_picker_result', { pick: b.getAttribute('data-key'), tool: r.tool });
+    setTimeout(function(){ result.scrollIntoView({behavior:'smooth', block:'center'}); }, 120);
+  });
+})();
+</script>
+
+<script src="/leadform.js"></script>
+<script src="/chrome.js"></script>
+<script src="/main.js"></script>
+</body>
+</html>
