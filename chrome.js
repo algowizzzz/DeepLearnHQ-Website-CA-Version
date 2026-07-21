@@ -276,6 +276,7 @@
             <li><a href="/blogs/">Blog</a></li>
             <li><a href="/tools/prompt-library">AI Prompt Library</a></li>
             <li><a href="/tools/ai-picker">Which AI to use?</a></li>
+            <li><a href="/tools/state-of-ai-learning-2026">State of AI Learning 2026</a></li>
           </ul>
         </div>
         <div class="foot-col">
