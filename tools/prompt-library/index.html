@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The Free AI Prompt Library: Copy-Paste Prompts That Actually Work (2026) | DeepLearnHQ</title>
+<meta name="description" content="A free, searchable library of copy-paste AI prompts by use-case — work, writing, studying, everyday life — plus the Role + Task + Context + Format framework so you can write your own. Tested with 39,000+ learners." />
+<link rel="canonical" href="https://www.deeplearnhq.ca/tools/prompt-library/" />
+<meta property="og:title" content="The Free AI Prompt Library — Copy-Paste Prompts That Actually Work" />
+<meta property="og:description" content="Searchable, copy-paste AI prompts by use-case + the framework to write your own. Free, no signup." />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="DeepLearnHQ" />
+<meta property="og:image" content="https://www.deeplearnhq.ca/assets/blog/digital-transformation.png" />
+<meta property="og:url" content="https://www.deeplearnhq.ca/tools/prompt-library/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="The Free AI Prompt Library — DeepLearnHQ" />
+<meta name="twitter:image" content="https://www.deeplearnhq.ca/assets/blog/digital-transformation.png" />
+<meta name="author" content="Saad Ahmed" />
+<link rel="icon" type="image/png" href="/assets/logo-mark.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/styles.css" />
+<link rel="stylesheet" href="/inner.css" />
+<style>
+  .pl-hero{padding:64px 0 28px}
+  .pl-hero .eyebrow{display:inline-flex;font:600 12px/1 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--t-ink-3);margin-bottom:14px}
+  .pl-hero h1{font:700 clamp(30px,5vw,50px)/1.06 var(--f-display);letter-spacing:-.02em;margin:0 0 14px;max-width:16ch}
+  .pl-hero p.lead{font-size:clamp(16px,2vw,19px);color:var(--t-ink-2);max-width:60ch;margin:0}
+  .pl-frame{margin:26px 0 0;padding:18px 22px;border:1px solid var(--line-l);border-radius:var(--r);background:var(--paper-2);max-width:680px}
+  .pl-frame b{font-family:var(--f-display)}
+  .pl-frame code{font-family:var(--f-mono);font-size:.92em;background:var(--paper-3);padding:2px 7px;border-radius:6px}
+  .pl-tools{position:sticky;top:0;z-index:5;padding:16px 0;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line-l)}
+  .pl-search{width:100%;max-width:520px;padding:13px 16px;border:1px solid var(--line-l2);border-radius:12px;font:500 15px var(--f-body);background:var(--paper-2);color:var(--t-ink)}
+  .pl-search:focus{outline:none;border-color:var(--violet)}
+  .pl-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .pl-chip{cursor:pointer;border:1px solid var(--line-l2);background:var(--paper-2);color:var(--t-ink-2);font:600 13px var(--f-body);padding:8px 14px;border-radius:999px;transition:.15s var(--ease)}
+  .pl-chip:hover{border-color:var(--violet)}
+  .pl-chip.on{background:var(--grad);color:#fff;border-color:transparent}
+  .pl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;padding:28px 0 12px}
+  .pcard{border:1px solid var(--line-l);border-radius:var(--r);background:var(--paper-2);padding:20px;display:flex;flex-direction:column;gap:12px}
+  .pcard .pcat-tag{font:700 11px/1 var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--violet)}
+  .pcard h3{font:700 17px/1.25 var(--f-display);margin:0}
+  .prompt-text{font:400 13.5px/1.6 var(--f-mono);color:var(--t-ink-2);background:var(--paper-3);border:1px solid var(--line-l);border-radius:10px;padding:12px 14px;white-space:pre-wrap;flex:1}
+  .copy-btn{align-self:flex-start;cursor:pointer;border:1px solid var(--line-l2);background:var(--paper-2);color:var(--t-ink);font:600 13px var(--f-body);padding:8px 16px;border-radius:9px;transition:.15s var(--ease)}
+  .copy-btn:hover{border-color:var(--violet)}
+  .copy-btn.done{background:var(--grad);color:#fff;border-color:transparent}
+  .pl-empty{display:none;padding:40px 0;color:var(--t-ink-3);font-size:15px}
+  .pl-cta{margin:24px 0 10px;padding:34px;border-radius:var(--r-lg);background:var(--grad-soft);border:1px solid var(--line-l);text-align:center}
+  .pl-cta h2{font:700 clamp(22px,3vw,30px)/1.1 var(--f-display);margin:0 0 10px}
+  .pl-cta p{color:var(--t-ink-2);max-width:52ch;margin:0 auto 20px}
+</style>
+</head>
+<body data-page="learning">
+<section class="pl-hero" data-screen-label="Prompt Library">
+  <div class="wrap">
+    <span class="eyebrow">Free tool · No signup</span>
+    <h1>The AI Prompt Library</h1>
+    <p class="lead">Copy-paste prompts that actually save you time — for ChatGPT, Claude, Gemini and more — organized by what you're trying to do. Tested across 39,000+ learners. Search, copy, done.</p>
+    <div class="pl-frame">
+      The real skill isn't a prompt list — it's the pattern behind it: <b>Role + Task + Context + Format</b>.
+      <br><code>You are [role]. Help me [task]. Context: [details]. Give it as [format].</code>
+      <br>Every prompt below is pre-structured this way. Steal them, then write your own.
+    </div>
+  </div>
+</section>
+
+<div class="pl-tools">
+  <div class="wrap">
+    <input id="plSearch" class="pl-search" type="text" placeholder="Search prompts… (e.g. email, study, rewrite)" aria-label="Search prompts" />
+    <div class="pl-chips" id="plChips">
+      <button class="pl-chip on" data-cat="all" type="button">All</button>
+      <button class="pl-chip" data-cat="hits" type="button">⚡ Greatest hits</button>
+      <button class="pl-chip" data-cat="work" type="button">💼 Work</button>
+      <button class="pl-chip" data-cat="writing" type="button">✍️ Writing</button>
+      <button class="pl-chip" data-cat="students" type="button">🎓 Students</button>
+      <button class="pl-chip" data-cat="growth" type="button">🌱 Self-improvement</button>
+      <button class="pl-chip" data-cat="life" type="button">🏠 Everyday</button>
+    </div>
+  </div>
+</div>
+
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="pl-grid" id="plGrid">
+
+      <article class="pcard" data-cat="hits"><div class="pcat-tag">Greatest hits</div><h3>Ask me questions first (highest ROI)</h3><div class="prompt-text">I want to [goal]. Before you answer, ask me the 5 most important questions you need answered to do this really well. Then wait for my responses.</div><button class="copy-btn" type="button">Copy</button></article>
+      <article class="pcard" data-cat="hits"><div class="pcat-tag">Greatest hits</div><h3>The expert reviewer</h3><div class="prompt-text">Act as an experienced [role]. Review this [thing] and give me: 3 things that work, 3 weaknesses, and the single most important fix. Be direct.</div><button class="copy-btn" type="button">Copy</button></article>
+      <article class="pcard" data-cat="hits"><div class="pcat-tag">Greatest hits</div><h3>Explain, then simplify</h3><div class="prompt-text">Explain [topic] thoroughly, then give me a one-paragraph version I could tell a 12-year-old.</div><button class="copy-btn" type="button">Copy</button></article>
+
+      <article class="pcard" data-cat="work"><div class="pcat-tag">Work</div><h3>Email triage</h3><div class="prompt-text">You're my executive assistant. Here's an email thread: [paste]. Summarize the key ask in 2 lines and draft a concise, professional reply.</div><button class="copy-btn" type="button">Copy</button></article>
+      <article class="pcard" data-cat="work"><div class="pcat-tag">Work</div><h3>Meeting prep</h3><div class="prompt-text">I have a meeting with [role] about [topic]. Give me 5 smart questions to ask and 3 points I should prepare.</div><button class="copy-btn" type="button">Copy</button></article>
+      <article class="pcard" data-cat="work"><div class="pcat-tag">Work</div><h3>Turn notes into action</h3><div class="prompt-text">Here are my messy meeting notes: [paste]. Extract decisions, action items (with owners), and open questions as a clean list.</div><button class="copy-btn" type="button">Copy</button></article>
+      <article class="pcard" data-cat="work"><div class="pcat-tag">Work</div><h3>Report first draft</h3><div class="prompt-text">Write a 1-page status report from these bullets: [paste]. Professional tone, sections: Progress, Risks, Next steps.</div><button class="copy-btn" type="button">Copy</button></article>
+      <article class="pcard" data-cat="work"><div class="pcat-tag">Work</div><h3>The difficult message</h3><div class="prompt-text">Help me write a polite but firm message to [person] about [situation]. Keep it calm, clear, and under 100 words.</div><button class="copy-btn" type="button">Copy</button></article>
+
+      <article class="pcard" data-cat="writing"><div class="pcat-tag">Writing</div><h3>Rewrite for clarity</h3><div class="prompt-text">Rewrite this to be clearer and more concise without losing meaning: [paste].</div><button class="copy-btn" type="button">Copy</button></article>
+      <article class="pcard" data-cat="writing"><div class="pcat-tag">Writing</div><h3>Match a tone</h3><div class="prompt-text">Rewrite this in a [warm / confident / formal] tone for [audience]: [paste].</div><button class="copy-btn" type="button">Copy</button></article>
+      <article class="pcard" data-cat="writing"><div class="pcat-tag">Writing</div><h3>Three versions</h3><div class="prompt-text">Give me 3 versions of this: one safe, one bold, one funny: [paste].</div><button class="copy-btn" type="button">Copy</button></article>
+      <article class="pcard" data-cat="writing"><div class="pcat-tag">Writing</div><h3>Beat the blank page</h3><div class="prompt-text">I need to write [thing]. Ask me 5 questions first, then draft it based on my answers.</div><button class="copy-btn" type="button">Copy</button></article>
+      <article class="pcard" data-cat="writing"><div class="pcat-tag">Writing</div><h3>Headline options</h3><div class="prompt-text">Give me 10 headline options for [topic], ranging from straightforward to bold.</div><button class="copy-btn" type="button">Copy</button></article>
+      <article class="pcard" data-cat="writing"><div class="pcat-tag">Writing</div><h3>Edit like a tough editor</h3><div class="prompt-text">Act as a tough copy editor. Cut fluff, flag weak sentences, and suggest fixes for this: [paste].</div><button class="copy-btn" type="button">Copy</button></article>
+
+      <article class="pcard" data-cat="students"><div class="pcat-tag">Students</div><h3>Explain at my level</h3><div class="prompt-text">Explain [concept] to me like I'm a [high-school / first-year] student, with one everyday analogy.</div><button class="copy-btn" type="button">Copy</button></article>
+      <article class="pcard" data-cat="students"><div class="pcat-tag">Students</div><h3>Make a study guide</h3><div class="prompt-text">Turn these notes into a study guide with key terms, summaries, and 5 practice questions: [paste].</div><button class="copy-btn" type="button">Copy</button></article>
+      <article class="pcard" data-cat="students"><div class="pcat-tag">Students</div><h3>Quiz me</h3><div class="prompt-text">Quiz me on [topic] with 10 questions, one at a time. Wait for my answer before revealing if I'm right.</div><button class="copy-btn" type="button">Copy</button></article>
+      <article class="pcard" data-cat="students"><div class="pcat-tag">Students</div><h3>Understand, don't cheat</h3><div class="prompt-text">I got this wrong: [problem + my answer]. Explain where my reasoning broke down without just giving the answer.</div><button class="copy-btn" type="button">Copy</button></article>
+      <article class="pcard" data-cat="students"><div class="pcat-tag">Students</div><h3>Essay feedback</h3><div class="prompt-text">Give feedback on this essay's argument and structure (not grammar): [paste]. What's the weakest point?</div><button class="copy-btn" type="button">Copy</button></article>
+
+      <article class="pcard" data-cat="growth"><div class="pcat-tag">Self-improvement</div><h3>Thoughtful coach</h3><div class="prompt-text">Act as a thoughtful coach. Ask me about my goal for [area], then help me build a realistic weekly plan.</div><button class="copy-btn" type="button">Copy</button></article>
+      <article class="pcard" data-cat="growth"><div class="pcat-tag">Self-improvement</div><h3>Weekly reflection</h3><div class="prompt-text">Help me reflect: here's what happened this week [paste]. Ask me 3 questions to draw out the lesson.</div><button class="copy-btn" type="button">Copy</button></article>
+      <article class="pcard" data-cat="growth"><div class="pcat-tag">Self-improvement</div><h3>Small, specific changes</h3><div class="prompt-text">I keep struggling with [habit]. Give me 3 small, specific changes — not generic advice.</div><button class="copy-btn" type="button">Copy</button></article>
+
+      <article class="pcard" data-cat="life"><div class="pcat-tag">Everyday</div><h3>Meal planning</h3><div class="prompt-text">Plan 5 dinners for 2 people, ~30 min each, using mostly [ingredients I have]. Include a shopping list.</div><button class="copy-btn" type="button">Copy</button></article>
+      <article class="pcard" data-cat="life"><div class="pcat-tag">Everyday</div><h3>Make a decision</h3><div class="prompt-text">Help me decide between [A] and [B]. Ask me what matters most, then give a reasoned recommendation.</div><button class="copy-btn" type="button">Copy</button></article>
+      <article class="pcard" data-cat="life"><div class="pcat-tag">Everyday</div><h3>Explain the fine print</h3><div class="prompt-text">Explain this in plain English and flag anything I should watch out for: [paste terms/contract].</div><button class="copy-btn" type="button">Copy</button></article>
+      <article class="pcard" data-cat="life"><div class="pcat-tag">Everyday</div><h3>Plan an event</h3><div class="prompt-text">Help me plan a [birthday / trip] for [details]. Give a timeline and checklist.</div><button class="copy-btn" type="button">Copy</button></article>
+      <article class="pcard" data-cat="life"><div class="pcat-tag">Everyday</div><h3>Learn a skill in 30 days</h3><div class="prompt-text">I want to learn [skill] in 30 days, ~20 min/day. Give me a week-by-week plan.</div><button class="copy-btn" type="button">Copy</button></article>
+
+    </div>
+    <p class="pl-empty" id="plEmpty">No prompts match that search. Try a different word.</p>
+
+    <div class="pl-cta">
+      <h2>Want to go from prompts to <em>fluent</em>?</h2>
+      <p>These get you started. Our free Generative AI Masterclass teaches the framework hands-on — so you write great prompts for anything, without a list.</p>
+      <a class="btn btn-grad" href="/courses/free">Start the free Masterclass →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var grid = document.getElementById('plGrid');
+  var cards = Array.prototype.slice.call(grid.querySelectorAll('.pcard'));
+  var search = document.getElementById('plSearch');
+  var chips = document.getElementById('plChips');
+  var empty = document.getElementById('plEmpty');
+  var cat = 'all', q = '';
+
+  function apply(){
+    var shown = 0;
+    cards.forEach(function(c){
+      var okCat = cat === 'all' || c.getAttribute('data-cat') === cat;
+      var okQ = !q || c.textContent.toLowerCase().indexOf(q) > -1;
+      var vis = okCat && okQ;
+      c.style.display = vis ? '' : 'none';
+      if (vis) shown++;
+    });
+    empty.style.display = shown ? 'none' : 'block';
+  }
+  search.addEventListener('input', function(){ q = this.value.trim().toLowerCase(); apply(); });
+  chips.addEventListener('click', function(e){
+    var b = e.target.closest('.pl-chip'); if(!b) return;
+    cat = b.getAttribute('data-cat');
+    chips.querySelectorAll('.pl-chip').forEach(function(x){ x.classList.toggle('on', x === b); });
+    apply();
+  });
+  grid.addEventListener('click', function(e){
+    var btn = e.target.closest('.copy-btn'); if(!btn) return;
+    var txt = btn.parentNode.querySelector('.prompt-text').textContent.trim();
+    var done = function(){ btn.classList.add('done'); btn.textContent = 'Copied ✓'; setTimeout(function(){ btn.classList.remove('done'); btn.textContent = 'Copy'; }, 1600); };
+    if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(txt).then(done, function(){ fallback(txt); done(); }); }
+    else { fallback(txt); done(); }
+    if (window.gtag) gtag('event', 'prompt_copy', { prompt_title: btn.parentNode.querySelector('h3').textContent });
+  });
+  function fallback(t){ var ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(ta); }
+})();
+</script>
+
+<script src="/leadform.js"></script>
+<script src="/chrome.js"></script>
+<script src="/main.js"></script>
+</body>
+</html>
