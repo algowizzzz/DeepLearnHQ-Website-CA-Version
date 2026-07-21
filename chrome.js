@@ -274,6 +274,8 @@
             <li><a href="/courses/free">Free Masterclass</a></li>
             <li><a href="learning-enterprise-training.html">Enterprise Training</a></li>
             <li><a href="/blogs/">Blog</a></li>
+            <li><a href="/tools/prompt-library">AI Prompt Library</a></li>
+            <li><a href="/tools/ai-picker">Which AI to use?</a></li>
           </ul>
         </div>
         <div class="foot-col">
