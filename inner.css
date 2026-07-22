@@ -718,3 +718,8 @@
 .dd-table.is-scrollable::after { content: "Scroll \2192"; position: absolute; top: 9px; right: 10px; font-family: var(--f-mono); font-size: 10px; letter-spacing: .06em; color: #fff; background: rgba(106,49,214,.92); padding: 4px 9px; border-radius: 999px; pointer-events: none; opacity: 1; transition: opacity .35s; }
 .dd-table.is-scrollable.scrolled { box-shadow: none; }
 .dd-table.is-scrollable.scrolled::after { opacity: 0; }
+
+/* free-course inline snippet — also syndicates to Medium/dev.to with absolute backlink */
+.article-body .course-snippet{margin:24px 0;padding:16px 20px;border:1px solid var(--line-l);border-left:3px solid var(--violet);border-radius:var(--r);background:var(--grad-soft);font:500 15px/1.55 var(--f-body);color:var(--t-ink-2)}
+.article-body .course-snippet strong{color:var(--t-ink);font-family:var(--f-display)}
+.article-body .course-snippet a{color:var(--violet);font-weight:700;white-space:nowrap}
