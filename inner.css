@@ -723,3 +723,8 @@
 .article-body .course-snippet{margin:24px 0;padding:16px 20px;border:1px solid var(--line-l);border-left:3px solid var(--violet);border-radius:var(--r);background:var(--grad-soft);font:500 15px/1.55 var(--f-body);color:var(--t-ink-2)}
 .article-body .course-snippet strong{color:var(--t-ink);font-family:var(--f-display)}
 .article-body .course-snippet a{color:var(--violet);font-weight:700;white-space:nowrap}
+
+/* in-body cluster / related-guides link block */
+.article-body .related-cluster{margin:26px 0;padding:14px 18px;border-left:3px solid var(--violet);background:var(--paper-2);border-radius:0 var(--r) var(--r) 0;font-size:15px;line-height:1.6;color:var(--t-ink-2)}
+.article-body .related-cluster strong{color:var(--t-ink)}
+.article-body .related-cluster a{color:var(--violet);font-weight:600}
