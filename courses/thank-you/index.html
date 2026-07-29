@@ -78,8 +78,10 @@
 <script src="/heroscene.js"></script>
 <script>
   /* Fire a GA4 conversion signal when a buyer lands on the confirmation page.
-     Mark "course_enroll_success" as a Key event in GA4 Admin to track enrollments. */
-  if (window.gtag) window.gtag('event', 'course_enroll_success', { method: 'stripe_payment_link' });
+     Mark "course_enroll_success" as a Key event in GA4 Admin to track enrollments.
+     NOTE: confirm currency — Stripe presents CA$ but the bootcamp product was set up as USD $4,999.
+     If the charge is actually CAD, change currency below to 'CAD'. */
+  if (window.gtag) window.gtag('event', 'course_enroll_success', { method: 'stripe_payment_link', value: 4999, currency: 'USD' });
 </script>
 </body>
 </html>

@@ -3,13 +3,263 @@
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" },
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=(), payment=()" },
-        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; connect-src 'self' https://api.web3forms.com https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com; object-src 'none'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'" }
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), payment=()"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; connect-src 'self' https://api.web3forms.com https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com; object-src 'none'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'"
+        }
       ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/press-:s*",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/work:s*",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/industr:s*",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/geo-:s*",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/landing-:s*",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/solution:s*",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/about-how-we-work.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/about-manifesto.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/about-people.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/about-testimonial.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/about.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/agentic-ai.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/ai-platforms-ml.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/ai-product-development.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/ai-solutions.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/android-development.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/business-optimization.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/careers-life.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/careers.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/cloud-devops.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/cloud-native.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/cross-platform-mobile.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/custom-software.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/data-analytics.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/data-engineering.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/data-science-ml.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/design-thinking.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/devops-secops.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/digital-transformation.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/generative-ai-applications.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/index.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/innovation.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/ios-development.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/modernization.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/nearshore-offshore.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/product-discovery.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/product-strategy.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/products.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/quality-assurance.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/services.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/software-development.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/strategy-consulting.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/technology-assessment.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/university.html",
+      "destination": "/courses/free",
+      "permanent": true
+    },
+    {
+      "source": "/web-apps.html",
+      "destination": "/courses/free",
+      "permanent": true
     }
   ]
 }

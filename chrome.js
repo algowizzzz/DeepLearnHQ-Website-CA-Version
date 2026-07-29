@@ -198,8 +198,9 @@
     </div>`;
   }).join("");
 
-  /* ---- Course-site header/menu (treat /courses + /blogs as a separate "courses website") ---- */
-  const EDU = active === "courses" || active === "learning";
+  /* ---- Education site: the whole site is now the courses/blogs funnel.
+     Force the EDU header/menu on every page (studio nav retired). ---- */
+  const EDU = true;
   const eduLinks = [["Free Masterclass","/courses/free"],["8-Week Bootcamp","/courses"],["Blog","/blogs/"]]
     .map(([l,h]) => `<div class="nav-item"><a class="nav-top" href="${h}">${l}</a></div>`).join("");
   const eduMenu = [["Free Masterclass","/courses/free"],["8-Week Bootcamp","/courses"],["Blog","/blogs/"]]
@@ -219,7 +220,7 @@
       </div>
     </div>` : `
     <div class="wrap nav-in">
-      <a href="index.html" class="nav-logo" aria-label="DeepLearnHQ home"><img src="assets/logo-white.png" alt="DeepLearnHQ" /></a>
+      <a href="/courses/free" class="nav-logo" aria-label="DeepLearnHQ"><img src="assets/logo-white.png" alt="DeepLearnHQ" /></a>
       <nav class="nav-links">${navLinks}</nav>
       <div class="nav-right">
         <a href="tel:8442010286" class="nav-phone">(844) 201-0286</a>
@@ -243,36 +244,14 @@
       <div class="foot-top">
         <div class="foot-brand">
           <img src="assets/logo-white.png" alt="DeepLearnHQ" />
-          <p>An AI-native product studio. We build the AI systems, applications, and mobile products we also teach.</p>
-          <div class="meta">Toronto, ON · Madison, WI · Lake St, Chicago, IL, USA<br>info@deeplearnhq.tech · (844) 201-0286</div>
-        </div>
-        <div class="foot-col">
-          <h4>Services</h4>
-          <ul>
-            <li><a href="ai-solutions.html">AI Solutions</a></li>
-            <li><a href="software-development.html">Software Development</a></li>
-            <li><a href="data-analytics.html">Data &amp; Analytics</a></li>
-            <li><a href="cloud-devops.html">Cloud &amp; DevOps</a></li>
-            <li><a href="strategy-consulting.html">Strategy &amp; Consulting</a></li>
-            <li><a href="products.html">Products</a></li>
-          </ul>
-        </div>
-        <div class="foot-col">
-          <h4>Work</h4>
-          <ul>
-            <li><a href="work.html">Case Studies</a></li>
-            <li><a href="industry-financial-services.html">Financial Services</a></li>
-            <li><a href="industry-healthcare.html">Healthcare</a></li>
-            <li><a href="industry-ecommerce.html">E-Commerce</a></li>
-            <li><a href="industries.html">All Industries</a></li>
-          </ul>
+          <p>Practical generative-AI education. Learn ChatGPT, Claude, Gemini, Grok &amp; Perplexity — from a free masterclass to a mentored 8-week bootcamp.</p>
+          <div class="meta">info@deeplearnhq.ca</div>
         </div>
         <div class="foot-col">
           <h4>Learn</h4>
           <ul>
-            <li><a href="/courses">8-Week Bootcamp</a></li>
             <li><a href="/courses/free">Free Masterclass</a></li>
-            <li><a href="learning-enterprise-training.html">Enterprise Training</a></li>
+            <li><a href="/courses">8-Week Bootcamp</a></li>
             <li><a href="/blogs/">Blog</a></li>
             <li><a href="/tools/prompt-library">AI Prompt Library</a></li>
             <li><a href="/tools/ai-picker">Which AI to use?</a></li>
@@ -282,16 +261,22 @@
         <div class="foot-col">
           <h4>Company</h4>
           <ul>
-            <li><a href="about.html">About Us</a></li>
-            <li><a href="about-how-we-work.html">How We Work</a></li>
-            <li><a href="careers.html">Careers</a></li>
-            <li><a href="contact.html">Contact</a></li>
+            <li><a href="/blog-author-saad-ahmed.html">About the Instructor</a></li>
+            <li><a href="/contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="foot-col">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="/privacy.html">Privacy Policy</a></li>
+            <li><a href="/terms.html">Terms</a></li>
+            <li><a href="/refund.html">Refund Policy</a></li>
           </ul>
         </div>
       </div>
       <div class="foot-bot">
-        <div class="cp">© 2026 DeepLearnHQ Inc. All rights reserved.</div>
-        <div class="lk"><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms</a><a href="refund.html">Refund Policy</a></div>
+        <div class="cp">© 2026 DeepLearnHQ. All rights reserved.</div>
+        <div class="lk"><a href="/privacy.html">Privacy Policy</a><a href="/terms.html">Terms</a><a href="/refund.html">Refund Policy</a></div>
       </div>
     </div>`;
 
@@ -321,10 +306,10 @@
   const firstScript = document.body.querySelector("script");
   if (firstScript) {
     document.body.insertBefore(footer, firstScript);
-    if (active !== "courses" && active !== "learning") document.body.insertBefore(sticky, firstScript);
+    if (!EDU) document.body.insertBefore(sticky, firstScript);
   } else {
     document.body.appendChild(footer);
-    if (active !== "courses" && active !== "learning") document.body.appendChild(sticky);
+    if (!EDU) document.body.appendChild(sticky);
   }
 
   /* ---- CTA pre-qualification modal ---- */
@@ -373,7 +358,7 @@
   // Timed auto-open: 10s → 30s → 1min → 5min after load.
   // Stops once a lead is captured; never interrupts an open modal or a page
   // where the inline form lives (contact) or the careers page (job-focused).
-  if (active !== "contact" && active !== "careers" && active !== "courses" && active !== "learning") {
+  if (!EDU) {
     const SCHEDULE = [10000, 30000, 60000, 300000];
     SCHEDULE.forEach((ms) => {
       setTimeout(() => {
@@ -389,7 +374,7 @@
 
   // Intercept CTA links to contact.html → open the modal (full page is the fallback).
   // Skip on the contact page itself, and respect data-no-modal opt-outs.
-  if (active !== "contact" && active !== "courses" && active !== "learning") {
+  if (!EDU) {
     document.addEventListener("click", (e) => {
       const a = e.target.closest("a[href]");
       if (!a) return;
