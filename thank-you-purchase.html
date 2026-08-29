@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>You're in — The Generative AI 8-Week Bootcamp | DeepLearnHQ</title>
+<link rel="icon" type="image/png" href="/assets/logo-mark.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/styles.css" />
+<link rel="stylesheet" href="/inner.css" />
+<style>
+  .ty{max-width:680px;margin:0 auto;text-align:center}
+  .ty h1{font-family:"Space Grotesk",sans-serif;font-size:2.3rem;line-height:1.2;margin-bottom:18px}
+  .ty p{font-size:1.03rem;line-height:1.6;opacity:.88;margin-bottom:16px}
+  .ty .card{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.03);
+    border-radius:18px;padding:26px;margin:24px 0;text-align:left}
+  .ty .card h2{font-family:"Space Grotesk",sans-serif;font-size:1.1rem;margin-bottom:12px}
+  .ty .card li{font-size:.97rem;line-height:1.6;margin-bottom:9px}
+  .ty .note{font-size:.9rem;opacity:.62}
+  .ty .mail{font-family:"JetBrains Mono",monospace;font-size:.95rem}
+</style>
+</head>
+<body data-page="courses">
+
+<section class="page-hero">
+  <div class="hero-aura"></div>
+  <div class="hero-grid"></div>
+  <div class="wrap page-hero-in ty">
+    <span class="eyebrow" style="justify-content:center;display:inline-flex">Payment received</span>
+    <h1>You're in. Welcome to the bootcamp.</h1>
+    <p>Thank you for your purchase. I set up every student's access personally, so it isn't instant &mdash; <strong>you'll receive an email with your login within 24 hours</strong>, usually much sooner.</p>
+
+    <div class="card">
+      <h2>What happens next</h2>
+      <ol>
+        <li><strong>Within 24 hours:</strong> an email from <span class="mail">saadahmed@deeplearnhq.ca</span> with your username and password. Whitelist that address now so it doesn't land in spam.</li>
+        <li><strong>Your first Saturday:</strong> the live Q&amp;A runs 10:00&ndash;12:00 EST every week. The meeting invite comes to this same email address.</li>
+        <li><strong>Then start Week 1</strong>, and take Project 1 to the first Q&amp;A you can make.</li>
+      </ol>
+    </div>
+
+    <p class="note">Haven't heard from me after 24 hours? Email <span class="mail">saadahmed@deeplearnhq.ca</span> and I'll fix it immediately &mdash; and I'll extend your guarantee by the time you waited.</p>
+    <p class="note">Changed your mind? The unconditional 30-day guarantee covers you at whatever you paid. <a href="/refund.html">Read the policy</a>.</p>
+  </div>
+</section>
+
+<script src="/chrome.js"></script>
+<script src="/main.js"></script>
+<script>
+  (function () {
+    // Report the amount actually paid, not a hardcoded 99. Most buyers use the
+    // $50-off code, so a fixed value would overstate revenue to Meta by ~2x
+    // and train the ad algorithm on a number that never existed (ticket 7.4).
+    var sid = new URLSearchParams(location.search).get('session_id');
+    if (!sid) return;
+
+    var key = 'dlhq_purchase_' + sid;                 // once per session id, not per pageview
+    try { if (localStorage.getItem(key) === '1') return; } catch (e) {}
+
+    fetch('/api/purchase-value?session_id=' + encodeURIComponent(sid))
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        if (!j || !j.ok) return;
+        if (window.gtag) gtag('event', 'purchase', {
+          transaction_id: sid, value: j.value, currency: j.currency,
+          items: [{ item_name: 'The Generative AI 8-Week Bootcamp', price: j.value, quantity: 1 }]
+        });
+        // event_id matches the webhook's, so Meta counts one Purchase even
+        // though both the browser and the server report it.
+        if (window.fbq) fbq('track', 'Purchase',
+          { value: j.value, currency: j.currency, content_name: 'The Generative AI 8-Week Bootcamp' },
+          { eventID: j.event_id });
+        try { localStorage.setItem(key, '1'); } catch (e) {}
+      })
+      .catch(function () { /* the webhook's CAPI call is the backstop */ });
+  })();
+</script>
+</body>
+</html>

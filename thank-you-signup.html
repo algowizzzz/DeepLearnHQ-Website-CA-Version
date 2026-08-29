@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<link rel="icon" type="image/png" href="/assets/logo-mark.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/styles.css" />
+<link rel="stylesheet" href="/inner.css" />
+<style>
+  .ty{max-width:660px;margin:0 auto;text-align:center}
+  .ty h1{font-family:"Space Grotesk",sans-serif;font-size:2.3rem;line-height:1.2;margin-bottom:18px}
+  .ty p{font-size:1.03rem;line-height:1.6;opacity:.86;margin-bottom:16px}
+  .ty .big{font-family:"JetBrains Mono",monospace;font-size:1.5rem;letter-spacing:.06em;padding:14px 22px;
+    border:1px solid rgba(62,207,142,.4);background:rgba(62,207,142,.07);border-radius:14px;display:inline-block;margin:6px 0 20px}
+  .ty .timer{font-family:"JetBrains Mono",monospace;font-size:1.1rem;letter-spacing:.05em;opacity:.9}
+  .ty .note{font-size:.9rem;opacity:.62}
+  .ty .warn{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.03);border-radius:14px;padding:22px;margin:8px 0 22px}
+</style>
+<title>Your $50-off code is on its way | DeepLearnHQ</title>
+</head>
+<body data-page="courses">
+
+<section class="page-hero">
+  <div class="hero-aura"></div>
+  <div class="hero-grid"></div>
+  <div class="wrap page-hero-in ty">
+    <span class="eyebrow" style="justify-content:center;display:inline-flex">Check your inbox</span>
+    <h1>Your $50-off code is in your inbox.</h1>
+    <p>It comes from <strong>saadahmed@deeplearnhq.ca</strong> &mdash; if it's not there in five minutes, check spam or promotions, and whitelist that address so the rest of the series arrives.</p>
+
+    <div id="codeBox" hidden>
+      <div class="big" id="codeVal">&mdash;</div>
+      <p class="timer" id="codeTimer"></p>
+    </div>
+
+    <div class="warn" id="expiredBox" hidden>
+      <p style="margin:0"><strong>This code has expired.</strong> The bootcamp is $99 USD &mdash; still covered by the unconditional 30-day money-back guarantee, so you can still buy with no risk.</p>
+    </div>
+
+    <div class="cta-actions" style="justify-content:center">
+      <a href="#" class="btn btn-grad" data-buy id="useCode">Use my code &mdash; $49 USD</a>
+      <a href="/" class="btn btn-ghost-d">Back to the bootcamp</a>
+    </div>
+    <p class="note" style="margin-top:22px">Your first Q&amp;A is the next Saturday, 10:00&ndash;12:00 EST. The invite is emailed once you buy.</p>
+  </div>
+</section>
+
+<script src="/chrome.js"></script>
+<script src="/main.js"></script>
+<script>
+  var CHECKOUT_URL = 'https://buy.stripe.com/PLACEHOLDER_99_LINK';
+  (function () {
+    var q = new URLSearchParams(location.search);
+    var code = q.get('code'), exp = parseInt(q.get('exp'), 10);
+    try {
+      if (code && exp) { localStorage.setItem('dlhq_code', code); localStorage.setItem('dlhq_exp', String(exp)); }
+      else { code = localStorage.getItem('dlhq_code'); exp = parseInt(localStorage.getItem('dlhq_exp'), 10); }
+    } catch (e) {}
+
+    var live = code && exp && exp * 1000 > Date.now();
+    if (live) {
+      document.getElementById('codeBox').hidden = false;
+      document.getElementById('codeVal').textContent = code;
+      var t = document.getElementById('codeTimer');
+      var tick = function () {
+        var left = exp * 1000 - Date.now();
+        if (left <= 0) { location.reload(); return; }
+        var s = Math.floor(left / 1000), h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60);
+        t.textContent = 'Expires in ' + h + 'h ' + String(m).padStart(2, '0') + 'm';
+      };
+      tick(); setInterval(tick, 30000);
+    } else if (code) {
+      // Expired: show the honest $99 state rather than sending them to a
+      // Stripe error page with a dead promo code (finding T12).
+      document.getElementById('expiredBox').hidden = false;
+      var b = document.getElementById('useCode');
+      b.textContent = 'Buy the bootcamp — $99 USD';
+    }
+
+    // Lead fires ONCE per code. A refresh must not re-fire it, or the ad
+    // algorithm optimises toward people who reload pages (finding T11).
+    var key = 'dlhq_lead_' + (code || 'none');
+    var fired = false;
+    try { fired = localStorage.getItem(key) === '1'; } catch (e) {}
+    if (!fired) {
+      if (window.gtag) gtag('event', 'sign_up', { method: 'discount_code' });
+      if (window.fbq) fbq('track', 'Lead', { value: 49, currency: 'USD' }, { eventID: 'lead_' + (code || Date.now()) });
+      try { localStorage.setItem(key, '1'); } catch (e) {}
+    }
+  })();
+</script>
+<script src="/track.js"></script>
+</body>
+</html>

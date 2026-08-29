@@ -1,17 +1,91 @@
 /* ============================================================
-   Google Analytics 4 — deeplearnhq.ca dedicated stream (G-154Y1RBED7)
-   Injected here so it loads on every page via the shared chrome.
+   Consent gate + analytics (tickets 7.1 / 7.2 / G18)
+   PIPEDA and Quebec Law 25 require consent BEFORE non-essential
+   tracking. GA4 used to load unconditionally here, which also
+   contradicted privacy.html's promise that analytics load only
+   after consent. Nothing below fires until the visitor chooses.
    ============================================================ */
 (function () {
   var GA_ID = "G-154Y1RBED7";
-  var s = document.createElement("script");
-  s.async = true;
-  s.src = "https://www.googletagmanager.com/gtag/js?id=" + GA_ID;
-  document.head.appendChild(s);
+  var PIXEL_ID = "656402296715617";
+  var KEY = "dlhq_consent";
+
+  // gtag() must exist immediately so page code can queue events without
+  // guarding every call; the queue only drains once GA4 is actually loaded.
   window.dataLayer = window.dataLayer || [];
   window.gtag = function () { dataLayer.push(arguments); };
-  gtag("js", new Date());
-  gtag("config", GA_ID);
+
+  function loadAnalytics() {
+    var s = document.createElement("script");
+    s.async = true;
+    s.src = "https://www.googletagmanager.com/gtag/js?id=" + GA_ID;
+    document.head.appendChild(s);
+    gtag("js", new Date());
+    gtag("config", GA_ID);
+
+    /* Meta pixel */
+    !function (f, b, e, v, n, t, s2) {
+      if (f.fbq) return; n = f.fbq = function () {
+        n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+      };
+      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = "2.0"; n.queue = [];
+      t = b.createElement(e); t.async = !0; t.src = v;
+      s2 = b.getElementsByTagName(e)[0]; s2.parentNode.insertBefore(t, s2);
+    }(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+    fbq("init", PIXEL_ID);
+    fbq("track", "PageView");
+    window.__dlhqConsent = "granted";
+    document.dispatchEvent(new CustomEvent("dlhq:consent", { detail: "granted" }));
+  }
+
+  // Cookieless, PII-free record of the choice. Decliners are invisible to GA4
+  // and the pixel, so without this we cannot tell "bad page" from "blind spot"
+  // when reading the funnel (finding G18).
+  function record(choice) {
+    try {
+      var b = JSON.stringify({ choice: choice, path: location.pathname });
+      if (navigator.sendBeacon) navigator.sendBeacon("/api/consent-event", new Blob([b], { type: "application/json" }));
+      else fetch("/api/consent-event", { method: "POST", headers: { "Content-Type": "application/json" }, body: b, keepalive: true });
+    } catch (e) {}
+  }
+
+  function decide(choice, fromBanner) {
+    try { localStorage.setItem(KEY, choice); } catch (e) {}
+    if (fromBanner) record(choice);
+    if (choice === "granted") loadAnalytics();
+    else {
+      window.__dlhqConsent = "denied";
+      document.dispatchEvent(new CustomEvent("dlhq:consent", { detail: "denied" }));
+    }
+    var el = document.getElementById("dlhq-consent");
+    if (el) el.remove();
+  }
+
+  var prior = null;
+  try { prior = localStorage.getItem(KEY); } catch (e) {}
+  if (prior === "granted" || prior === "denied") { decide(prior, false); return; }
+
+  function banner() {
+    var d = document.createElement("div");
+    d.id = "dlhq-consent";
+    d.setAttribute("role", "dialog");
+    d.setAttribute("aria-label", "Cookie choices");
+    d.innerHTML =
+      '<p>We use cookies to measure how this site is used and how well our ads work. ' +
+      'You can say no and the site works exactly the same. ' +
+      '<a href="/privacy.html">How we use them</a>.</p>' +
+      '<div class="dlhq-consent-btns">' +
+      '<button type="button" data-c="denied" class="btn btn-ghost-d">No thanks</button>' +
+      '<button type="button" data-c="granted" class="btn btn-grad">Accept</button>' +
+      "</div>";
+    d.addEventListener("click", function (e) {
+      var b = e.target.closest("button[data-c]");
+      if (b) decide(b.getAttribute("data-c"), true);
+    });
+    document.body.appendChild(d);
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", banner);
+  else banner();
 })();
 
 /* ============================================================
@@ -102,8 +176,8 @@
       title: "Learning", href: "learning.html",
       cols: [
         { cat: "Learn", items: [
-          ["8-Week Bootcamp", "/courses"],
-          ["Free Masterclass", "/courses/free"],
+          
+          ["The 8-Week Bootcamp", "/"],
           ["Enterprise Training", "learning-enterprise-training.html"],
           ["Free Resources", "learning-resources.html"],
           ["Blog", "/blogs/"],
@@ -201,9 +275,9 @@
   /* ---- Education site: the whole site is now the courses/blogs funnel.
      Force the EDU header/menu on every page (studio nav retired). ---- */
   const EDU = true;
-  const eduLinks = [["Free Masterclass","/courses/free"],["8-Week Bootcamp","/courses"],["Blog","/blogs/"]]
+  const eduLinks = [["The 8-Week Bootcamp","/"],["Blog","/blogs/"]]
     .map(([l,h]) => `<div class="nav-item"><a class="nav-top" href="${h}">${l}</a></div>`).join("");
-  const eduMenu = [["Free Masterclass","/courses/free"],["8-Week Bootcamp","/courses"],["Blog","/blogs/"]]
+  const eduMenu = [["The 8-Week Bootcamp","/"],["Blog","/blogs/"]]
     .map(([l,h]) => `<div class="mm-group"><a class="m-top" href="${h}">${l}</a></div>`).join("");
 
   /* ---- Header ---- */
@@ -212,15 +286,15 @@
   header.id = "nav";
   header.innerHTML = EDU ? `
     <div class="wrap nav-in">
-      <a href="/courses/free" class="nav-logo" aria-label="DeepLearnHQ courses"><img src="/assets/logo-white.png" alt="DeepLearnHQ" /></a>
+      <a href="/" class="nav-logo" aria-label="DeepLearnHQ"><img src="/assets/logo-white.png" alt="DeepLearnHQ" /></a>
       <nav class="nav-links">${eduLinks}</nav>
       <div class="nav-right">
-        <a href="/courses/free" class="btn btn-grad btn-sm">Get free access ${ARROW}</a>
+        <a href="/" class="btn btn-grad btn-sm">Get the bootcamp ${ARROW}</a>
         <button class="nav-burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
       </div>
     </div>` : `
     <div class="wrap nav-in">
-      <a href="/courses/free" class="nav-logo" aria-label="DeepLearnHQ"><img src="assets/logo-white.png" alt="DeepLearnHQ" /></a>
+      <a href="/" class="nav-logo" aria-label="DeepLearnHQ"><img src="assets/logo-white.png" alt="DeepLearnHQ" /></a>
       <nav class="nav-links">${navLinks}</nav>
       <div class="nav-right">
         <a href="tel:8442010286" class="nav-phone">(844) 201-0286</a>
@@ -233,7 +307,7 @@
   menu.className = "mobile-menu";
   menu.id = "mobileMenu";
   menu.innerHTML = EDU
-    ? `<div class="mm-panel">${eduMenu}<div class="mm-foot"><a href="/courses/free" class="btn btn-grad">Get free access ${ARROW}</a></div></div>`
+    ? `<div class="mm-panel">${eduMenu}<div class="mm-foot"><a href="/" class="btn btn-grad">Get the bootcamp ${ARROW}</a></div></div>`
     : `<div class="mm-panel">${menuGroups}<div class="mm-foot"><a href="tel:8442010286" class="nav-phone">(844) 201-0286</a><a href="contact.html" class="btn btn-grad">Get Started ${ARROW}</a></div></div>`;
 
   /* ---- Footer ---- */
@@ -244,14 +318,14 @@
       <div class="foot-top">
         <div class="foot-brand">
           <img src="assets/logo-white.png" alt="DeepLearnHQ" />
-          <p>Practical generative-AI education. Learn ChatGPT, Claude, Gemini, Grok &amp; Perplexity — from a free masterclass to a mentored 8-week bootcamp.</p>
+          <p>Practical generative-AI education. Learn ChatGPT, Claude, Gemini &amp; more — and ship 4 real AI projects in the 8-Week Bootcamp.</p>
           <div class="meta">info@deeplearnhq.ca</div>
         </div>
         <div class="foot-col">
           <h4>Learn</h4>
           <ul>
-            <li><a href="/courses/free">Free Masterclass</a></li>
-            <li><a href="/courses">8-Week Bootcamp</a></li>
+            <li><a href="/">The 8-Week Bootcamp</a></li>
+            <li><a href="/">The 8-Week Bootcamp</a></li>
             <li><a href="/blogs/">Blog</a></li>
             <li><a href="/tools/prompt-library">AI Prompt Library</a></li>
             <li><a href="/tools/ai-picker">Which AI to use?</a></li>

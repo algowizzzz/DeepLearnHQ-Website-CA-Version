@@ -25,241 +25,279 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; connect-src 'self' https://api.web3forms.com https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com; object-src 'none'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://www.facebook.com https://connect.facebook.net https://i.ytimg.com; connect-src 'self' https://api.web3forms.com https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://connect.facebook.net https://www.facebook.com; frame-src 'self' https://www.youtube-nocookie.com https://www.youtube.com; object-src 'none'; frame-ancestors 'self'; base-uri 'self'; form-action 'self' https://buy.stripe.com"
         }
       ]
     }
   ],
   "redirects": [
     {
-      "source": "/",
-      "destination": "/courses/free",
-      "permanent": true
-    },
-    {
       "source": "/press-:s*",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/work:s*",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/industr:s*",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/geo-:s*",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/landing-:s*",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/solution:s*",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/about-how-we-work.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/about-manifesto.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/about-people.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/about-testimonial.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/about.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/agentic-ai.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/ai-platforms-ml.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/ai-product-development.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/ai-solutions.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/android-development.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/business-optimization.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/careers-life.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/careers.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/cloud-devops.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/cloud-native.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/cross-platform-mobile.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/custom-software.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/data-analytics.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/data-engineering.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/data-science-ml.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/design-thinking.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/devops-secops.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/digital-transformation.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/generative-ai-applications.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/index.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/innovation.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/ios-development.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/modernization.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/nearshore-offshore.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/product-discovery.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/product-strategy.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/products.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/quality-assurance.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/services.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/software-development.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/strategy-consulting.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/technology-assessment.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/university.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/web-apps.html",
-      "destination": "/courses/free",
+      "destination": "/",
       "permanent": true
+    },
+    {
+      "source": "/courses",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/courses/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/courses/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/courses/thank-you",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/courses/free/thank-you",
+      "destination": "/",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/courses/free",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/courses/free/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/thank-you-signup",
+      "destination": "/thank-you-signup.html"
+    },
+    {
+      "source": "/thank-you-purchase",
+      "destination": "/thank-you-purchase.html"
     }
   ]
 }
