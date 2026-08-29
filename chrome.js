@@ -1,17 +1,91 @@
 /* ============================================================
-   Google Analytics 4 — deeplearnhq.ca dedicated stream (G-154Y1RBED7)
-   Injected here so it loads on every page via the shared chrome.
+   Consent gate + analytics (tickets 7.1 / 7.2 / G18)
+   PIPEDA and Quebec Law 25 require consent BEFORE non-essential
+   tracking. GA4 used to load unconditionally here, which also
+   contradicted privacy.html's promise that analytics load only
+   after consent. Nothing below fires until the visitor chooses.
    ============================================================ */
 (function () {
   var GA_ID = "G-154Y1RBED7";
-  var s = document.createElement("script");
-  s.async = true;
-  s.src = "https://www.googletagmanager.com/gtag/js?id=" + GA_ID;
-  document.head.appendChild(s);
+  var PIXEL_ID = "656402296715617";
+  var KEY = "dlhq_consent";
+
+  // gtag() must exist immediately so page code can queue events without
+  // guarding every call; the queue only drains once GA4 is actually loaded.
   window.dataLayer = window.dataLayer || [];
   window.gtag = function () { dataLayer.push(arguments); };
-  gtag("js", new Date());
-  gtag("config", GA_ID);
+
+  function loadAnalytics() {
+    var s = document.createElement("script");
+    s.async = true;
+    s.src = "https://www.googletagmanager.com/gtag/js?id=" + GA_ID;
+    document.head.appendChild(s);
+    gtag("js", new Date());
+    gtag("config", GA_ID);
+
+    /* Meta pixel */
+    !function (f, b, e, v, n, t, s2) {
+      if (f.fbq) return; n = f.fbq = function () {
+        n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+      };
+      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = "2.0"; n.queue = [];
+      t = b.createElement(e); t.async = !0; t.src = v;
+      s2 = b.getElementsByTagName(e)[0]; s2.parentNode.insertBefore(t, s2);
+    }(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+    fbq("init", PIXEL_ID);
+    fbq("track", "PageView");
+    window.__dlhqConsent = "granted";
+    document.dispatchEvent(new CustomEvent("dlhq:consent", { detail: "granted" }));
+  }
+
+  // Cookieless, PII-free record of the choice. Decliners are invisible to GA4
+  // and the pixel, so without this we cannot tell "bad page" from "blind spot"
+  // when reading the funnel (finding G18).
+  function record(choice) {
+    try {
+      var b = JSON.stringify({ choice: choice, path: location.pathname });
+      if (navigator.sendBeacon) navigator.sendBeacon("/api/consent-event", new Blob([b], { type: "application/json" }));
+      else fetch("/api/consent-event", { method: "POST", headers: { "Content-Type": "application/json" }, body: b, keepalive: true });
+    } catch (e) {}
+  }
+
+  function decide(choice, fromBanner) {
+    try { localStorage.setItem(KEY, choice); } catch (e) {}
+    if (fromBanner) record(choice);
+    if (choice === "granted") loadAnalytics();
+    else {
+      window.__dlhqConsent = "denied";
+      document.dispatchEvent(new CustomEvent("dlhq:consent", { detail: "denied" }));
+    }
+    var el = document.getElementById("dlhq-consent");
+    if (el) el.remove();
+  }
+
+  var prior = null;
+  try { prior = localStorage.getItem(KEY); } catch (e) {}
+  if (prior === "granted" || prior === "denied") { decide(prior, false); return; }
+
+  function banner() {
+    var d = document.createElement("div");
+    d.id = "dlhq-consent";
+    d.setAttribute("role", "dialog");
+    d.setAttribute("aria-label", "Cookie choices");
+    d.innerHTML =
+      '<p>We use cookies to measure how this site is used and how well our ads work. ' +
+      'You can say no and the site works exactly the same. ' +
+      '<a href="/privacy.html">How we use them</a>.</p>' +
+      '<div class="dlhq-consent-btns">' +
+      '<button type="button" data-c="denied" class="btn btn-ghost-d">No thanks</button>' +
+      '<button type="button" data-c="granted" class="btn btn-grad">Accept</button>' +
+      "</div>";
+    d.addEventListener("click", function (e) {
+      var b = e.target.closest("button[data-c]");
+      if (b) decide(b.getAttribute("data-c"), true);
+    });
+    document.body.appendChild(d);
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", banner);
+  else banner();
 })();
 
 /* ============================================================

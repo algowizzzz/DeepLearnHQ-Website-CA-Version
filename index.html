@@ -18,6 +18,9 @@
 <link rel="icon" type="image/png" href="/assets/logo-mark.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+<link rel="dns-prefetch" href="https://connect.facebook.net" />
+<link rel="preconnect" href="https://buy.stripe.com" />
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="/styles.css" />
 <link rel="stylesheet" href="/inner.css" />
@@ -87,6 +90,8 @@
 </style>
 </head>
 <body data-page="courses">
+
+<div id="codeBar" class="code-bar" hidden></div>
 
 <!-- §1 HERO -->
 <section class="page-hero" data-screen-label="Bootcamp Hero">
@@ -248,7 +253,7 @@
     </ul>
     <div class="doors">
       <div class="door door-a">
-        <div class="price">$99<span class="cur">USD</span></div>
+        <div class="price" data-price-full>$99<span class="cur">USD</span></div>
         <p class="sub">One-time payment. Everything above, for life.</p>
         <a href="#" class="btn btn-grad" data-buy style="width:100%;justify-content:center">Buy now — $99 USD</a>
       </div>
@@ -346,5 +351,6 @@
     else if (a.hasAttribute('data-cta')) gtag('event', 'cta_click', { location: a.getAttribute('data-cta') });
   });
 </script>
+<script src="/track.js" defer></script>
 </body>
 </html>

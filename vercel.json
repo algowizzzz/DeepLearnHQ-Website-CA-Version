@@ -290,6 +290,14 @@
     {
       "source": "/courses/free/",
       "destination": "/index.html"
+    },
+    {
+      "source": "/thank-you-signup",
+      "destination": "/thank-you-signup.html"
+    },
+    {
+      "source": "/thank-you-purchase",
+      "destination": "/thank-you-purchase.html"
     }
   ]
 }
