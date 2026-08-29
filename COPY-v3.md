@@ -20,7 +20,7 @@
 2. "I've taught AI to {STUDENTS} students. Here's the first thing I tell every one of them to build."
 3. "Stop learning AI. Start shipping it. 4 projects, no code, $99."
 4. "I build AI systems for a living. This course is me handing you the playbook."
-5. "Every weekend I answer your questions live. The rest of the week, you build. $99."
+5. "Every Saturday I answer your questions live. The rest of the week, you build. $99."
 
 *(Hook 5 is new — the Q&A is the strongest differentiator against every self-paced course in the feed, so at least one hook should carry it. Policy notes per 9.5 unchanged: no second-person behavioral callouts, no unverifiable price claims, no universality overclaims.)*
 

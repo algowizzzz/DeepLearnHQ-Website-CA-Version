@@ -318,3 +318,32 @@ was the point of the rewrite — but the funnel does not work until they are set
 Rate limiting is per serverless instance and in-memory, so it throttles the common
 case but is not a hard guarantee. A KV store would be needed for that. Acceptable at
 launch volume; revisit if bots mint codes.
+
+
+---
+
+## MAILERLITE SETUP — added to Saad's list 2026-08-29 (ticket 8.3/8.4/8.5)
+
+Writing the emails does **not** finish the email system. The copy and the endpoints are
+mine; the automation is dashboard work only Saad can do. Ordered:
+
+1. **Create 4 custom fields — exact spelling.** `discount_code` · `code_expires_at` · `marketing_opt_in` · `source`
+   > ⚠️ **Silent failure:** MailerLite **drops fields that don't exist** and still returns success. The API call looks fine, my code sees 200, and **E1 sends with a blank discount code.** Create these before the first test.
+2. **Create 2 groups**, then give me the ids for `MAILERLITE_GROUP_ID` (code series, its join fires E1) and `ML_GROUP_BUYERS` (99 Course Buyers).
+3. **Build the automation:** trigger = joins the code-series group → E1 (immediate) → wait 24h → E2 → wait to +66h → E3.
+   > ⚠️ **Timing:** MailerLite does relative waits, not "6 hours before this subscriber's expiry." The 0 / +24h / +66h schedule only lines up because every code is exactly 72h. If the TTL changes, this drifts silently out of sync with the real Stripe expiry.
+4. **Turn automation re-entry ON.** Without it, the remove-then-add in `api/subscribe.js` does nothing and a repeat signup gets a code with no email.
+5. **Suppress buyers from E1–E3 as a send-time condition,** not a static segment.
+   > ⚠️ **Race:** someone who buys 20 minutes after signing up already has E2/E3 queued. Unless membership is checked at send time, a paying customer receives *"your code dies tonight."*
+6. **Sender identity:** from-name and from-address = `saadahmed@deeplearnhq.ca` (SPF/DKIM/DMARC already pass — ticket 0.5 closed).
+7. **Paste E1–E4** once Claude delivers the bodies.
+
+### 🔴 Hard blocker for this whole section
+**MailerLite requires a company postal address on the account** and injects it into every
+footer. Saad declined to supply one. MailerLite may refuse to send at all. A **registered-agent
+address or PO box** satisfies MailerLite and CAN-SPAM/CASL without publishing a home address.
+This is the "raise once at email wiring" moment from the earlier decision — raised.
+
+### Still on Claude for this section
+- E1–E4 full send-ready bodies (currently one-line specs, not pasteable)
+- A step-by-step MailerLite configuration doc so the above is checklist-driven
