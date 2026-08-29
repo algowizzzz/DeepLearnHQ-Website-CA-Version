@@ -272,3 +272,49 @@ Saad's call: **do not cite a free course anywhere.** Executed site-wide, not jus
 **Still pending by Saad's instruction:** Udemy proof screenshots (N8) · Stripe + Meta dashboard actions.
 
 **Page placeholder count is now ONE:** `CHECKOUT_URL` — the Day-12 Stripe link. Everything else on the homepage is real content.
+
+
+---
+
+## BUILD LOG — Day 2 (2026-08-29): the full funnel
+
+All 10 remaining Claude-side items are built, tested (71/72 automated checks, the one
+"failure" a verified false positive) and pushed. Commit `a7f917b`.
+
+### ⚠️ NEW — env vars Saad must set in Vercel before any of this runs
+
+| Var | For | Notes |
+|---|---|---|
+| `STRIPE_SECRET_KEY` | promo codes + purchase value | **Restricted key:** promotion_codes *write*, checkout_sessions *read*. Nothing else |
+| `STRIPE_COUPON_ID` | the $50-off coupon | Create the coupon once in Stripe; the code generator attaches to it |
+| `STRIPE_PAYMENT_LINK_99` | webhook routing | The `plink_…` id of the $99 product (ticket 0.6). Kept as an env var so it needs no code change |
+| `ML_GROUP_BUYERS` | buyer group | MailerLite "99 Course Buyers" group id |
+| `MAILERLITE_GROUP_ID` | code series group | The group whose join fires E1 |
+| `META_CAPI_TOKEN` | CAPI backstop | From Events Manager |
+| `ALERT_WEBHOOK_URL` | purchase + failure alerts | Web3Forms or Resend endpoint |
+| `MAILERLITE_API_KEY`, `STRIPE_WEBHOOK_SECRET` | already configured | verify still present |
+
+Without these the endpoints fail **loudly and honestly** rather than silently — that
+was the point of the rewrite — but the funnel does not work until they are set.
+
+### What was built
+1. **Signup endpoint** rewritten to the strict contract (promo code first, real errors, remove-then-add re-entry, honeypot + rate limit + server validation).
+2. **Webhook hardened** — 5xx on MailerLite failure so Stripe retries; CAPI backstop with hashed email and deterministic `event_id`; purchase and failure alerts; routes on the new link; unknown links alert rather than drop.
+3. **Purchase value endpoint** — reports the amount actually paid.
+4. **Consent banner** + cookieless decline counter, and **GA4 + pixel moved behind it**.
+5. **Discount modal** — accessible dialog, honeypot, unchecked marketing opt-in separated from the transactional series, honest failure copy.
+6. **Both thank-you pages**, `noindex`, with clean URLs.
+7. **Code-holder state** — URL params + localStorage, live countdown, `prefilled_promo_code`, honest expired state.
+8. **Attribution** — charset-safe `client_reference_id`.
+9. **Docs** — RUNBOOK.md, MEDIA-PLAN.md, AD-POLICY-CHECKLIST.md.
+10. **Perf** — deferred script, dns-prefetch, no iframe on first paint.
+
+### Three defects found and fixed while building
+- **GA4 loaded unconditionally on every page** — broke PIPEDA/Law 25 *and* contradicted the privacy policy I had just written, which promises analytics load only after consent.
+- **Hardcoding Purchase value at 99** would have overstated revenue to Meta by roughly 2x, since most buyers pay $49 — training the ad algorithm on a number that never existed.
+- **A `/thank-you.html` redirect I added would have broken the contact form**, whose confirmation page that is (`leadform.js:169`). Reverted before commit.
+
+### Known limitation (documented, not a bug)
+Rate limiting is per serverless instance and in-memory, so it throttles the common
+case but is not a hard guarantee. A KV store would be needed for that. Acceptable at
+launch volume; revisit if bots mint codes.
