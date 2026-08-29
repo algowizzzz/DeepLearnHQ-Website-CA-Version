@@ -1,6 +1,6 @@
 # deeplearnhq.ca — Site Copy v3 (D16–D19 applied)
 
-**Supersedes COPY-v2.md.** Changes from v2: product name is now **The Generative AI 8-Week Bootcamp** (D16, keeps the existing name — the $4,999 and free-masterclass pages are deleted outright) · curriculum is the **real 4-project arc** from the old bootcamp page (D17, supersedes the invented 6-project arc) · **weekly weekend Q&A with Saad** added as the live component (D19) · **1:1 mentoring / instructors + TAs / demo day removed** — undeliverable at $99 (Saad confirmed the drop) · **no mini-win lead magnet** — the signup offer is the code itself (D14) · the course-preview video is Saad's existing YouTube recording, not a new shoot (D18); the free Lesson 1 is removed entirely · support email resolved to **saadahmed@deeplearnhq.ca** · Project-1 beginner-output screenshots dropped; §6 proof now rests on the Udemy screenshot + the four real testimonials carried over from the old page.
+**Supersedes COPY-v2.md.** Changes from v2: product name is now **The Generative AI 8-Week Bootcamp** (D16, keeps the existing name — the $4,999 and free-masterclass pages are deleted outright) · curriculum is the **real 4-project arc** from the old bootcamp page (D17, supersedes the invented 6-project arc) · **weekly Saturday Q&A with Saad** added as the live component (D19) · **1:1 mentoring / instructors + TAs / demo day removed** — undeliverable at $99 (Saad confirmed the drop) · **no mini-win lead magnet** — the signup offer is the code itself (D14) · the course-preview video is Saad's existing YouTube recording, not a new shoot (D18); the free Lesson 1 is removed entirely · support email resolved to **saadahmed@deeplearnhq.ca** · Project-1 beginner-output screenshots dropped; §6 proof now rests on the Udemy screenshot + the four real testimonials carried over from the old page.
 
 **Proof-number tokens (2.7b, unchanged):** {STUDENTS} = 38,000+ · {REVIEWS} = 9,276 · {STARS} = 4.5★ — the conservative set, held until Saad's Udemy screenshots verify. *Note: the old bootcamp page published 39,000+ / 13,017 / 4.5★, so there is a published precedent for the higher set — but the screenshot still decides. Copy matches evidence, never the reverse.*
 
@@ -8,7 +8,7 @@
 
 **Risk-reversal rule (NEW, 2026-08-28):** there is no lead magnet, no free course, and no free lesson. The **unconditional 30-day guarantee is the only thing standing between a cold ad click and a $99 decision** — so it is stated at every decision point, never buried in §10 alone.
 
-**Deliverability rule (D16 consequence):** the old page sold this name with 1:1 mentoring, a TA bench, and a demo day at $4,999. **None of those words appear anywhere in v3.** What a $99 buyer gets is the recorded 8-week curriculum, 4 projects, the weekend Q&A, a certificate, and lifetime access. Nothing advertised that Saad cannot deliver alone.
+**Deliverability rule (D16 consequence):** the old page sold this name with 1:1 mentoring, a TA bench, and a demo day at $4,999. **None of those words appear anywhere in v3.** What a $99 buyer gets is the recorded 8-week curriculum, 4 projects, the Saturday Q&A, a certificate, and lifetime access. Nothing advertised that Saad cannot deliver alone.
 
 `[brackets]` = facts still outstanding.
 
@@ -31,10 +31,10 @@
 - B: {STUDENTS} students learned AI with me. This is where I'd tell you to start.
 - C: Stop watching AI videos. Start shipping AI work.
 
-**Subhead:** A structured 8-week bootcamp you take at your own pace — with a live Q&A with me every weekend. Taught by the instructor behind a {STARS}, {REVIEWS}-review Udemy AI course.
+**Subhead:** A structured 8-week bootcamp you take at your own pace — with a live Q&A with me every Saturday. Taught by the instructor behind a {STARS}, {REVIEWS}-review Udemy AI course.
 
 **CTAs:** `[ Get the bootcamp — $99 ]` `[ Get $50 off → ]`
-**Under-button:** One-time payment in USD · Lifetime access · Live weekend Q&A · Build-Something Guarantee
+**Under-button:** One-time payment in USD · Lifetime access · Live Saturday Q&A · Build-Something Guarantee
 
 **USD display rule (G19, enforced):** "USD" appears with the price at every price *cluster* — hero under-button, §9 both doors, §12 final CTA, sticky bar, modal header, both thank-you pages, E1–E3.
 
@@ -71,7 +71,7 @@ You choose the projects. The structure makes sure you finish them. Every project
 
 Week 1 — Your AI operating system · Week 2 — Advanced prompting & workflows · Week 3 — Automate your real work **(Project 1 ships)** · Week 4 — Build without a developer **(Project 2 ships)** · Week 5 — The AI content & marketing engine · Week 6 — Build your own AI agents **(Project 3 ships)** · Week 7 — Package & sell it **(Project 4 ships)** · Week 8 — Capstone & launch.
 
-**Framing (honest):** the 8 weeks are a **suggested pace**, not a cohort with fixed dates. You have lifetime access and can move faster or slower. The one live, recurring thing is the weekend Q&A. *(No "demo day" — that was the $4,999 cohort product.)*
+**Framing (honest):** the 8 weeks are a **suggested pace**, not a cohort with fixed dates. You have lifetime access and can move faster or slower. The one live, recurring thing is the Saturday Q&A. *(No "demo day" — that was the $4,999 cohort product.)*
 
 ## §5c — LIVE Q&A EVERY WEEKEND (D19 — the differentiator)
 
@@ -92,11 +92,11 @@ Not a chatbot, not a forum where nobody replies, not a support ticket. Me, live,
 
 ## §7 — FOUNDER BLOCK (2.5, face-forward, first person)
 
-I'm Saad. I've taught AI to {STUDENTS} students, and I've spent a decade building systems at Deloitte, PwC, BMO, and Microsoft. Everything in this bootcamp is what I actually do — recorded, structured into 8 weeks, and priced so an individual can buy it. And I'm not disappearing after checkout: I'm on the Q&A every weekend. Bootcamps teach this skill set for $5,000+. University certificates run $2,000+. This is $99.
+I'm Saad. I've taught AI to {STUDENTS} students, and I've spent a decade building systems at Deloitte, PwC, BMO, and Microsoft. Everything in this bootcamp is what I actually do — recorded, structured into 8 weeks, and priced so an individual can buy it. And I'm not disappearing after checkout: I'm on the Q&A every Saturday. Bootcamps teach this skill set for $5,000+. University certificates run $2,000+. This is $99.
 
 ## §8 — WHY THIS ONE (2.17 wedge — competitors unnamed; 2.18 Udemy positioning)
 
-You've seen the big AI-course ads. Venture-funded academies, faceless curricula, four-figure price tags. This isn't that. One instructor, whose face is on this page, who answers for the material — and answers your questions live every weekend.
+You've seen the big AI-course ads. Venture-funded academies, faceless curricula, four-figure price tags. This isn't that. One instructor, whose face is on this page, who answers for the material — and answers your questions live every Saturday.
 
 And if you know me from Udemy: this is my newest system, not a re-upload. Direct from me, always the latest version, with a live Q&A and a guarantee Udemy can't offer.
 
@@ -109,7 +109,7 @@ And if you know me from Udemy: this is my newest system, not a re-upload. Direct
 **The Generative AI 8-Week Bootcamp — $99 USD.** Everything above. Lifetime access. Free updates.
 
 **What's included** (dollar values only where real per G16 — nothing invented to sum past $500):
-The 8-week curriculum · 4 real projects · **live Q&A with Saad every weekend** · certificate of completion · prompt library · lifetime access + free updates
+The 8-week curriculum · 4 real projects · **live Q&A with Saad every Saturday** · certificate of completion · prompt library · lifetime access + free updates
 
 Anchor line: Bootcamps charge $5,000+ to teach this. Certificates run $2,000+. **This is $99.**
 
@@ -124,7 +124,7 @@ Anchor line: Bootcamps charge $5,000+ to teach this. Certificates run $2,000+. *
 
 ## §11 — FAQ (2.9)
 
-Time required [X hrs total] · Prerequisites (none) · Tool costs ($0/mo path exists — N9) · **When is the Q&A? (Every Saturday 10:00–12:00 EST, invite by email, included for life)** · **Is this a live cohort? (No — self-paced with lifetime access; the 8 weeks are a suggested pace, and the Q&A is the live part)** · Certificate (yes, on completion) · Lifetime access (yes) · Refund terms (§10) · "I'm not technical" (§4) · Which AI tools (§5) · How is this different from your Udemy courses (newest system, direct, live Q&A, $49 with code) · When do I get access (**within 24 hours — I set up every student personally**; D6)
+Time required (8-week path, self-paced) · Prerequisites (none) · Tool costs ($0/mo path exists — N9) · **When is the Q&A? (Every Saturday 10:00–12:00 EST, invite by email, included for life)** · **Is this a live cohort? (No — self-paced with lifetime access; the 8 weeks are a suggested pace, and the Q&A is the live part)** · Certificate (yes, on completion) · Lifetime access (yes) · Refund terms (§10) · "I'm not technical" (§4) · Which AI tools (§5) · How is this different from your Udemy courses (newest system, direct, live Q&A, $49 with code) · When do I get access (**within 24 hours — I set up every student personally**; D6)
 
 ## §12 — FINAL CTA
 
@@ -162,7 +162,7 @@ A few days from now you'll either have working AI projects — or more watched v
 ## EMAILS — MailerLite (8.2/8.3/8.4)
 
 **E1 — instant, code delivery:** subject "Your $50-off code (72 hours)" — code merge tag, exact expiry timestamp, checkout link with `prefilled_promo_code` + `code`/`exp` params, the 30-day guarantee restated in one line, one line on what you'll build.
-**E2 — +24h, proof/objection:** the weekend Q&A as the reason this isn't just another recorded course, the "not technical" answer, code + time left.
+**E2 — +24h, proof/objection:** the Saturday Q&A as the reason this isn't just another recorded course, the "not technical" answer, code + time left.
 **E3 — final 6 hours:** plain and honest: "your code dies at [time]. After that it's $99 USD. Both are fine — but decide." No fake extensions, ever.
 **E4 — post-purchase onboarding (buyers only, suppressed from E1–E3):** **credentials (username + password), no platform named in the body per D13b** · the 24h SLA · whitelist ask · the next Saturday Q&A (10:00–12:00 EST, invite emailed) · Week 1 / Project 1 first-win framing.
 **Every email (CASL/CAN-SPAM, G10):** footer = DeepLearnHQ Corp. · [business address — Wyoming, street line N10b] · working unsubscribe. No exceptions, including E4.
@@ -180,7 +180,7 @@ Privacy gains pixel/analytics/consent disclosure; refund page mirrors §10 verba
 |---|---|---|
 | `[business address]` | **Saad declined a street address (2026-08-28)** | every email footer — see the MailerLite blocker note below |
 | `{STUDENTS}` `{REVIEWS}` `{STARS}` | Saad (screenshots) | §1, §6, §7, hooks |
-| `[X hrs total]` (N9) | Saad | §11 |
+| ~~`[X hrs total]` (N9)~~ | **Resolved without Saad** | FAQ reworded to "8-week path, self-paced" — no hour count needed, so N9's total-hours figure is no longer a blocker |
 
 
 ---
