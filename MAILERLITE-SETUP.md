@@ -79,7 +79,7 @@ On **each** of E1, E2, E3, add a condition: *do not send if the subscriber is in
 
 ## Step 7 — Paste the emails
 
-From `EMAILS.md`. Replace `CHECKOUT_URL` with the real Stripe link in E1, E2 and E3.
+From `EMAILS.md`. The real Stripe link is already wired into E1, E2 and E3.
 E4 is a **separate** automation on the buyers group — do not put it in the code series.
 
 ## Step 8 — Test before any ad spend

@@ -118,8 +118,8 @@
     m.innerHTML =
       '<div class="dlg" role="dialog" aria-modal="true" aria-labelledby="dlgTitle">' +
       '<button class="dlg-x" type="button" aria-label="Close">&times;</button>' +
-      '<h2 id="dlgTitle">Save $50 — get the bootcamp for $49 USD</h2>' +
-      "<p>I'll email you a personal code that expires in 72 hours, plus two reminders before it does. That's the whole series — no surprise list.</p>" +
+      '<h2 id="dlgTitle">Take $50 off — the bootcamp for $49 USD</h2>' +
+      "<p>I'll email you a personal code worth $50 off. It's yours for <strong>72 hours</strong>, then it's gone and the price is $99. You'll get two reminders before it expires — that's the whole series, no surprise list.</p>" +
       '<form id="dlgForm" novalidate>' +
       '<label class="dlg-lbl" for="dlgEmail">Your email</label>' +
       '<input id="dlgEmail" name="email" type="email" inputmode="email" autocomplete="email" required placeholder="you@example.com" />' +

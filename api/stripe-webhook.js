@@ -19,6 +19,8 @@
 //   META_PIXEL_ID           optional — CAPI backstop
 //   META_CAPI_TOKEN         optional — CAPI backstop
 //   ALERT_WEBHOOK_URL       optional — purchase + failure notifications
+//   ALERT_WEBHOOK_KEY       required WITH Web3Forms — its access_key; without it
+//                           Web3Forms rejects the post and alerts silently no-op
 import crypto from "node:crypto";
 
 export const config = { api: { bodyParser: false } };
@@ -59,11 +61,16 @@ const sha256 = (s) => crypto.createHash("sha256").update(s).digest("hex");
 async function notify(subject, body) {
   const url = process.env.ALERT_WEBHOOK_URL;
   if (!url) return false;
+  // Web3Forms (the chosen sender, 0.10b) rejects any payload without access_key,
+  // and reads `message` as the email body. Generic webhooks ignore both extras.
+  const payload = { subject, body, message: body };
+  const key = process.env.ALERT_WEBHOOK_KEY;
+  if (key) payload.access_key = key;
   try {
     const r = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ subject, body }),
+      body: JSON.stringify(payload),
     });
     return r.ok;
   } catch (e) {

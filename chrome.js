@@ -318,33 +318,22 @@
       <div class="foot-top">
         <div class="foot-brand">
           <img src="assets/logo-white.png" alt="DeepLearnHQ" />
-          <p>Practical generative-AI education. Learn ChatGPT, Claude, Gemini &amp; more — and ship 4 real AI projects in the 8-Week Bootcamp.</p>
-          <div class="meta">info@deeplearnhq.ca</div>
+          <p>Master AI in 8 weeks — and finish with four things you actually built.</p>
+          <div class="meta"><a href="mailto:saadahmed@deeplearnhq.ca">saadahmed@deeplearnhq.ca</a></div>
         </div>
         <div class="foot-col">
           <h4>Learn</h4>
           <ul>
             <li><a href="/">The 8-Week Bootcamp</a></li>
-            <li><a href="/">The 8-Week Bootcamp</a></li>
             <li><a href="/blogs/">Blog</a></li>
             <li><a href="/tools/prompt-library">AI Prompt Library</a></li>
-            <li><a href="/tools/ai-picker">Which AI to use?</a></li>
-            <li><a href="/tools/state-of-ai-learning-2026">State of AI Learning 2026</a></li>
           </ul>
         </div>
         <div class="foot-col">
           <h4>Company</h4>
           <ul>
-            <li><a href="/blog-author-saad-ahmed.html">About the Instructor</a></li>
+            <li><a href="/blog-author-saad-ahmed.html">About Saad</a></li>
             <li><a href="/contact.html">Contact</a></li>
-          </ul>
-        </div>
-        <div class="foot-col">
-          <h4>Legal</h4>
-          <ul>
-            <li><a href="/privacy.html">Privacy Policy</a></li>
-            <li><a href="/terms.html">Terms</a></li>
-            <li><a href="/refund.html">Refund Policy</a></li>
           </ul>
         </div>
       </div>

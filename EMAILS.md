@@ -3,7 +3,7 @@ Tickets 8.3 / 8.4 · paste into MailerLite · setup steps in MAILERLITE-SETUP.md
 
 **Sender:** Saad Ahmed · `saadahmed@deeplearnhq.ca`
 **Merge fields used:** `{$discount_code}` · `{$code_expires_at}` · `{$code_expires_unix}`
-**Replace `CHECKOUT_URL`** with the real $99 Stripe link before the first send.
+**Checkout link is wired** — `plink_1U9q8HJPOpfKeQtNY8gx7Bhp`, live in E1/E2/E3 below.
 
 > ⚠️ `{$code_expires_unix}` is not decoration. The landing pages parse `exp` with
 > `parseInt`, so passing the ISO date instead would resolve to 1970 and show every
@@ -27,7 +27,7 @@ Tickets 8.3 / 8.4 · paste into MailerLite · setup steps in MAILERLITE-SETUP.md
 > It brings The Generative AI 8-Week Bootcamp from $99 USD down to **$49 USD**, and it expires on **{$code_expires_at}** — 72 hours from now.
 >
 > **[ Use my code — $49 USD ]**
-> → `CHECKOUT_URL?prefilled_promo_code={$discount_code}&code={$discount_code}&exp={$code_expires_unix}`
+> → `https://buy.stripe.com/8x23cw8NA7p76o56skejK0b?prefilled_promo_code={$discount_code}&code={$discount_code}&exp={$code_expires_unix}`
 >
 > You don't need to type the code anywhere. That link applies it for you.
 >
@@ -57,7 +57,7 @@ Tickets 8.3 / 8.4 · paste into MailerLite · setup steps in MAILERLITE-SETUP.md
 > Your code **{$discount_code}** is still live until **{$code_expires_at}**.
 >
 > **[ Use my code — $49 USD ]**
-> → `CHECKOUT_URL?prefilled_promo_code={$discount_code}&code={$discount_code}&exp={$code_expires_unix}`
+> → `https://buy.stripe.com/8x23cw8NA7p76o56skejK0b?prefilled_promo_code={$discount_code}&code={$discount_code}&exp={$code_expires_unix}`
 >
 > — Saad
 
@@ -77,7 +77,7 @@ Tickets 8.3 / 8.4 · paste into MailerLite · setup steps in MAILERLITE-SETUP.md
 > But if you were going to use the code, this is the last of it.
 >
 > **[ Use my code — $49 USD ]**
-> → `CHECKOUT_URL?prefilled_promo_code={$discount_code}&code={$discount_code}&exp={$code_expires_unix}`
+> → `https://buy.stripe.com/8x23cw8NA7p76o56skejK0b?prefilled_promo_code={$discount_code}&code={$discount_code}&exp={$code_expires_unix}`
 >
 > Either way — 30-day unconditional guarantee, any reason, one email. The risk is mine, not yours.
 >
@@ -114,19 +114,18 @@ Tickets 8.3 / 8.4 · paste into MailerLite · setup steps in MAILERLITE-SETUP.md
 
 ```
 DeepLearnHQ Corp.
-[POSTAL ADDRESS — required by MailerLite and by CAN-SPAM/CASL]
+30 N Gould St, Ste R, Sheridan, WY 82801
 You're receiving this because you requested a discount code at deeplearnhq.ca.
 {$unsubscribe}
 ```
 
-🔴 **The address is still outstanding.** MailerLite injects a company address into every
-footer and may refuse to send without one. A registered-agent address or PO box satisfies
-both MailerLite and the statute without publishing a home address.
+✅ **Address resolved 2026-08-29** — registered-agent address above satisfies MailerLite's
+account requirement and the CAN-SPAM/CASL physical-address rule without publishing a home address.
 
 ## §6 — Before the first send
 
-- [ ] `CHECKOUT_URL` replaced with the real Stripe link in E1, E2, E3
+- [x] `CHECKOUT_URL` replaced with the real Stripe link in E1, E2, E3
 - [ ] Merge-tag syntax confirmed against MailerLite's own field keys — send a test to yourself and check the code renders, **not** a literal `{$discount_code}`
-- [ ] Postal address present
+- [x] Postal address present
 - [ ] E4 excluded from the code-series automation; buyers suppressed from E1–E3
 - [ ] Test link clicked from a phone mail app: it should land on the sales page showing **$49** and a live countdown

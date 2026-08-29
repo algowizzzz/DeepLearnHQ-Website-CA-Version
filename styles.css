@@ -901,7 +901,10 @@ a:focus-visible, button:focus-visible, .btn:focus-visible, summary:focus-visible
 /* ---- Consent banner (ticket 7.1) ---- */
 #dlhq-consent{position:fixed;left:0;right:0;bottom:0;z-index:9999;display:flex;flex-wrap:wrap;
   align-items:center;justify-content:center;gap:14px 22px;padding:16px 20px calc(16px + env(safe-area-inset-bottom));
-  background:rgba(6,8,15,.97);backdrop-filter:blur(14px);border-top:1px solid rgba(255,255,255,.14)}
+  background:rgba(6,8,15,.97);backdrop-filter:blur(14px);border-top:1px solid rgba(255,255,255,.14);
+  /* Appended to <body> (light surface), so the inherited #0d0f15 ink was
+     invisible on this dark bar. Same defect as .dlg. */
+  color:var(--t-on-dark)}
 #dlhq-consent p{margin:0;font-size:.9rem;line-height:1.5;max-width:640px;opacity:.88}
 #dlhq-consent a{text-decoration:underline}
 #dlhq-consent .dlhq-consent-btns{display:flex;gap:10px;flex-shrink:0}
@@ -916,7 +919,11 @@ body.dlg-open{overflow:hidden}
 .dlg-wrap{position:fixed;inset:0;z-index:10000;display:grid;place-items:center;padding:20px;
   background:rgba(4,6,12,.78);backdrop-filter:blur(6px);overflow-y:auto}
 .dlg{position:relative;width:100%;max-width:460px;background:#0d1017;border:1px solid rgba(255,255,255,.14);
-  border-radius:20px;padding:34px 30px 28px}
+  border-radius:20px;padding:34px 30px 28px;
+  /* The modal is appended to <body>, which defaults to the LIGHT surface
+     (color:var(--t-ink) = #0d0f15). On this #0d1017 panel that rendered the
+     entire form invisible. Set the dark-surface text colour explicitly. */
+  color:var(--t-on-dark)}
 .dlg h2{font-family:"Space Grotesk",sans-serif;font-size:1.45rem;line-height:1.25;margin-bottom:12px}
 .dlg>p{font-size:.95rem;line-height:1.55;opacity:.8;margin-bottom:20px}
 .dlg-x{position:absolute;top:14px;right:16px;background:none;border:0;color:inherit;font-size:1.7rem;
@@ -924,7 +931,9 @@ body.dlg-open{overflow:hidden}
 .dlg-x:hover{opacity:1}
 .dlg-lbl{display:block;font-size:.82rem;letter-spacing:.04em;text-transform:uppercase;opacity:.6;margin-bottom:7px}
 .dlg input[type=email]{width:100%;padding:13px 14px;border-radius:11px;background:rgba(255,255,255,.05);
-  border:1px solid rgba(255,255,255,.16);color:inherit;font:inherit;font-size:1rem}
+  border:1px solid rgba(255,255,255,.16);color:var(--t-on-dark);font:inherit;font-size:1rem}
+.dlg input[type=email]::placeholder{color:var(--t-on-dark-3);opacity:1}
+.dlg-check input,.dlg input[type=checkbox]{accent-color:var(--violet)}
 .dlg input[type=email]:focus{outline:2px solid #2E7DF6;outline-offset:1px}
 /* Honeypot: off-screen rather than display:none — bots skip hidden inputs. */
 .dlg-hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}

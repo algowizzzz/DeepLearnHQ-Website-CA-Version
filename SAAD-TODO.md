@@ -11,42 +11,45 @@ Rule: this file is the one place to check. If it's not here, it's mine to do.
 
 - [x] ✅ 🔴 **N13 / 0.11a — Access artifact — RESOLVED 2026-08-28.** Manual fulfillment: Saad emails the buyer a **username + password**. 6-project content confirmed as will-be-in-place. **The access email does NOT name the platform** (D13b) — credentials + login link only. Platform question closed; I won't ask again.
 - [x] ✅ 🔴 **N4 — Mini-win asset — RESOLVED BY DECISION 2026-08-28 (supersedes G4).** There is **no separate lead magnet.** The signup offer IS the discount code ($99 → $49). E1 delivers the code. See consequence note in DECISIONS DELTA below.
-- [x] ✅ 🔴 **N10 — Business address — DECIDED: Wyoming** (matches the actual filing; reverses the Madison call). **Street line deferred by Saad's instruction — parked, not forgotten.** Email footers ship with the Wyoming entity line; the street/PO-box detail is a PRE-LAUNCH gate item (CAN-SPAM/CASL want a real mailing address), re-raised once at the Days 13–15 email-wiring step and not before.
-- [x] ✅ 🔴 **N11 — Support email — DECIDED by Claude per Saad: `saadahmed@deeplearnhq.ca`.** Already in use (8 places), sits on the domain whose DNS we control (so it can pass SPF/DKIM/DMARC for MailerLite), and founder-from-address fits manual fulfillment. `info@deeplearnhq.tech` retired from all new copy. *One-time check when convenient: send yourself a test to confirm the mailbox actually receives.*
+- [x] ✅ 🔴 **N10 — Business address — FULLY RESOLVED 2026-08-29.** `DeepLearnHQ Corp., 30 N Gould St, Ste R, Sheridan, WY 82801` — the Wyoming registered-agent address. Supersedes both the earlier Wyoming-vs-Madison conflict (D15 said Madison; Saad ruled **Wyoming** on 2026-08-29) and N10b's declined-street-address risk. Live in the `EMAILS.md` §5 footer block. Satisfies MailerLite's account requirement and CAN-SPAM/CASL.
+- [x] ✅ 🔴 **N11 — Support email — DECIDED by Claude per Saad: `saadahmed@deeplearnhq.ca`.** Already in use (8 places), sits on the domain whose DNS we control (so it can pass SPF/DKIM/DMARC for MailerLite), and founder-from-address fits manual fulfillment. `info@deeplearnhq.tech` retired from all new copy. **✅ Mailbox receive-test CONFIRMED by Saad 2026-08-29.**
 - [x] ✅ 🔴 **N1 — Discount confirmed:** code takes $99 → $49. Mechanic is ~50%; **on-page wording stays "save $50"** per D3/1.14.
 
 - [ ] 🔴 `[S]` **N2 / 1.5 — Product name — STILL THE ONE OPEN COPY BLOCKER.** ⚠️ **"Generative AI Bootcamp" is not available** — see NAME COLLISION below. Need a name that isn't "bootcamp" and isn't "masterclass".
 - [ ] `[S]` **N5 — Confirm tools per project** (the 6-project arc, §5 of COPY-v2). Four of six lines currently read `[tools]`. See PROJECTS section below.
-- [ ] 🔴 `[S]` **0.12 / 0.10a / 0.4 — Dashboard actions (Stripe + Meta).** Not automatable from here — see MCP note below. (a) restricted `STRIPE_SECRET_KEY` → Vercel env, (b) Meta CAPI token → Vercel env, (c) Stripe payment-notification email ON, (d) Meta domain verification check.
+- [ ] 🔴 `[S]` **0.12 / 0.10a / 0.4 — Dashboard actions still open for Saad:** (a) restricted `STRIPE_SECRET_KEY` → Vercel env, (b) Meta CAPI token → Vercel env, (c) Stripe payment-notification email ON, (d) Meta domain verification check, (e) archive promo code `WIRETEST-DELETEME`, (f) deactivate the two old payment links — **still un-answered as of 2026-08-29.**
+  > **Alert sender (ticket 0.10b) — decided 2026-08-29: Web3Forms.** The contact form already uses it (`leadform.js:184`), so no new account. ⚠️ `notify()` in `api/stripe-webhook.js:59` posts only `{subject, body}`; Web3Forms requires an `access_key` field, so as written the alert silently no-ops. Claude patches that; Saad sets `ALERT_WEBHOOK_URL=https://api.web3forms.com/submit`.
 - [ ] 🔴 `[C+S]` **0.5 — DNS: SPF/DKIM/DMARC.** I hand you exact records; you paste at the registrar. Gated on N11 (which sender domain).
 
 ### MCP reality check (2026-08-28)
 Saad expected Stripe/Meta to be automatable from here. Actual state:
 - **Meta ads MCP** — tools exist but the server is **unauthorized**, and this session can't run the OAuth flow. Authorize via claude.ai connector settings, then Meta reads/writes become possible.
-- **Stripe MCP** — **not configured at all.** No Stripe tooling available in this session.
-- Until both change, every Stripe and Meta dashboard action stays `[S]`.
+- **Stripe MCP** — ✅ **connected as of 2026-08-29.** Live-mode read + write available; 0.6 was completed through it. Note: the MCP runs API version `2026-06-24.preview`, where `/v1/promotion_codes` requires a nested `promotion` object. `api/subscribe.js` posts the legacy flat `coupon=` param with no `Stripe-Version` header, so it resolves to the account's default (stable) version where that still works — confirm during the live signup test.
+- **Meta ads MCP** — ✅ connected as of 2026-08-29.
+- Remaining `[S]` Stripe/Meta items are dashboard-only ones the API does not cover (payment-notification email toggle, domain verification).
 
 ## Day 3–5 — Offer facts for copy
 
-- [ ] `[S]` **N3 — Bonuses:** 2–3 real ones. Dollar values only if honestly substantiable (no invented value stacks).
+- [~] ⛔ **N3 — Bonuses — OUT OF SCOPE (Saad, 2026-08-29).** Shipping without a bonus stack. The guarantee + Saturday Q&A carry the offer.
 - [ ] `[S]` **N5 — Curriculum:** confirm the 6 projects match actual course content; name the tools used per project.
-- [ ] `[S]` **N6 — Tools claim:** 7 named so far. Name 3+ more or the page keeps saying "7 tools."
-- [ ] `[S]` **N7 — Assets:** 2–3 beginner Project-1 output screenshots, face photos.
+- [x] ✅ **N6 — CLOSED.** The "7 tools" placeholder claim was retired in COPY-v3; the page names the tools the curriculum teaches.
+- [~] ⛔ **N7 — OUT OF SCOPE (Saad, 2026-08-29)** for the Project-1 output screenshots. Face photos were already in the repo (`assets/saad_img.png`, `assets/courses/saad-ahmed.jpg`) — that half is closed.
 - [ ] 🟡 `[S]` **N14 / 9.7 — Approve media plan:** US + English Canada, **Quebec excluded at launch** (removes Law 25 + French-commerce obligations), age 22–55 broad, 1 campaign / 2 ad sets / 3 creatives, kill/scale rules.
 
 ### ⏰ HARD DUE DAY 5 — these are film-day inputs, not paperwork
-- [ ] 🔴 `[S]` **N8 — Proof screenshots.** Udemy profile student count + review page. Docs conflict (39,000/13,017 vs 38,000/9,276); copy currently runs the conservative set as tokens. **The screenshots set the numbers — copy never sets the evidence.**
-- [ ] 🔴 `[S]` **N9 — Time numbers.** Total course hours · real *timed* minutes-to-first-result (a hook films this number) · confirm the $0/mo tools path.
+- [x] ✅ 🔴 **N8 — RESOLVED 2026-08-29.** Screenshots supplied. Verified: **40,404 total learners · 13,259 reviews** (instructor-wide) and **4.5★ / 2,524 ratings** on the flagship course. Page now runs **40,000+ / 13,000+ / 4.5★** as `data-proof` tokens — rounded down so a daily-changing number never makes the page wrong.
+  > ⚠️ Framing matters: 13,259 is **instructor-wide**, not one course. Copy says "40,000+ learners taught, 13,000+ reviews, 4.5★ on my flagship AI course" so no single course is credited with all reviews.
+- [~] 🟡 **N9 — PARTIAL.** The Udemy card gives **35.5 total hours · 287 lectures** for the flagship course. Still open, both low-priority now that filming is off the schedule: a timed minutes-to-first-result, and confirmation of the $0/mo tools path (the FAQ currently asserts it).
 
 ## Days 6–7 — Film `[S]`
 - [ ] 🔴 VSL + Lesson 1 shoot. Scripts from me by Day 5. No placeholder numbers on film day — gated by N8/N9 above.
 
 ## ⏰ Day 12 gate — Stripe must be real
-- [ ] 🔴 `[S]` **0.6 — Create the $99 USD product + payment link.** Success URL → `/thank-you-purchase?session_id={CHECKOUT_SESSION_ID}`. Plus base promo config: **$50 off → $49**.
+- [x] ✅ 🔴 **0.6 — DONE 2026-08-29 (Claude, via Stripe MCP).** Product `prod_VAAS3lvAv7ipOs` · price `price_1U9q86JPOpfKeQtNqft1dyHm` ($99.00 USD, tax-inclusive per D7) · link `plink_1U9q8HJPOpfKeQtNY8gx7Bhp` → `https://buy.stripe.com/8x23cw8NA7p76o56skejK0b` (promo codes enabled, redirect to `/thank-you-purchase?session_id={CHECKOUT_SESSION_ID}`) · coupon `wqf9JZry` **$50.00 off, once** → $49.00 exactly.
   *Every Day 13–15 test runs against the real link or proves nothing. Each day late slips the wire/QA phase 1:1 (risk R6).*
 
 ## Days 13–15 — Wire (mostly me, you paste)
-- [ ] 🔴 `[S]` **MailerLite:** paste E1–E4 · automation **re-entry ON** · buyers suppressed from E1–E3.
+- [ ] 🔴 **MailerLite — Claude is building this via MCP** (fields, groups, automations, E1–E4). Saad's part is now only whatever the API can't set; Claude will report exactly what's left.
 - [ ] `[C+S]` Transactional sender (Web3Forms or Resend) live + confirm you receive the test alert email.
 
 ## Day 16 morning — Deploy, in this order
@@ -327,7 +330,8 @@ launch volume; revisit if bots mint codes.
 Writing the emails does **not** finish the email system. The copy and the endpoints are
 mine; the automation is dashboard work only Saad can do. Ordered:
 
-1. **Create 4 custom fields — exact spelling.** `discount_code` · `code_expires_at` · `marketing_opt_in` · `source`
+1. **Create 5 custom fields — exact spelling.** `discount_code` · `code_expires_at` · `code_expires_unix` · `marketing_opt_in` · `source`
+   > Corrected 2026-08-29: this line said 4 and omitted `code_expires_unix`. `MAILERLITE-SETUP.md` step 1 is authoritative — five fields.
    > ⚠️ **Silent failure:** MailerLite **drops fields that don't exist** and still returns success. The API call looks fine, my code sees 200, and **E1 sends with a blank discount code.** Create these before the first test.
 2. **Create 2 groups**, then give me the ids for `MAILERLITE_GROUP_ID` (code series, its join fires E1) and `ML_GROUP_BUYERS` (99 Course Buyers).
 3. **Build the automation:** trigger = joins the code-series group → E1 (immediate) → wait 24h → E2 → wait to +66h → E3.
@@ -364,3 +368,74 @@ feature exists for, and it would only have appeared once real emails started sen
 
 Fixed: the endpoint now also stores `code_expires_unix`. Both fields must exist in
 MailerLite — see MAILERLITE-SETUP.md step 1.
+
+
+---
+
+## BUILD LOG — Day 3 (2026-08-29): Stripe live, three rendering bugs, copy repositioned
+
+### Stripe — ticket 0.6 CLOSED
+Product `prod_VAAS3lvAv7ipOs` · price `price_1U9q86JPOpfKeQtNqft1dyHm` ($99.00 USD,
+tax-inclusive) · link `plink_1U9q8HJPOpfKeQtNY8gx7Bhp` → `https://buy.stripe.com/8x23cw8NA7p76o56skejK0b`
+· coupon `wqf9JZry` **$50.00 off, once** → $49.00 exactly.
+
+**Coupon shape decided:** Saad initially wanted to keep the old 50%-off coupon. Costed it —
+50% yields $49.50, which would have made **13 live surfaces wrong** (`index.html` ×6,
+`track.js` `PRICE_CODE` + banner + modal headline, `thank-you-signup.html` ×4 including the
+Meta `Lead` value, `refund.html`, `EMAILS.md` ×5) and put the banned "50% off" phrasing on the
+Stripe checkout line via the coupon's own name. Saad chose **$50 flat**. Zero copy edits needed.
+Old 50% coupon `ufqcf11P` deleted (0 redemptions).
+
+> ⚠️ **Left for Saad:** promotion code `WIRETEST-DELETEME` was created to smoke-test the coupon
+> and the Stripe MCP exposes create-but-not-update for promotion codes, so it could not be
+> deactivated from here. Archive it in the dashboard. Single-use, 0 redemptions.
+
+### Three rendering bugs found in Saad's mobile screenshots
+
+1. 🔴 **The discount modal rendered completely blank.** `.dlg` sets `background:#0d1017` but
+   never set a text colour, so it inherited `body{color:var(--t-ink)}` = `#0d0f15` — the light
+   surface's ink. Near-black text on a near-black panel: contrast ≈ **1.003:1**. The headline,
+   the body copy, the field label, the checkbox label and the typed email were all invisible.
+   **This is the entire lead-capture mechanic**, so every signup from every ad would have hit an
+   invisible form. Fixed with an explicit `color:var(--t-on-dark)` plus placeholder and
+   accent-colour rules.
+2. 🔴 **The consent banner had the identical defect.** `#dlhq-consent` is appended to `<body>`
+   with `background:rgba(6,8,15,.97)` and no colour. Its buttons carry their own styles so they
+   showed, but the explanatory text did not. That banner gates GA4 **and** the Meta pixel.
+3. **Footer:** "The 8-Week Bootcamp" was listed twice, the three legal links appeared twice
+   (own column + bottom bar), and the contact address read `info@deeplearnhq.ca` — contradicting
+   N11's decision of `saadahmed@deeplearnhq.ca`. Cut to 3 columns, deduped, address corrected.
+
+*Root cause common to 1 and 2: the design system's default surface is light (`--paper`), so
+anything appended to `<body>` with a dark background must set its text colour explicitly.
+Worth checking any future body-level overlay for the same trap.*
+
+*Noted, not fixed: `chrome.js` still injects a legacy "Start a Project → contact.html" sticky
+CTA on every page. It is inert (`.sticky-cta` needs a `.show` class nothing adds) but it is
+agency chrome on a course site.*
+
+### Copy repositioned (Saad's direction, 2026-08-29)
+> *"Traffic from ads won't know about Udemy. Focus on my credibility, background, teaching
+> experience, professional experience, and what students get. Don't talk about product — think
+> like students."*
+
+- **Hero** — was "Ship 4 real AI projects…" over a Udemy-review credential. Now "Master AI in
+  8 weeks — and finish with four things you actually built," with credibility carried by the
+  decade at Deloitte/PwC/BMO/Microsoft plus 40,000+ learners taught.
+- **§7 founder** — rewritten around career depth and teaching depth. Dropped the
+  "bootcamps charge $5,000+, certificates $2,000+" anchor: unsubstantiated third-party price
+  claims, same FTC surface as the banned $4,999 line.
+- **§8** — was "One instructor, whose face is on this page" + a Udemy-re-upload paragraph, both
+  explicitly rejected. Now "What you'll be able to do in eight weeks," with the outcome split
+  three ways: portfolio for a student, hours back for a professional, shipping without hiring
+  for a founder.
+- **§6 proof** — "Reviews from my Udemy Generative AI course" removed; Udemy is now
+  substantiation, not the comparison anchor.
+- **FAQ** — "How is this different from your Udemy courses?" replaced with "I'm a student, or
+  just starting out — is this too advanced?"
+- **Pricing** — the two-door layout is gone. **One visible price, $99.** The $50 code is no
+  longer displayed as a competing door; it is revealed inside the modal where the 72-hour
+  expiry gives it urgency. The sticky bar and final CTA are single-action too.
+  > ⚠️ **Tradeoff to watch:** the page no longer advertises "$50 off" anywhere, which is the
+  > incentive the Leads campaign optimises for. If signup rate is weak in week 1, putting the
+  > amount back into the trigger link — not into a second price door — is the first thing to try.
