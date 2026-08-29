@@ -344,6 +344,23 @@ footer. Saad declined to supply one. MailerLite may refuse to send at all. A **r
 address or PO box** satisfies MailerLite and CAN-SPAM/CASL without publishing a home address.
 This is the "raise once at email wiring" moment from the earlier decision — raised.
 
-### Still on Claude for this section
-- E1–E4 full send-ready bodies (currently one-line specs, not pasteable)
-- A step-by-step MailerLite configuration doc so the above is checklist-driven
+### ~~Still on Claude for this section~~ — DELIVERED 2026-08-29
+- ✅ `EMAILS.md` — E1–E4 send-ready bodies
+- ✅ `MAILERLITE-SETUP.md` — 9 steps, each noting what breaks if skipped
+- ✅ `AD-COPY.md` — 3 ads × primary text/headline/description + variants, compliance-checked
+
+
+---
+
+## BUG FOUND WHILE WRITING THE EMAILS (2026-08-29)
+
+The landing pages parse the `exp` link parameter with `parseInt`. The signup endpoint
+only stored `code_expires_at` as an **ISO string**, so an email link built from it would
+have produced `?exp=2026-09-01T…`, which `parseInt` reads as **2026 seconds after 1970**.
+
+Every code-holder clicking through from email would have been shown **"your code has
+expired"** — a total, silent failure of the exact cross-device mechanic that whole
+feature exists for, and it would only have appeared once real emails started sending.
+
+Fixed: the endpoint now also stores `code_expires_unix`. Both fields must exist in
+MailerLite — see MAILERLITE-SETUP.md step 1.

@@ -182,7 +182,13 @@ export default async function handler(req, res) {
   try {
     const id = await upsertSubscriber(email, {
       discount_code: code,
+      // Human-readable, for display in the email body.
       code_expires_at: new Date(expiresAt * 1000).toISOString(),
+      // Unix seconds, for the ?exp= link parameter. The landing pages parse
+      // exp with parseInt, so feeding them the ISO string would yield 2026 —
+      // i.e. 1970 — and every code-holder arriving from email would be shown
+      // the "your code expired" state. Both formats are stored deliberately.
+      code_expires_unix: String(expiresAt),
       marketing_opt_in: marketingOptIn ? "yes" : "no",
       source: (data.source || "site").toString().slice(0, 60),
     });
