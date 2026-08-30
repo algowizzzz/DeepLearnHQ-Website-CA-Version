@@ -502,3 +502,25 @@ signup_source (reserved).
 **Remaining before first live test:** sender identity check (does
 saadahmed@deeplearnhq.ca show verified in MailerLite → Account settings → Senders?)
 · push to main so Vercel deploys the env vars + signup_source/webhook changes.
+
+
+## TEST MATRIX — first live run, 2026-08-29 evening (Claude, end-to-end via browser)
+
+| Test | Result |
+|---|---|
+| Fresh signup on live site | ✅ after one fix — first attempt 502'd; root cause: subscribe.js sent the legacy flat `coupon=` param and the account's default Stripe API version now requires the nested `promotion` object. Fixed by pinning `Stripe-Version: 2024-06-20` (commit d430020). Second attempt: code SAVE50-Z3AT34 minted, thank-you page with live 72h countdown |
+| Honest failure path | ✅ proven by the bug itself — modal showed "Nothing was saved — please try again," no phantom subscriber, no fake success |
+| Stripe promo code correctness | ✅ single-use, attached to wqf9JZry, expires_at matches the exp link param to the second |
+| MailerLite record | ✅ all 5 fields populated (code, ISO expiry, unix expiry, opt-in=no, signup_source=sales_page) |
+| Cross-device email-link simulation | ✅ /?code=…&exp=<unix> renders "$49 USD … Expires in 71h 59m" bar — the 1970-bug mechanic confirmed fixed in production |
+| localStorage persistence | ✅ code bar survives navigation to plain / |
+| Duplicate signup (T5) | ✅ fresh code SAVE50-CFD8D2 issued to the same email |
+| Discount modal + consent banner rendering | ✅ both fully legible in production (the invisible-text bugs are dead) |
+
+**Still needs a human inbox:** E1 arrival ×2 (from Saad Ahmed <saadahmed@deeplearnhq.ca>,
+code renders, not spam), the phone-mail-app click, buy-then-E2-suppressed, and the live
+purchase + refund. Gmail MCP lacked mail scope so Claude could not verify delivery.
+
+**⚠️ New finding during testing:** the live site shows a SECOND cookie banner ("We use
+cookies to improve your experience…" with Decline/Accept) that is not the dlhq-consent
+banner from chrome.js. Two consent systems are racing; needs a look before ads.
