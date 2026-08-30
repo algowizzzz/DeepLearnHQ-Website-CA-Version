@@ -84,6 +84,11 @@ async function createPromotionCode(expiresAt) {
       headers: {
         Authorization: "Bearer " + KEY,
         "Content-Type": "application/x-www-form-urlencoded",
+        // Pin a stable API version: the account default is a 2026 version on
+        // which POST /v1/promotion_codes requires a nested `promotion` object
+        // and rejects the flat coupon= param this endpoint sends. Confirmed
+        // live 2026-08-29 — the first test signup 502'd on exactly this.
+        "Stripe-Version": "2024-06-20",
       },
       body: form({
         coupon: COUPON,
