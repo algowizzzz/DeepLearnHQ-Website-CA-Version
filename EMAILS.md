@@ -31,22 +31,23 @@ Tickets 8.3 / 8.4 · paste into MailerLite · setup steps in MAILERLITE-SETUP.md
 > No typing needed — that link applies the code for you.
 >
 > **So what exactly are you getting?**
-> The Generative AI 8-Week Bootcamp, in a nutshell: you master AI by **building four real things** — not by watching videos. Built for students, professionals and founders. No code required. You finish with work you actually use.
+> The Generative AI 8-Week Bootcamp, in a nutshell: master generative AI — **ChatGPT, Claude, Gemini, Perplexity, MidJourney, DALL-E** and more — by using it on real work: prompting, content, data analysis, AI agents. Built for students, professionals and founders. No code required.
 >
 > **The 8 weeks**
-> Wk 1–2 · Your AI operating system — setup, prompting frameworks, custom GPTs
-> Wk 3 · **Project 1:** automate a real workflow from your job or business
-> Wk 4 · **Project 2:** ship a working no-code AI tool or app
-> Wk 5 · The AI content & marketing engine
-> Wk 6 · **Project 3:** build an AI agent that runs a multi-step job end-to-end
-> Wk 7 · **Project 4:** package something sellable, with a go-to-market plan
-> Wk 8 · Capstone & launch — portfolio + plan
-> *Self-paced with lifetime access — the 8 weeks are a suggested rhythm, not a fixed cohort.*
+> Wk 1 · Generative AI foundations — how it works, where it fits
+> Wk 2 · Prompt engineering that works — text & image prompts
+> Wk 3 · ChatGPT at full depth — advanced analytics, code, custom GPTs
+> Wk 4 · Claude, Gemini & Perplexity — the right model for each job
+> Wk 5 · AI visuals & content — MidJourney, DALL-E, Adobe Firefly
+> Wk 6 · Data analysis & visualization — datasets to insights
+> Wk 7 · Build your own AI agents for business & personal use
+> Wk 8 · Career & life applications + your capstone
+> *14.5 hours of on-demand video · 179 lectures · self-paced, lifetime access to the material. Four hands-on projects thread through the weeks.*
 >
 > **Everything included**
-> ✓ The full 8-week curriculum — ChatGPT · Claude · Gemini · custom GPTs · no-code tools
-> ✓ 4 real projects, built around *your* goals
-> ✓ **Live Q&A with me every Saturday, 10:00–12:00 EST — included for life**
+> ✓ The full curriculum — 14.5 hours of video, 179 lectures
+> ✓ 4 hands-on projects, built around *your* goals
+> ✓ **Weekly live Q&A sessions with me (Saturdays 10:00–12:00 EST)**
 > ✓ Certificate of completion
 > ✓ Lifetime access + free updates
 >

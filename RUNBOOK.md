@@ -82,7 +82,7 @@ This is the control that stops a buyer being silently unfulfilled while spend co
 
 ## 6. Weekly Q&A — the other recurring promise
 
-Every Saturday, 10:00–12:00 EST, advertised on the sales page as included for life.
+Weekly, Saturdays 10:00–12:00 EST, advertised on the sales page as a weekly session (no lifetime commitment in copy — Saad, 2026-08-29).
 
 - Send the invite with the credentials, and again as a calendar series.
 - If a Saturday must be cancelled, email buyers **before** it, not after, and name the replacement date. An advertised recurring benefit that silently does not happen is the fastest route to refund requests.

@@ -49,7 +49,7 @@ Tickets 9.1–9.3 · 2 ad sets × 3 creatives · structure in MEDIA-PLAN.md · r
 >
 > That's the whole difference. Most online courses hand you videos and vanish — which is why most of them go unfinished. Stuck on your project at 11pm Thursday? Bring it Saturday, 10:00–12:00 EST, and I'll work through it with you.
 >
-> Four real AI projects, eight weeks, no code needed. $99 USD, lifetime access, and the Q&A runs for as long as you own it.
+> Four hands-on AI projects, eight weeks, no code needed. $99 USD, lifetime access to the material, and a weekly live Q&A.
 
 **Headline:** A live instructor, every single week
 **Description:** 4 AI projects · $99 USD · 30-day guarantee

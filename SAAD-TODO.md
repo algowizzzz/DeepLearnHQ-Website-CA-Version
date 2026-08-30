@@ -539,3 +539,20 @@ banner from chrome.js. Two consent systems are racing; needs a look before ads.
   Deloitte/PwC/BMO/Microsoft + 40k-learners credibility block, and the guarantee.
   Paused → updated via API → reactivated. EMAILS.md synced.
 - Third live signup fired (SAVE50-F7LMNE) to verify instant re-entry + new content.
+
+
+## Day 3 addendum 2 — copy realigned to the ACTUAL course (D22)
+
+Saad supplied the real Udemy course page ("Master Generative AI & Generative AI tools",
+4.5★ · 9,315 ratings · 19,972 students · 14.5h · 179 lectures · 23 sections). Rulings:
+- **Curriculum on site + E1 rebuilt from the real outline**: foundations → prompt
+  engineering (text+image) → ChatGPT depth (analytics/code/custom GPTs) → Claude/
+  Gemini/Perplexity → AI visuals (MidJourney/DALL-E/Firefly/Leonardo) → data analysis
+  & viz → AI agents → career applications + capstone. Course stats (14.5h/179 lectures)
+  now cited on page and in E1.
+- **4 projects demoted to one component** ("the applied layer"), not the whole story.
+- **D22 — Q&A: weekly sessions, NO lifetime commitment.** Every "for as long as you own
+  it"/"included for life" claim removed from index.html, EMAILS.md, AD-COPY.md,
+  RUNBOOK.md. Schedule (Saturdays 10–12 EST) unchanged. E4's "runs every week" kept.
+- Tools row updated: ChatGPT · Claude · Gemini · Perplexity · MidJourney · DALL-E ·
+  Adobe Firefly · AI Agents.
