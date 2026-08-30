@@ -477,3 +477,28 @@ MAILERLITE_API_KEY + STRIPE_WEBHOOK_SECRET pre-existing. Vars take effect on nex
 since Feb 22, 2026: no two-factor authentication.** 2FA setup is Saad's; phone app is
 the trusted device (laptop browser tripped the device check). Ad-set creation retried
 after the env work: **still blocked** (subcode 2859015).
+
+
+## BUILD LOG — Day 3, part 3: MailerLite LIVE; suppression redesigned (D21)
+
+**D21 — buyer suppression mechanism changed** from MAILERLITE-SETUP step 6's
+per-email send conditions to a cleaner data-layer design:
+- The Code Series trigger now has **"exit subscribers when they no longer belong to
+  any trigger group" ON**, and
+- `api/stripe-webhook.js` now **removes the buyer from the Code Series group**
+  (best-effort, never fails the webhook) right after the buyers-group add.
+A purchase therefore cancels any queued E2/E3 instantly — same guarantee as
+send-time conditions, no branch logic to maintain. The condition-step approach was
+abandoned: MailerLite's group-membership condition has no "not in group" operator
+and puts existing steps under Yes, which would have inverted the logic.
+
+**State: BOTH AUTOMATIONS ACTIVE.** Re-entry ON (Code Series). Old 3 automations
+deleted by Saad (they were consuming the Free-plan active-automation quota).
+Stripe payment-notification email ON (0.10a done). 3 new buyer fields created
+(purchase_amount, purchase_currency, stripe_session) — the webhook's field writes
+were previously being silently dropped; its `source` field also renamed
+signup_source (reserved).
+
+**Remaining before first live test:** sender identity check (does
+saadahmed@deeplearnhq.ca show verified in MailerLite → Account settings → Senders?)
+· push to main so Vercel deploys the env vars + signup_source/webhook changes.

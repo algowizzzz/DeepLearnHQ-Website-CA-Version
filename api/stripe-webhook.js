@@ -79,6 +79,22 @@ async function notify(subject, body) {
 }
 
 // Idempotent upsert — safe to repeat when Stripe retries.
+// Suppression (MAILERLITE-SETUP step 6): the Code Series trigger has
+// "exit when subscriber leaves the trigger group" enabled, so removing the
+// buyer from that group cancels any queued E2/E3 instantly. Best-effort —
+// a failure here must not fail the webhook (the buyer add is the critical op).
+async function removeFromCodeSeries(subscriberId) {
+  const codeGroup = process.env.MAILERLITE_GROUP_ID;
+  const KEY = process.env.MAILERLITE_API_KEY;
+  if (!codeGroup || !subscriberId || !KEY) return;
+  try {
+    await fetch(
+      `https://connect.mailerlite.com/api/subscribers/${subscriberId}/groups/${codeGroup}`,
+      { method: "DELETE", headers: { Authorization: "Bearer " + KEY } }
+    );
+  } catch (e) {}
+}
+
 async function addBuyerToGroup(email, groupId, fields) {
   const KEY = process.env.MAILERLITE_API_KEY;
   if (!KEY) throw new Error("mailerlite_not_configured");
@@ -92,7 +108,8 @@ async function addBuyerToGroup(email, groupId, fields) {
     body: JSON.stringify({ email, groups: [groupId], fields }),
   });
   if (!r.ok) throw new Error("mailerlite_" + r.status);
-  return true;
+  const j = await r.json().catch(() => null);
+  return j && j.data && j.data.id;
 }
 
 // Server-side Purchase, deduplicated against the browser pixel via event_id.
@@ -177,9 +194,10 @@ export default async function handler(req, res) {
   // 1. Buyer group — MUST succeed. Failure => 5xx => Stripe retries.
   //    A miss here means a paying customer keeps getting "your code dies
   //    tonight" emails, so it is worth failing loudly for.
+  let buyerId = null;
   try {
-    await addBuyerToGroup(email, process.env.ML_GROUP_BUYERS, {
-      source: "bootcamp_99_purchase",
+    buyerId = await addBuyerToGroup(email, process.env.ML_GROUP_BUYERS, {
+      signup_source: "bootcamp_99_purchase",
       purchase_amount: value.toString(),
       purchase_currency: currency,
       stripe_session: s.id,
@@ -193,6 +211,11 @@ export default async function handler(req, res) {
     );
     return res.status(500).json({ ok: false, error: "mailerlite_failed" });
   }
+
+  // 1b. Pull the buyer out of the Code Series group. With the trigger's
+  //     "exit when no longer in trigger group" setting on, this cancels any
+  //     queued E2/E3 the moment they pay. Best-effort by design.
+  await removeFromCodeSeries(buyerId);
 
   // 2 + 3. CAPI and notification are best-effort: alert on failure, never
   //        fail the webhook, because a retry would re-run step 1 for nothing.
