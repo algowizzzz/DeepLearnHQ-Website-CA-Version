@@ -439,3 +439,41 @@ agency chrome on a course site.*
   > ⚠️ **Tradeoff to watch:** the page no longer advertises "$50 off" anywhere, which is the
   > incentive the Leads campaign optimises for. If signup rate is weak in week 1, putting the
   > amount back into the trigger link — not into a second price door — is the first thing to try.
+
+
+---
+
+## BUILD LOG — Day 3, part 2 (2026-08-29 evening): env vars + MailerLite built
+
+**Vercel env — ALL 10 SET.** Claude entered the non-secret IDs via browser
+(STRIPE_COUPON_ID, STRIPE_PAYMENT_LINK_99, ALERT_WEBHOOK_URL, ML_GROUP_BUYERS, and
+updated the stale MAILERLITE_GROUP_ID); Saad pasted the three secrets
+(ALERT_WEBHOOK_KEY, STRIPE_SECRET_KEY restricted key, META_CAPI_TOKEN).
+MAILERLITE_API_KEY + STRIPE_WEBHOOK_SECRET pre-existing. Vars take effect on next deploy.
+
+**MailerLite — BUILT via MCP (tickets 8.3/8.4/8.5, most of it no longer Saad's):**
+- 5 custom fields: discount_code, code_expires_at, code_expires_unix, marketing_opt_in,
+  **signup_source** — ⚠️ MailerLite RESERVES the name "source"; field renamed and
+  `api/subscribe.js:194` updated to send `signup_source` (uncommitted).
+- Groups: **Code Series** `197197570022311311` (= MAILERLITE_GROUP_ID) ·
+  **99 Course Buyers** `197197572702471894` (= ML_GROUP_BUYERS).
+- Automation `197197616331621618` "Code Series — E1/E2/E3": join-group trigger →
+  E1 → 24h → E2 → 42h → E3. Automation `197197626813187525` "Buyers — E4 onboarding".
+- **E1–E4 HTML bodies uploaded via API** from EMAILS.md — no dashboard pasting needed.
+  E4 footer reads "because you purchased", not the discount-code line.
+
+**⚠️ Still dashboard-only, Saad, before activation (the API cannot set these):**
+1. Automation settings → **re-entry ON** (both automations; critical for Code Series —
+   without it repeat signups silently get no email).
+2. E1/E2/E3 each → send condition: **not in group "99 Course Buyers"** (send-time, not
+   a segment — the race in MAILERLITE-SETUP.md step 6).
+3. Confirm sender identity saadahmed@deeplearnhq.ca shows verified.
+4. **Activate both automations** (created inactive by design).
+5. The 3 old automations (Signup - 50% Off Bootcamp Code / Purchase - Bootcamp Welcome /
+   Enroll - Free Course Welcome) are still enabled on the old CA groups — disable or
+   delete to avoid confusion; nothing new routes to them.
+
+**Meta:** root cause of the block found in Account Quality — **FB account restricted
+since Feb 22, 2026: no two-factor authentication.** 2FA setup is Saad's; phone app is
+the trusted device (laptop browser tripped the device check). Ad-set creation retried
+after the env work: **still blocked** (subcode 2859015).

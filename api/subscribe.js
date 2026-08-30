@@ -190,7 +190,8 @@ export default async function handler(req, res) {
       // the "your code expired" state. Both formats are stored deliberately.
       code_expires_unix: String(expiresAt),
       marketing_opt_in: marketingOptIn ? "yes" : "no",
-      source: (data.source || "site").toString().slice(0, 60),
+      // MailerLite reserves the field name "source", so ours is signup_source.
+      signup_source: (data.source || "site").toString().slice(0, 60),
     });
     if (!id) throw new Error("mailerlite_no_id");
     await rejoinGroup(id, process.env.MAILERLITE_GROUP_ID);
