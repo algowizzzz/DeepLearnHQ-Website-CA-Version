@@ -556,3 +556,15 @@ Saad supplied the real Udemy course page ("Master Generative AI & Generative AI 
   RUNBOOK.md. Schedule (Saturdays 10–12 EST) unchanged. E4's "runs every week" kept.
 - Tools row updated: ChatGPT · Claude · Gemini · Perplexity · MidJourney · DALL-E ·
   Adobe Firefly · AI Agents.
+
+## Day 4 (2026-08-30) — adversarial conversion pass, 18 loops, live
+
+Two-agent loop (skeptical customer vs marketer) over every word, benchmarked
+against LearnWorlds/Leadpages/Outskill conversion patterns. 18 fixes shipped, all
+verified live. Highlights: hero proof strip (stars in first viewport), Enroll-now
+CTAs, pricing-door trust stack (Stripe badges + personal-onboarding expectation +
+guarantee), this-exact-course proof (4.5★/9,315/19,972) + 3 real dated reviews,
+outcomes checklist, 3 new FAQs incl. the Udemy objection answered head-on, meta/OG
+ad congruence, N18 prompt-library inclusion removed, conditional-sounding
+guarantee line fixed, duplicate legacy cookie banner removed from chrome.js.
+Banned-claims sweep clean; $99 × 14 / $49 × 1 consistent.
