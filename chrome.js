@@ -449,29 +449,6 @@
     });
   }
 
-  /* ---- Cookie consent banner ---- */
-  try {
-    if (!localStorage.getItem("dlhq_cookie")) {
-      const cb = document.createElement("div");
-      cb.className = "cookie-bar";
-      cb.innerHTML = `
-        <p>We use cookies to improve your experience and measure site performance. See our <a href="privacy.html">Privacy Policy</a>.</p>
-        <div class="cookie-actions">
-          <button class="btn btn-ghost-l btn-sm" data-cc="decline">Decline</button>
-          <button class="btn btn-grad btn-sm" data-cc="accept">Accept</button>
-        </div>`;
-      absolutize(cb);
-      document.body.appendChild(cb);
-      requestAnimationFrame(() => cb.classList.add("show"));
-      cb.addEventListener("click", (e) => {
-        const b = e.target.closest("[data-cc]");
-        if (!b) return;
-        try { localStorage.setItem("dlhq_cookie", b.dataset.cc); } catch (e) {}
-        cb.classList.remove("show");
-        setTimeout(() => cb.remove(), 400);
-      });
-    }
-  } catch (e) {}
 })();
 
 /* ============================================================
