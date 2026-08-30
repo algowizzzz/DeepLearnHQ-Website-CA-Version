@@ -16,30 +16,50 @@ Tickets 8.3 / 8.4 · paste into MailerLite · setup steps in MAILERLITE-SETUP.md
 ## E1 — instant · fires on join to the code-series group
 
 **Subject:** Your $50-off code (expires in 72 hours)
-**Preview text:** Here it is — plus what you'll build with it.
+**Preview text:** Here it is — plus everything the bootcamp includes.
 
 > Hi,
 >
 > Here's your code:
 >
 > **{$discount_code}**
->
-> It brings The Generative AI 8-Week Bootcamp from $99 USD down to **$49 USD**, and it expires on **{$code_expires_at}** — 72 hours from now.
+> $99 USD → **$49 USD** · expires **{$code_expires_at}** (72 hours)
 >
 > **[ Use my code — $49 USD ]**
 > → `https://buy.stripe.com/8x23cw8NA7p76o56skejK0b?prefilled_promo_code={$discount_code}&code={$discount_code}&exp={$code_expires_unix}`
 >
-> You don't need to type the code anywhere. That link applies it for you.
+> No typing needed — that link applies the code for you.
 >
-> **What you're getting:** four real projects — a workflow you actually automate, a no-code AI product you ship, an agent that runs a multi-step job, and something you can genuinely sell. Eight weeks of structure, at your own pace, with lifetime access.
+> **So what exactly are you getting?**
+> The Generative AI 8-Week Bootcamp, in a nutshell: you master AI by **building four real things** — not by watching videos. Built for students, professionals and founders. No code required. You finish with work you actually use.
 >
-> And every Saturday, 10:00–12:00 EST, I run a live Q&A. You bring what you're stuck on, I answer it. That runs for as long as you own the bootcamp.
+> **The 8 weeks**
+> Wk 1–2 · Your AI operating system — setup, prompting frameworks, custom GPTs
+> Wk 3 · **Project 1:** automate a real workflow from your job or business
+> Wk 4 · **Project 2:** ship a working no-code AI tool or app
+> Wk 5 · The AI content & marketing engine
+> Wk 6 · **Project 3:** build an AI agent that runs a multi-step job end-to-end
+> Wk 7 · **Project 4:** package something sellable, with a go-to-market plan
+> Wk 8 · Capstone & launch — portfolio + plan
+> *Self-paced with lifetime access — the 8 weeks are a suggested rhythm, not a fixed cohort.*
 >
-> If it isn't for you, the 30-day guarantee is unconditional — one email and I refund you, whatever you paid.
+> **Everything included**
+> ✓ The full 8-week curriculum — ChatGPT · Claude · Gemini · custom GPTs · no-code tools
+> ✓ 4 real projects, built around *your* goals
+> ✓ **Live Q&A with me every Saturday, 10:00–12:00 EST — included for life**
+> ✓ Certificate of completion
+> ✓ Lifetime access + free updates
+>
+> **Who's teaching you**
+> I've spent a decade building systems inside **Deloitte, PwC, BMO and Microsoft**, and I've taught AI to **40,000+ learners** across 13,000+ reviews (4.5★ on my flagship AI course). This bootcamp is how I actually work — taught the way that clicks for beginners.
+>
+> **Zero risk:** 30-day unconditional money-back guarantee. Any reason, whatever you paid — one email and I refund you.
+>
+> **[ Start building — $49 USD ]**
 >
 > — Saad
 
----
+*(Rewritten 2026-08-29 per Saad: summarize the full landing page — curriculum, credibility, inclusions — not just the 4 projects. This version is LIVE in MailerLite, uploaded via API.)*
 
 ## E2 — +24 hours
 

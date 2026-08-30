@@ -524,3 +524,18 @@ purchase + refund. Gmail MCP lacked mail scope so Claude could not verify delive
 **⚠️ New finding during testing:** the live site shows a SECOND cookie banner ("We use
 cookies to improve your experience…" with Decline/Accept) that is not the dlhq-consent
 banner from chrome.js. Two consent systems are racing; needs a look before ads.
+
+
+## Day 3 addendum — E1 rewrite + the one-email mystery solved
+
+- Saad's inbox got ONE E1 from two signups. Root cause found in the automation
+  settings: re-entry was ON but **"Time for re-enter" defaulted to a 1-day delay**,
+  so a same-day repeat signup could not re-enter. Changed to
+  **"as soon as they match the triggers."** (This was invisible via API — the
+  create/settings endpoints never surfaced the field.)
+- **E1 rewritten per Saad** ("mention the full landing page in a nutshell —
+  curriculum, credibility, what they get, not just 4 projects"): now carries the
+  code + CTA up top, then nutshell, the 8-week table, the inclusion list, the
+  Deloitte/PwC/BMO/Microsoft + 40k-learners credibility block, and the guarantee.
+  Paused → updated via API → reactivated. EMAILS.md synced.
+- Third live signup fired (SAVE50-F7LMNE) to verify instant re-entry + new content.
