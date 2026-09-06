@@ -97,6 +97,8 @@
   .faq{max-width:760px;margin:30px auto 0}
   .sticky-buy{position:fixed;left:0;right:0;bottom:0;z-index:60;display:none;gap:10px;padding:12px 14px calc(12px + env(safe-area-inset-bottom));background:rgba(6,8,15,.94);backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,.12)}
   .sticky-buy .btn{flex:1;justify-content:center;font-size:.95rem;padding:13px 10px}
+  .qa-next{margin-top:12px;font-size:.92rem;opacity:.72;line-height:1.5}
+  #launch-offer a{text-decoration:underline;text-underline-offset:2px}
   .sticky-cap{position:fixed;left:0;right:0;bottom:0;display:none}
   @media(max-width:780px){.sticky-buy{display:flex}body{padding-bottom:78px}}
 </style>
@@ -117,6 +119,7 @@
     <div class="cta-actions">
       <a href="#pricing" class="btn btn-grad" data-cta="hero">Enroll now — $99 USD →</a>
     </div>
+    <p class="qa-next" data-qa-next hidden></p>
     <p class="hero-proof"><span class="stars-inline">★★★★★</span> <strong>4.5</strong> average across <span data-proof="reviews">13,000+</span> reviews · <span data-proof="students">40,000+</span> learners taught</p>
     <p class="crs-note">One-time payment in USD · lifetime access to the material and all updates · live Q&amp;A every Saturday · <a href="#guarantee"><strong>unconditional 30-day money-back guarantee</strong></a></p>
   </div>
@@ -216,6 +219,18 @@
   </div>
 </section>
 
+<!-- §5d DISCOUNT (single instance, below the fold, never beside a buy button) -->
+<section class="section" style="padding-top:0" id="launch-offer">
+  <div class="wrap" style="max-width:640px;text-align:center">
+    <p style="opacity:.72;font-size:.95rem;line-height:1.7">
+      <strong>Launch pricing for Canada — $50 off.</strong>
+      <a href="#" data-discount>Request your code →</a>
+      It's good for 72 hours, and whatever you pay is covered by the same
+      <a href="#guarantee">unconditional 30-day guarantee</a>.
+    </p>
+  </div>
+</section>
+
 <!-- §6 PROOF -->
 <section class="section">
   <div class="wrap">
@@ -279,6 +294,7 @@
         <div class="price" data-price-full>$99<span class="cur">USD</span></div>
         <p class="sub">One time. If this hands back two hours in your first month, it's already paid for itself — and if it doesn't, the refund is one email.</p>
         <a href="#" class="btn btn-grad" data-buy style="width:100%;justify-content:center">Enroll now — $99 USD</a>
+        <p class="qa-next" data-qa-next hidden></p>
         <p class="door-trust">🔒 Secure checkout by Stripe · Visa · Mastercard · Amex · Apple&nbsp;Pay</p>
         <p class="door-trust" style="margin-top:6px"><strong>Personal onboarding:</strong> your login is set up for you and emailed within 24 hours — usually much sooner.</p>
         <p class="door-trust" style="margin-top:6px">Covered by the <a href="#guarantee"><strong>30-day unconditional money-back guarantee</strong></a>.</p>
@@ -363,6 +379,24 @@
     pv.addEventListener('click', playPreview);
     pv.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); playPreview(); } });
   }
+
+  /* Next live Q&A — Saturdays 10:00 EST. Self-updating, so the page never shows a date
+     that has already passed. If it is Saturday before 10:00, today still counts. */
+  (function () {
+    var els = document.querySelectorAll('[data-qa-next]');
+    if (!els.length) return;
+    var now = new Date();
+    var d = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    var dow = now.getDay();                       // 6 = Saturday
+    var ahead = (6 - dow + 7) % 7;
+    if (ahead === 0 && now.getHours() >= 10) ahead = 7;
+    d.setDate(d.getDate() + ahead);
+    var when = d.toLocaleDateString('en-CA', { month: 'long', day: 'numeric' });
+    els.forEach(function (el) {
+      el.textContent = "Enroll today and you're in Saturday's live Q&A — " + when + ', 10:00 EST.';
+      el.hidden = false;
+    });
+  })();
 
   document.addEventListener('click', function (e) {
     var a = e.target.closest('a'); if (!a || !window.gtag) return;
