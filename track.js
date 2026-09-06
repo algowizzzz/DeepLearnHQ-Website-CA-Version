@@ -73,6 +73,30 @@
     return h + "h " + String(m).padStart(2, "0") + "m";
   }
 
+  /* The nav is fixed, so it has to be pushed down by however tall the code bar
+     currently is. The bar wraps to two lines on narrow viewports, so measure it
+     rather than hard-coding a height, and re-measure on resize. */
+  function syncBarHeight(bar) {
+    var h = bar && !bar.hidden ? bar.offsetHeight : 0;
+    document.documentElement.style.setProperty("--codebar-h", h + "px");
+  }
+
+  function watchBarHeight(bar) {
+    if (window.__dlhqBarObserved) return;
+    window.__dlhqBarObserved = true;
+    var resync = function () { syncBarHeight(bar); };
+    // Always listen for resize: it is the case that actually matters (the bar
+    // wraps to two lines under ~700px, and the nav offset has to follow).
+    window.addEventListener("resize", resync);
+    // ResizeObserver additionally catches height changes that are not driven by
+    // a viewport resize, e.g. the countdown text reflowing. Keep a reference —
+    // an unreferenced observer can be collected before it ever fires.
+    if (window.ResizeObserver) {
+      window.__dlhqBarRO = new ResizeObserver(resync);
+      window.__dlhqBarRO.observe(bar);
+    }
+  }
+
   function applyCodeState() {
     var held = readCode();
     var live = held && held.exp * 1000 > Date.now();
@@ -106,6 +130,9 @@
         "<strong>Your discount code has expired.</strong> The bootcamp is $" + PRICE_FULL +
         " USD — still covered by the unconditional 30-day money-back guarantee.";
     }
+
+    syncBarHeight(bar);
+    if (!bar.hidden) watchBarHeight(bar);
   }
 
   /* ---------- 3. Discount modal (2.14 / 8.1 / 8.1b) ---------------------- */

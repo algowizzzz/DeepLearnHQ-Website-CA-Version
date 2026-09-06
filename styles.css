@@ -154,7 +154,10 @@ h1,h2,h3 { font-family: var(--f-display); font-weight: 700; line-height: 1.02; l
    NAV
    ============================================================ */
 .nav {
-  position: fixed; inset: 0 0 auto 0; z-index: 100;
+  /* --codebar-h is the measured height of the sticky #codeBar, set by track.js
+     (0 when no bar is showing). The bar reserves its own space in flow, but the
+     nav is fixed, so without this offset the two paint over each other. */
+  position: fixed; inset: var(--codebar-h, 0px) 0 auto 0; z-index: 100;
   transition: background .4s, border-color .4s, backdrop-filter .4s, padding .4s;
   padding: 18px 0;
   border-bottom: 1px solid transparent;
@@ -946,7 +949,14 @@ body.dlg-open{overflow:hidden}
   background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.32);border-radius:10px;padding:11px 13px}
 .dlg-fine{margin-top:16px;font-size:.76rem;opacity:.45;text-align:center}
 
-/* ---- Code-holder bar (ticket 5.6b) ---- */
+/* ---- Code-holder bar (ticket 5.6b) ----
+   The bar is sticky and therefore reserves its own space in normal flow, but
+   .nav is fixed at top:0 and painted above it (z-index 100 vs 55), so the two
+   shared the same pixels — the expired notice rendered through the logo. The
+   nav is now offset by --codebar-h so they no longer overlap; track.js measures
+   it, since the bar wraps to two lines (46px -> 89px) on narrow viewports.
+   z-index stays at 55 deliberately: the mobile menu overlay is 95 and must be
+   able to cover the bar when open. */
 .code-bar{position:sticky;top:0;z-index:55;padding:12px 18px;text-align:center;font-size:.92rem;line-height:1.45}
 .code-bar.active{background:linear-gradient(90deg,rgba(62,207,142,.16),rgba(46,125,246,.16));
   border-bottom:1px solid rgba(62,207,142,.4)}
