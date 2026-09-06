@@ -15,8 +15,13 @@
 //   MAILERLITE_API_KEY    required
 //   MAILERLITE_GROUP_ID   required — the code-series group that fires E1
 //   ALERT_WEBHOOK_URL     optional — Web3Forms/Resend endpoint for failure alerts
+//   META_PIXEL_ID         optional — CAPI Lead backstop
+//   META_CAPI_TOKEN       optional — CAPI Lead backstop; absent = silently off
+import crypto from "node:crypto";
 
 const CODE_TTL_HOURS = 72;
+const PIXEL_ID = "656402296715617";    // D5 — same pixel as the Purchase backstop
+const LEAD_VALUE = 49;                 // discounted price, matches track.js PRICE_CODE
 const RATE_LIMIT_MAX = 3;              // signups per identity per window
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
 
@@ -145,6 +150,70 @@ async function rejoinGroup(subscriberId, groupId) {
   if (!r.ok) throw new Error("mailerlite_group_" + r.status);
 }
 
+// --- Meta CAPI --------------------------------------------------------------
+
+const sha256 = (s) => crypto.createHash("sha256").update(s).digest("hex");
+
+function readCookie(header, name) {
+  if (!header) return null;
+  const m = String(header).match(new RegExp("(?:^|;\\s*)" + name + "=([^;]*)"));
+  return m ? decodeURIComponent(m[1]) : null;
+}
+
+// _fbc is written by the browser pixel, which on this site is consent-gated
+// (chrome.js) — so for most signups the cookie does not exist. Rebuild it from
+// the fbclid the ad click left in the URL, in the same format the pixel would
+// have used. Without this, ad-clicked signups reach Meta with an email hash
+// and nothing else, and match quality suffers exactly where it matters most.
+function deriveFbc(cookieHeader, fbclid) {
+  const fromCookie = readCookie(cookieHeader, "_fbc");
+  if (fromCookie) return fromCookie;
+  const clean = String(fbclid || "").replace(/[^A-Za-z0-9_.-]/g, "").slice(0, 400);
+  return clean ? `fb.1.${Date.now()}.${clean}` : null;
+}
+
+// Server-side Lead, deduplicated against the browser pixel via event_id: the
+// browser sends the same "lead_<code>" as eventID, so Meta counts one event
+// when both fire, and we still get the event when the browser never does.
+// On this site the browser usually never does — the pixel only loads after the
+// visitor accepts the consent banner, so a decline or a bounce past the banner
+// is invisible to it. Signup-time CAPI use is disclosed in privacy.html §9.
+async function sendCapiLead({ email, eventId, sourceUrl, fbp, fbc, ip, ua }) {
+  const token = process.env.META_CAPI_TOKEN;
+  if (!token) return false;
+  const pixel = process.env.META_PIXEL_ID || PIXEL_ID;
+
+  const user_data = { em: [sha256(email)] };   // email already trimmed+lowercased
+  if (fbp) user_data.fbp = fbp;
+  if (fbc) user_data.fbc = fbc;
+  if (ip && ip !== "unknown") user_data.client_ip_address = ip;
+  if (ua) user_data.client_user_agent = ua;
+
+  const r = await fetch(`https://graph.facebook.com/v21.0/${pixel}/events`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      access_token: token,
+      data: [
+        {
+          event_name: "Lead",
+          event_time: Math.floor(Date.now() / 1000),
+          event_id: eventId,
+          action_source: "website",
+          event_source_url: sourceUrl || "https://www.deeplearnhq.ca/",
+          user_data,
+          custom_data: {
+            value: LEAD_VALUE,
+            currency: "USD",
+            content_name: "The Generative AI 8-Week Bootcamp",
+          },
+        },
+      ],
+    }),
+  });
+  return r.ok;
+}
+
 // --- handler ----------------------------------------------------------------
 
 export default async function handler(req, res) {
@@ -207,5 +276,26 @@ export default async function handler(req, res) {
     return res.status(502).json({ ok: false, error: "email_delivery_failed", code });
   }
 
-  return res.status(200).json({ ok: true, code, expires_at: expiresAt });
+  // 5. Meta CAPI Lead — best-effort, after the signup is real. Never fail the
+  //    request on it: the user has their code and the email is sending, and a
+  //    5xx here would tell the UI the signup failed when it did not.
+  const eventId = "lead_" + code;
+  try {
+    const capiOk = await sendCapiLead({
+      email,
+      eventId,
+      sourceUrl: data.page_url || "https://www.deeplearnhq.ca/",
+      fbp: readCookie(req.headers.cookie, "_fbp"),
+      fbc: deriveFbc(req.headers.cookie, data.fbclid),
+      ip,
+      ua: req.headers["user-agent"] || null,
+    });
+    if (!capiOk && process.env.META_CAPI_TOKEN) {
+      await alertSaad("Meta CAPI Lead failed", `${email} — code ${code}`);
+    }
+  } catch (e) {
+    await alertSaad("Meta CAPI Lead error", `${email} — code ${code} — ${e.message}`);
+  }
+
+  return res.status(200).json({ ok: true, code, expires_at: expiresAt, event_id: eventId });
 }

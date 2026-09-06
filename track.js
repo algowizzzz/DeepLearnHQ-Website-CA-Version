@@ -9,13 +9,30 @@
   var LS_CODE = "dlhq_code";
   var LS_EXP = "dlhq_exp";
   var LS_UTM = "dlhq_ref";
+  var LS_FBCLID = "dlhq_fbclid";
   var PRICE_FULL = 99;
   var PRICE_CODE = 49;
 
   function $(s, r) { return (r || document).querySelector(s); }
   function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
   function ev(name, params) { if (window.gtag) gtag("event", name, params || {}); }
-  function fb(name, params) { if (window.fbq) fbq("track", name, params || {}); }
+  // opts carries {eventID} so a browser event can be deduplicated against the
+  // server-side CAPI copy of the same event.
+  function fb(name, params, opts) { if (window.fbq) fbq("track", name, params || {}, opts || undefined); }
+
+  /* fbclid identifies the ad click. The pixel would normally persist it as the
+     _fbc cookie, but the pixel only loads after consent, so on a decline it is
+     never written and the server has nothing to match the signup to an ad with.
+     Stash it on arrival — it survives the hop to the form either way, and
+     /api/subscribe rebuilds _fbc from it. No consent needed to read our own URL. */
+  function captureFbclid() {
+    try {
+      var v = new URLSearchParams(location.search).get("fbclid");
+      if (v) localStorage.setItem(LS_FBCLID, v);
+      return v || localStorage.getItem(LS_FBCLID) || "";
+    } catch (e) { return ""; }
+  }
+  captureFbclid();
 
   /* ---------- 1. Attribution (ticket 7.7) --------------------------------
      Payment-link `metadata` is fixed at link creation, so it cannot carry a
@@ -197,6 +214,8 @@
             company: form.company.value,          // honeypot
             marketing: form.marketing.checked,
             source: "sales_page",
+            fbclid: captureFbclid(),              // lets the server rebuild _fbc
+            page_url: location.href,
           }),
         });
         var j = await r.json();
@@ -219,7 +238,11 @@
           localStorage.setItem(LS_EXP, String(j.expires_at));
         } catch (e2) {}
         ev("generate_lead", { value: PRICE_CODE, currency: "USD" });
-        fb("Lead", { value: PRICE_CODE, currency: "USD" });
+        // Same event_id the server sent to CAPI, so Meta counts one Lead when
+        // consent was granted and both copies fire. j.event_id is only absent
+        // if an older API build is deployed — then this behaves as it did before.
+        fb("Lead", { value: PRICE_CODE, currency: "USD" },
+           j.event_id ? { eventID: j.event_id } : undefined);
         location.href = "/thank-you-signup?code=" + encodeURIComponent(j.code) + "&exp=" + j.expires_at;
       } catch (e3) {
         err.textContent = "We couldn't reach the server. Nothing was saved — please try again.";
