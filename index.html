@@ -4,10 +4,10 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Master Generative AI in 8 Weeks — 4.5★ Bootcamp | DeepLearnHQ</title>
-<meta name="description" content="Master ChatGPT 5, Claude, Gemini, Perplexity & MidJourney in 8 weeks. 4.5★-rated curriculum, 4 hands-on projects, weekly live Q&A. $99 USD, 30-day guarantee." />
+<meta name="description" content="Master ChatGPT 5, Claude, Gemini, MidJourney & AI agents in 8 weeks. 4.5★-rated curriculum, 4 hands-on projects, weekly live Q&A. $99 USD, 30-day guarantee." />
 <link rel="canonical" href="https://www.deeplearnhq.ca/" />
 <meta property="og:title" content="The Generative AI 8-Week Bootcamp | DeepLearnHQ" />
-<meta property="og:description" content="Master ChatGPT 5, Claude, Gemini, Perplexity & MidJourney in 8 weeks. 4.5★-rated curriculum, 4 hands-on projects, weekly live Q&A. $99 USD, 30-day guarantee." />
+<meta property="og:description" content="Master ChatGPT 5, Claude, Gemini, MidJourney & AI agents in 8 weeks. 4.5★-rated curriculum, 4 hands-on projects, weekly live Q&A. $99 USD, 30-day guarantee." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://www.deeplearnhq.ca/" />
 <meta property="og:site_name" content="DeepLearnHQ" />
@@ -98,6 +98,23 @@
   .sticky-buy{position:fixed;left:0;right:0;bottom:0;z-index:60;display:none;gap:10px;padding:12px 14px calc(12px + env(safe-area-inset-bottom));background:rgba(6,8,15,.94);backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,.12)}
   .sticky-buy .btn{flex:1;justify-content:center;font-size:.95rem;padding:13px 10px}
   .qa-next{margin-top:12px;font-size:.92rem;opacity:.72;line-height:1.5}
+  /* --- mobile: hero headline and curriculum rows --- */
+  @media(max-width:680px){
+    .page-hero{padding-top:64px;padding-bottom:34px}
+    /* eyebrow wraps to 2 lines on mobile; align-items:center was floating the
+       gradient dot to the middle of the block instead of the first line */
+    .page-hero-in .eyebrow{font-size:11px;letter-spacing:.11em;align-items:flex-start;gap:8px}
+    .page-hero-in .eyebrow::before{flex:0 0 auto;margin-top:3px}
+    .page-hero-in h1{font-size:clamp(1.45rem,6.6vw,1.95rem);line-height:1.12;letter-spacing:-.015em;margin-bottom:14px}
+    .page-hero-in .lead{font-size:.98rem;line-height:1.6}
+    .crs-stats{font-size:.72rem;line-height:1.8}
+    .qa-next{font-size:.86rem;margin-top:10px}
+    /* stack each week: the meta had white-space:nowrap, which squeezed titles
+       into an ~80px column and pushed the meta off-screen */
+    .crs-sec{flex-direction:column;align-items:flex-start;gap:5px;padding:14px 2px}
+    .crs-sec .t{font-size:1rem;line-height:1.35}
+    .crs-sec .m{white-space:normal;font-size:.74rem;line-height:1.55;opacity:.6}
+  }
   #launch-offer a{text-decoration:underline;text-underline-offset:2px}
   .sticky-cap{position:fixed;left:0;right:0;bottom:0;display:none}
   @media(max-width:780px){.sticky-buy{display:flex}body{padding-bottom:78px}}
@@ -113,7 +130,7 @@
   <div class="hero-grid"></div>
   <div class="wrap page-hero-in">
     <span class="eyebrow">No code · Four real projects · Live Q&amp;A with me every Saturday</span>
-    <h1>By week eight: a weekly task automated, <span class="grad-text">your own custom GPT built, two more projects shipped.</span></h1>
+    <h1>By week eight: a task automated, <span class="grad-text">an AI agent built, two more projects shipped.</span></h1>
     <p class="lead">A self-paced AI bootcamp for students, professionals and founders. No coding required — you build with the tools, on your own work, with me on a live call every Saturday when you get stuck. Taught by an instructor with a decade building systems inside Deloitte, PwC, BMO and Microsoft, and <span data-proof="students">40,000+</span> learners taught online.</p>
     <div class="crs-stats"><span>14.5h of lessons</span><span>· 179 lectures</span><span>· 4 hands-on projects</span><span>· weekly live Q&amp;A</span><span>· lifetime access to the material</span></div>
     <div class="cta-actions">
@@ -143,7 +160,7 @@
       </div>
       <p style="text-align:center;margin-top:16px;opacity:.7;font-size:.95rem">Watch the preview — the teaching style, in two minutes.</p>
     </div>
-    <div class="crs-tools"><span>ChatGPT</span><span>Claude</span><span>Gemini</span><span>Perplexity</span><span>MidJourney</span><span>DALL-E</span><span>Adobe Firefly</span><span>Leonardo AI</span></div>
+    <div class="crs-tools"><span>ChatGPT</span><span>Claude</span><span>Gemini</span><span>Perplexity</span><span>MidJourney</span><span>DALL-E</span><span>Adobe Firefly</span><span>Leonardo AI</span><span>AI Agents</span></div>
   </div>
 </section>
 
@@ -181,7 +198,7 @@
     <div class="proj-grid">
       <div class="proj"><span class="n">PROJECT 01</span><h3>Automate a real workflow</h3><p>Take a repetitive task from your job or business and build an AI workflow that does it — measurably faster.</p><div class="tools">ChatGPT · Claude · Gemini</div></div>
       <div class="proj"><span class="n">PROJECT 02</span><h3>Ship a no-code AI product</h3><p>A working tool or app — an internal assistant, a client deliverable, or the product idea you've been sitting on.</p><div class="tools">No-code platform + AI</div></div>
-      <div class="proj"><span class="n">PROJECT 03</span><h3>Build your own custom GPT</h3><p>A custom GPT that handles a multi-step job end-to-end for your specific use case, with human oversight.</p><div class="tools">Custom GPTs · ChatGPT 5</div></div>
+      <div class="proj"><span class="n">PROJECT 03</span><h3>Build an AI agent</h3><p>An agent that handles a multi-step job end-to-end for your specific use case, with human oversight.</p><div class="tools">Custom GPTs · agent tooling</div></div>
       <div class="proj"><span class="n">PROJECT 04</span><h3>Launch something sellable</h3><p>Package an AI service clients will pay for, or a product you can put in market — with a go-to-market plan.</p><div class="tools">The full stack above</div></div>
     </div>
     <p style="text-align:center;margin-top:34px;opacity:.78;font-size:.98rem">Build all four — and if it isn't for you, one email gets your money back. <a href="#guarantee">The 30-day guarantee →</a></p>
@@ -199,7 +216,7 @@
       <div class="crs-sec"><span class="t">Week 4 — Claude, Gemini, Perplexity &amp; Grok</span><span class="m">the right model for each job · AI-powered research</span></div>
       <div class="crs-sec"><span class="t">Week 5 — AI visuals &amp; content creation</span><span class="m">MidJourney · DALL-E · Adobe Firefly · Leonardo</span></div>
       <div class="crs-sec"><span class="t">Week 6 — Data analysis &amp; visualization</span><span class="m">datasets → insights → compelling visuals</span></div>
-      <div class="crs-sec"><span class="t">Week 7 — Custom GPTs &amp; automation</span><span class="m">custom GPTs for business &amp; personal use cases</span></div>
+      <div class="crs-sec"><span class="t">Week 7 — Build your own AI agents</span><span class="m">agents for business &amp; personal use cases</span></div>
       <div class="crs-sec"><span class="t">Week 8 — Career &amp; life applications</span><span class="m">workflows · productivity · your capstone</span></div>
     </div>
     <p style="max-width:700px;margin:26px auto 0;text-align:center;opacity:.72;font-size:.96rem">14.5 hours of on-demand video · 179 lectures across 23 sections. The 8 weeks are a <strong>suggested pace, not a fixed cohort</strong> — you have lifetime access to the material and can move faster or slower. The live part is the weekly Q&amp;A.</p>
@@ -270,7 +287,7 @@
       <li>Analyze a dataset and turn it into visuals people act on, using ChatGPT's advanced analytics</li>
       <li>Write image prompts that produce professional-grade visuals in MidJourney and DALL-E</li>
       <li>Know which model to reach for — ChatGPT, Claude, Gemini or Perplexity — and when not to trust the answer</li>
-      <li>Build a custom GPT that runs a multi-step job for your exact use case</li>
+      <li>Build an AI agent that runs a multi-step job for your exact use case</li>
       <li>Package something sellable — a service, a tool, a portfolio piece — and put it in front of people</li>
     </ul>
     <p style="margin-top:18px;opacity:.85">For a student that's a portfolio with four real projects in it. For a professional it's hours back every week and a skill your team doesn't have yet. For a founder it's shipping without hiring. And if you've been through a few of these before: no cohort, no upsell, no $5,000 backend — one price, one course, refundable for any reason.</p>
