@@ -172,13 +172,23 @@ function deriveFbc(cookieHeader, fbclid) {
   return clean ? `fb.1.${Date.now()}.${clean}` : null;
 }
 
-// Server-side Lead, deduplicated against the browser pixel via event_id: the
-// browser sends the same "lead_<code>" as eventID, so Meta counts one event
-// when both fire, and we still get the event when the browser never does.
+// Server-side signup events, deduplicated against the browser pixel via
+// event_id: the browser sends the same ids as eventID, so Meta counts one of
+// each when both fire, and we still get them when the browser never does.
 // On this site the browser usually never does — the pixel only loads after the
 // visitor accepts the consent banner, so a decline or a bounce past the banner
 // is invisible to it. Signup-time CAPI use is disclosed in privacy.html §9.
-async function sendCapiLead({ email, eventId, sourceUrl, fbp, fbc, ip, ua }) {
+//
+// TWO events describe the same signup, deliberately:
+//   Lead                 — kept for reporting continuity; verified working.
+//   CompleteRegistration — what the ad set actually optimises on. Meta reserves
+//                          LEAD for OUTCOME_LEADS campaigns and rejects it on
+//                          this OUTCOME_SALES campaign ("Conversion event
+//                          unavailable"), so COMPLETE_REGISTRATION is the
+//                          optimisable event for the same action.
+// Both go in one request; Meta treats distinct event_names as distinct events,
+// so this is not double-counting a conversion.
+async function sendCapiSignup({ email, eventIds, sourceUrl, fbp, fbc, ip, ua }) {
   const token = process.env.META_CAPI_TOKEN;
   if (!token) return false;
   const pixel = process.env.META_PIXEL_ID || PIXEL_ID;
@@ -189,25 +199,26 @@ async function sendCapiLead({ email, eventId, sourceUrl, fbp, fbc, ip, ua }) {
   if (ip && ip !== "unknown") user_data.client_ip_address = ip;
   if (ua) user_data.client_user_agent = ua;
 
+  const base = {
+    event_time: Math.floor(Date.now() / 1000),
+    action_source: "website",
+    event_source_url: sourceUrl || "https://www.deeplearnhq.ca/",
+    user_data,
+    custom_data: {
+      value: LEAD_VALUE,
+      currency: "USD",
+      content_name: "The Generative AI 8-Week Bootcamp",
+    },
+  };
+
   const r = await fetch(`https://graph.facebook.com/v21.0/${pixel}/events`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       access_token: token,
       data: [
-        {
-          event_name: "Lead",
-          event_time: Math.floor(Date.now() / 1000),
-          event_id: eventId,
-          action_source: "website",
-          event_source_url: sourceUrl || "https://www.deeplearnhq.ca/",
-          user_data,
-          custom_data: {
-            value: LEAD_VALUE,
-            currency: "USD",
-            content_name: "The Generative AI 8-Week Bootcamp",
-          },
-        },
+        { ...base, event_name: "Lead", event_id: eventIds.lead },
+        { ...base, event_name: "CompleteRegistration", event_id: eventIds.registration },
       ],
     }),
   });
@@ -279,11 +290,11 @@ export default async function handler(req, res) {
   // 5. Meta CAPI Lead — best-effort, after the signup is real. Never fail the
   //    request on it: the user has their code and the email is sending, and a
   //    5xx here would tell the UI the signup failed when it did not.
-  const eventId = "lead_" + code;
+  const eventIds = { lead: "lead_" + code, registration: "cr_" + code };
   try {
-    const capiOk = await sendCapiLead({
+    const capiOk = await sendCapiSignup({
       email,
-      eventId,
+      eventIds,
       sourceUrl: data.page_url || "https://www.deeplearnhq.ca/",
       fbp: readCookie(req.headers.cookie, "_fbp"),
       fbc: deriveFbc(req.headers.cookie, data.fbclid),
@@ -291,11 +302,17 @@ export default async function handler(req, res) {
       ua: req.headers["user-agent"] || null,
     });
     if (!capiOk && process.env.META_CAPI_TOKEN) {
-      await alertSaad("Meta CAPI Lead failed", `${email} — code ${code}`);
+      await alertSaad("Meta CAPI signup failed", `${email} — code ${code}`);
     }
   } catch (e) {
-    await alertSaad("Meta CAPI Lead error", `${email} — code ${code} — ${e.message}`);
+    await alertSaad("Meta CAPI signup error", `${email} — code ${code} — ${e.message}`);
   }
 
-  return res.status(200).json({ ok: true, code, expires_at: expiresAt, event_id: eventId });
+  return res.status(200).json({
+    ok: true,
+    code,
+    expires_at: expiresAt,
+    event_id: eventIds.lead,          // retained: older track.js builds read this
+    event_ids: eventIds,
+  });
 }

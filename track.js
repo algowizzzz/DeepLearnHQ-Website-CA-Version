@@ -238,11 +238,16 @@
           localStorage.setItem(LS_EXP, String(j.expires_at));
         } catch (e2) {}
         ev("generate_lead", { value: PRICE_CODE, currency: "USD" });
-        // Same event_id the server sent to CAPI, so Meta counts one Lead when
-        // consent was granted and both copies fire. j.event_id is only absent
-        // if an older API build is deployed — then this behaves as it did before.
-        fb("Lead", { value: PRICE_CODE, currency: "USD" },
-           j.event_id ? { eventID: j.event_id } : undefined);
+        // Same event_ids the server sent to CAPI, so Meta counts one of each
+        // when consent was granted and both copies fire. CompleteRegistration
+        // is the event the ad set optimises on (Meta rejects Lead on an
+        // OUTCOME_SALES campaign); Lead is kept for reporting continuity.
+        // Falls back to the older single-id shape if an older API is deployed.
+        var ids = j.event_ids || (j.event_id ? { lead: j.event_id } : {});
+        var money = { value: PRICE_CODE, currency: "USD" };
+        fb("Lead", money, ids.lead ? { eventID: ids.lead } : undefined);
+        fb("CompleteRegistration", money,
+           ids.registration ? { eventID: ids.registration } : undefined);
         location.href = "/thank-you-signup?code=" + encodeURIComponent(j.code) + "&exp=" + j.expires_at;
       } catch (e3) {
         err.textContent = "We couldn't reach the server. Nothing was saved — please try again.";
