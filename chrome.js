@@ -96,6 +96,12 @@
 (function () {
   "use strict";
 
+  // Distraction-free landing pages own their own compact header/footer and
+  // skip the mega-nav entirely — every extra pixel of chrome here pushes the
+  // signup form below the fold, which is the one thing these pages exist to
+  // avoid. Consent banner, GA4 and the Meta pixel above are unaffected.
+  if (document.body.dataset.page === "free-course") return;
+
   const ARROW =
     '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
   const CARET =

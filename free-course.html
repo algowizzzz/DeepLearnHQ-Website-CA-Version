@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Free: Learn 10+ AI Tools | DeepLearnHQ</title>
+<meta name="description" content="A free, no-fluff walkthrough of 10+ AI tools people actually use daily. From the instructor behind a 4.5★, 40,000+ student bootcamp. Sign up — no card required." />
+<link rel="canonical" href="https://www.deeplearnhq.ca/free-course" />
+<meta property="og:title" content="Free: Learn 10+ AI Tools | DeepLearnHQ" />
+<meta property="og:description" content="A free, no-fluff walkthrough of 10+ AI tools people actually use daily. From the instructor behind a 4.5★, 40,000+ student bootcamp." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://www.deeplearnhq.ca/free-course" />
+<meta property="og:site_name" content="DeepLearnHQ" />
+<meta property="og:image" content="https://www.deeplearnhq.ca/assets/blog/ai-machine-learning.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Free: Learn 10+ AI Tools | DeepLearnHQ" />
+<meta name="twitter:image" content="https://www.deeplearnhq.ca/assets/blog/ai-machine-learning.png" />
+<link rel="icon" type="image/png" href="/assets/logo-mark.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+<link rel="dns-prefetch" href="https://connect.facebook.net" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/styles.css" />
+<link rel="stylesheet" href="/inner.css" />
+<style>
+  /* Self-contained light theme for this page only — the rest of the site is
+     dark. This is a distraction-free landing page (see chrome.js's early
+     return for data-page="free-course"), so it owns its own chrome instead
+     of the shared dark mega-nav. Priority #1: everything up to and including
+     the signup form fits above the fold on a phone with no scrolling. */
+  body[data-page="free-course"]{background:linear-gradient(180deg,#eaf1ff 0%,#f6f9ff 42%,#ffffff 100%);color:#0b1220}
+  [data-page="free-course"] ::selection{background:rgba(18,103,214,.2)}
+
+  .fc-topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;max-width:680px;margin:0 auto}
+  .fc-topbar img{height:24px;display:block}
+  .fc-right{display:flex;align-items:center;gap:18px}
+  .fc-ig-ic{color:#0b1220;opacity:.62;display:flex;transition:opacity .2s}
+  .fc-ig-ic:hover{opacity:1}
+  .fc-bootcamp-link{font-family:"Manrope",sans-serif;font-size:13.5px;font-weight:700;color:#0a3c8c;text-decoration:none;white-space:nowrap}
+  .fc-bootcamp-link:hover{text-decoration:underline}
+
+  .fc-hero{padding:2px 20px 30px;text-align:center;position:relative;overflow:hidden}
+  .fc-blob{position:absolute;border-radius:50%;filter:blur(50px);opacity:.5;z-index:0;pointer-events:none}
+  .fc-blob.b1{width:280px;height:280px;background:#bcd6ff;top:-120px;left:-80px}
+  .fc-blob.b2{width:260px;height:260px;background:#e6cfff;top:-60px;right:-100px}
+  .fc-hero>*:not(.fc-blob){position:relative;z-index:1}
+
+  .fc-eyebrow{display:inline-flex;align-items:center;gap:6px;background:#e3edff;color:#0a3c8c;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:6px 12px;border-radius:999px;margin-bottom:14px}
+  .fc-h1{font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:clamp(27px,6.2vw,42px);line-height:1.14;letter-spacing:-.02em;color:#0b1220;margin:0 0 10px;max-width:600px;margin-left:auto;margin-right:auto}
+  .fc-h1 .grad{background:linear-gradient(115deg,#0a3c8c,#1267d6 55%,#7C45E8);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .fc-sub{font-family:"Manrope",sans-serif;font-size:15.5px;line-height:1.55;color:#586173;max-width:440px;margin:0 auto 18px}
+
+  /* Stats carry the trust signal above the fold, so they get real visual
+     weight — bigger numbers, bigger icon, a bit more air than the form. */
+  .fc-stats{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:22px}
+  .fc-stat{display:flex;align-items:center;gap:11px;background:#fff;border:1.5px solid #cddffb;border-radius:16px;padding:13px 18px;box-shadow:0 6px 18px rgba(18,103,214,.1)}
+  .fc-stat .ic{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#e3edff,#dbe7ff);display:grid;place-items:center;color:#0a3c8c;flex-shrink:0}
+  .fc-stat .ic svg{width:17px;height:17px}
+  .fc-stat b{display:block;font-family:"Space Grotesk",sans-serif;font-size:19px;font-weight:800;line-height:1.15;color:#0b1220;text-align:left;letter-spacing:-.01em}
+  .fc-stat i{display:block;font-style:normal;font-weight:600;font-size:10.5px;color:#5c7ba8;letter-spacing:.05em;text-transform:uppercase;text-align:left}
+
+  /* Form card is a utility, not the hero — deliberately smaller and quieter
+     than the stats above it. */
+  .fc-card{background:#fff;border:1px solid #dfe8fa;border-radius:18px;padding:17px;box-shadow:0 14px 34px -14px rgba(18,103,214,.2);max-width:380px;margin:0 auto;text-align:left}
+  .fc-field{margin-bottom:9px}
+  .fc-field label{display:block;font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:#7b8494;margin-bottom:5px}
+  .fc-field input{width:100%;padding:10px 12px;border-radius:10px;border:1.5px solid #dfe8fa;background:#f8faff;color:#0b1220;font:inherit;font-size:13.5px}
+  .fc-field input::placeholder{color:#a6afbd}
+  .fc-field input:focus{outline:none;border-color:#1267d6;box-shadow:0 0 0 4px rgba(18,103,214,.12)}
+  .fc-phone-row{display:flex;gap:6px}
+  .fc-cc{flex:0 0 auto;width:82px;padding:10px 6px;border-radius:10px;border:1.5px solid #dfe8fa;background:#f8faff;color:#0b1220;font:inherit;font-size:13px}
+  .fc-cc:focus{outline:none;border-color:#1267d6;box-shadow:0 0 0 4px rgba(18,103,214,.12)}
+  .fc-phone-row .fc-field-input,.fc-phone-row input{flex:1;min-width:0}
+  .fc-hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+  .fc-consent{display:flex;gap:7px;align-items:flex-start;margin:10px 0;font-family:"Manrope",sans-serif;font-size:10.5px;line-height:1.38;color:#7b8494}
+  .fc-consent input{margin-top:2px;flex-shrink:0;accent-color:#1267d6}
+  .fc-consent a{color:#0a3c8c;font-weight:600}
+  .fc-submit{width:100%;justify-content:center;background:linear-gradient(135deg,#0a3c8c,#1267d6);border:0;color:#fff;font-family:"Manrope",sans-serif;font-weight:700;font-size:13.5px;padding:11.5px;border-radius:11px;cursor:pointer;display:flex;align-items:center;gap:7px;box-shadow:0 10px 22px -10px rgba(18,103,214,.55)}
+  .fc-submit[disabled]{opacity:.6;cursor:progress}
+  .fc-submit:hover:not([disabled]){filter:brightness(1.06)}
+  .fc-err{margin-top:10px;font-family:"Manrope",sans-serif;font-size:12px;line-height:1.4;color:#b3261e;background:rgba(179,38,30,.08);border:1px solid rgba(179,38,30,.25);border-radius:9px;padding:9px 11px}
+  .fc-fine{margin-top:10px;font-family:"Manrope",sans-serif;font-size:10px;color:#9aa3b1;text-align:center}
+
+  .fc-success{display:none;text-align:center;padding:8px 4px}
+  .fc-success.show{display:block}
+  .fc-success .ck{width:52px;height:52px;border-radius:50%;margin:0 auto 14px;display:grid;place-items:center;background:rgba(16,163,127,.12);border:1px solid rgba(16,163,127,.35);color:#0e8f6f}
+  .fc-success h3{font-family:"Space Grotesk",sans-serif;font-size:1.2rem;margin-bottom:8px;color:#0b1220}
+  .fc-success p{font-family:"Manrope",sans-serif;font-size:14px;line-height:1.55;color:#586173}
+
+  /* ---- below the fold ---- */
+  .fc-section{padding:48px 20px;text-align:center}
+  .fc-section.alt{background:#fff}
+  .fc-section h2{font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:clamp(21px,3.4vw,30px);color:#0b1220;margin:14px 0 10px}
+  .fc-section>p{font-family:"Manrope",sans-serif;font-size:15px;line-height:1.6;color:#586173;max-width:560px;margin:0 auto}
+
+  .fc-tools{display:flex;flex-wrap:wrap;gap:18px 16px;justify-content:center;margin-top:30px;max-width:640px;margin-left:auto;margin-right:auto}
+  .fc-tool{display:flex;flex-direction:column;align-items:center;gap:8px;width:76px}
+  .fc-tool .tile{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;border:1px solid #e5e9f2;box-shadow:0 4px 14px rgba(18,40,80,.08)}
+  .fc-tool span{font-family:"Manrope",sans-serif;font-size:11.5px;font-weight:600;color:#3d4451}
+
+  .fc-credibility{max-width:680px;margin:0 auto;background:#eef4ff;border:1px solid #dfe8fa;border-radius:18px;padding:24px 26px}
+  .fc-credibility>p{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.08em;color:#7b8494;margin-bottom:14px;text-transform:uppercase;font-weight:500}
+  .fc-credibility .names{font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:18px;color:#0b1220;display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:center;align-items:center}
+  .fc-credibility .names span.dot{opacity:.35;font-weight:400}
+  .co-badge{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid #dfe8fa;border-radius:999px;padding:7px 14px 7px 10px;font-size:15px}
+  .co-badge i{display:block;width:10px;height:10px;border-radius:50%;flex-shrink:0}
+  .co-badge.co-ms svg{flex-shrink:0}
+
+  .fc-bootcamp-cta{margin-top:22px}
+  .fc-bootcamp-cta a{display:inline-flex;align-items:center;gap:8px;font-family:"Manrope",sans-serif;font-weight:700;font-size:15px;color:#0a3c8c;text-decoration:underline;text-underline-offset:3px}
+
+  .fc-foot{padding:24px 20px 44px;text-align:center;font-family:"Manrope",sans-serif;font-size:12.5px;color:#9aa3b1}
+  .fc-foot a{color:#9aa3b1;text-decoration:underline;text-underline-offset:2px;margin:0 8px}
+
+  /* ---- phone-width: protect the no-scroll hero above all else ---- */
+  @media(max-width:640px){
+    .fc-sub{display:none}
+    .fc-topbar{padding:12px 16px}
+    .fc-topbar img{height:20px}
+    .fc-hero{padding-top:0;padding-bottom:22px}
+    .fc-eyebrow{margin-bottom:10px;font-size:9.5px;padding:5px 10px}
+    .fc-h1{margin-bottom:14px;font-size:clamp(23px,7vw,30px)}
+    .fc-stats{gap:7px;margin-bottom:16px}
+    .fc-stat{padding:9px 11px;gap:8px}
+    .fc-stat .ic{width:26px;height:26px}
+    .fc-stat .ic svg{width:13px;height:13px}
+    .fc-stat b{font-size:14.5px}
+    .fc-stat i{font-size:8px}
+    .fc-card{padding:13px;max-width:100%}
+    .fc-field{margin-bottom:7px}
+    .fc-field label{margin-bottom:3px}
+    /* 16px, not smaller — anything under 16px triggers iOS Safari's auto-zoom
+       on focus, which would yank the viewport away from the button below it. */
+    .fc-field input{padding:9px 11px;font-size:16px}
+    .fc-cc{width:68px;padding:9px 4px;font-size:14px}
+    .fc-consent{margin:8px 0;font-size:9.8px}
+    .fc-submit{padding:11px;font-size:13.5px}
+    .fc-fine{margin-top:7px;font-size:9.5px}
+    .fc-section{padding:38px 16px}
+  }
+  @media(max-width:360px){
+    .fc-h1{font-size:clamp(21px,7vw,28px)}
+    .fc-stats{gap:5px}
+    .fc-stat i{display:none}
+  }
+</style>
+</head>
+<body data-page="free-course">
+
+<div class="fc-topbar">
+  <a href="/" aria-label="DeepLearnHQ"><img src="/assets/logo-dark.png" alt="DeepLearnHQ" /></a>
+  <div class="fc-right">
+    <a class="fc-ig-ic" href="https://www.instagram.com/deeplearnhq.ca" target="_blank" rel="noopener" aria-label="Follow DeepLearnHQ on Instagram">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg>
+    </a>
+    <a class="fc-bootcamp-link" href="/">Bootcamp →</a>
+  </div>
+</div>
+
+<!-- §1 HERO + SIGNUP — everything here must fit one phone screen, no scroll -->
+<section class="fc-hero" data-screen-label="Free Course Hero">
+  <div class="fc-blob b1"></div><div class="fc-blob b2"></div>
+
+  <span class="fc-eyebrow">100% Free · ~45 Minutes</span>
+  <h1 class="fc-h1">Learn 10+ AI Tools — <span class="grad">Free.</span></h1>
+  <p class="fc-sub">ChatGPT, Claude, Gemini and more — practical and hands-on, from the instructor behind a 4.5★, 40,000+ student bootcamp.</p>
+
+  <div class="fc-stats">
+    <div class="fc-stat">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 100-10 5 5 0 000 10zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5z"/></svg></span>
+      <div><b data-count="40000" data-suffix="+">0</b><i>Learners</i></div>
+    </div>
+    <div class="fc-stat">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16a1 1 0 011 1v10a1 1 0 01-1 1H9l-4 4v-4H4a1 1 0 01-1-1V5a1 1 0 011-1z"/></svg></span>
+      <div><b data-count="13000" data-suffix="+">0</b><i>Reviews</i></div>
+    </div>
+    <div class="fc-stat">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.7 7-6.3-3.9L5.7 21l1.7-7-5.4-4.7 7.1-.6z"/></svg></span>
+      <div><b>4.5★</b><i>Rated</i></div>
+    </div>
+  </div>
+
+  <div class="fc-card" id="fcCard">
+    <form id="fcForm" novalidate>
+      <div class="fc-field">
+        <label for="fcEmail">Email</label>
+        <input id="fcEmail" name="email" type="email" inputmode="email" autocomplete="email" required placeholder="you@example.com" />
+      </div>
+      <div class="fc-field">
+        <label for="fcPhone">Mobile number</label>
+        <div class="fc-phone-row">
+          <select id="fcCountry" class="fc-cc" aria-label="Country code"></select>
+          <input id="fcPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="555 123 4567" />
+        </div>
+      </div>
+      <!-- Honeypot: off-screen, not display:none — some bots skip hidden fields. -->
+      <div class="fc-hp" aria-hidden="true"><label>Company<input name="company" tabindex="-1" autocomplete="off" /></label></div>
+
+      <label class="fc-consent">
+        <input type="checkbox" name="sms_consent" value="yes">
+        <span>I agree to receive the course link and occasional updates by email and text from DeepLearnHQ Corp. Reply STOP to opt out anytime. <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.</span>
+      </label>
+
+      <button class="fc-submit" type="submit">Get free access <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      <p class="fc-err" hidden role="alert"></p>
+      <p class="fc-fine">DeepLearnHQ Corp. · Unsubscribe anytime, in every email.</p>
+    </form>
+    <div class="fc-success" id="fcSuccess">
+      <div class="ck"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>
+      <h3>You're in.</h3>
+      <p>Check your email (and texts) in the next few minutes for your free course link — plus a current coupon toward the full 8-week bootcamp.</p>
+    </div>
+  </div>
+</section>
+
+<!-- §2 TOOLS -->
+<section class="fc-section alt">
+  <span class="fc-eyebrow">What's inside</span>
+  <h2>Ten-plus tools. Zero fluff.</h2>
+  <p>Every tool below is something you can open today and get value from in minutes — not a theory lecture.</p>
+  <!-- TODO(Saad): starting list based on your existing bootcamp copy — edit to match exactly what the free course covers.
+       Tool marks are the real brand glyphs from Simple Icons (CC0, built for exactly this
+       "which tools does this identify" use — see VENDOR note in FREE-COURSE-SETUP.md).
+       Midjourney has no entry in that set, so it stays a hand-drawn sailboat approximation. -->
+  <div class="fc-tools">
+    <div class="fc-tool"><span class="tile" style="background:#10A37F"><svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></svg></span><span>ChatGPT</span></div>
+    <div class="fc-tool"><span class="tile" style="background:#D97757"><svg width="24" height="24" viewBox="0 0 24 24" fill="#fff"><path d="m4.7144 15.9555 4.7174-2.6471.079-.2307-.079-.1275h-.2307l-.7893-.0486-2.6956-.0729-2.3375-.0971-2.2646-.1214-.5707-.1215-.5343-.7042.0546-.3522.4797-.3218.686.0608 1.5179.1032 2.2767.1578 1.6514.0972 2.4468.255h.3886l.0546-.1579-.1336-.0971-.1032-.0972L6.973 9.8356l-2.55-1.6879-1.3356-.9714-.7225-.4918-.3643-.4614-.1578-1.0078.6557-.7225.8803.0607.2246.0607.8925.686 1.9064 1.4754 2.4893 1.8336.3643.3035.1457-.1032.0182-.0728-.164-.2733-1.3539-2.4467-1.445-2.4893-.6435-1.032-.17-.6194c-.0607-.255-.1032-.4674-.1032-.7285L6.287.1335 6.6997 0l.9957.1336.419.3642.6192 1.4147 1.0018 2.2282 1.5543 3.0296.4553.8985.2429.8318.091.255h.1579v-.1457l.1275-1.706.2368-2.0947.2307-2.6957.0789-.7589.3764-.9107.7468-.4918.5828.2793.4797.686-.0668.4433-.2853 1.8517-.5586 2.9021-.3643 1.9429h.2125l.2429-.2429.9835-1.3053 1.6514-2.0643.7286-.8196.85-.9046.5464-.4311h1.0321l.759 1.1293-.34 1.1657-1.0625 1.3478-.8804 1.1414-1.2628 1.7-.7893 1.36.0729.1093.1882-.0183 2.8535-.607 1.5421-.2794 1.8396-.3157.8318.3886.091.3946-.3278.8075-1.967.4857-2.3072.4614-3.4364.8136-.0425.0304.0486.0607 1.5482.1457.6618.0364h1.621l3.0175.2247.7892.522.4736.6376-.079.4857-1.2142.6193-1.6393-.3886-3.825-.9107-1.3113-.3279h-.1822v.1093l1.0929 1.0686 2.0035 1.8092 2.5075 2.3314.1275.5768-.3218.4554-.34-.0486-2.2039-1.6575-.85-.7468-1.9246-1.621h-.1275v.17l.4432.6496 2.3436 3.5214.1214 1.0807-.17.3521-.6071.2125-.6679-.1214-1.3721-1.9246L14.38 17.959l-1.1414-1.9428-.1397.079-.674 7.2552-.3156.3703-.7286.2793-.6071-.4614-.3218-.7468.3218-1.4753.3886-1.9246.3157-1.53.2853-1.9004.17-.6314-.0121-.0425-.1397.0182-1.4328 1.9672-2.1796 2.9446-1.7243 1.8456-.4128.164-.7164-.3704.0667-.6618.4008-.5889 2.386-3.0357 1.4389-1.882.929-1.0868-.0062-.1579h-.0546l-6.3385 4.1164-1.1293.1457-.4857-.4554.0608-.7467.2307-.2429 1.9064-1.3114Z"/></svg></span><span>Claude</span></div>
+    <div class="fc-tool"><span class="tile" style="background:#fff"><svg width="24" height="24" viewBox="0 0 24 24"><defs><linearGradient id="gemGrad" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#4285F4"/><stop offset=".5" stop-color="#9168C0"/><stop offset="1" stop-color="#D96570"/></linearGradient></defs><path fill="url(#gemGrad)" d="M11.04 19.32Q12 21.51 12 24q0-2.49.93-4.68.96-2.19 2.58-3.81t3.81-2.55Q21.51 12 24 12q-2.49 0-4.68-.93a12.3 12.3 0 0 1-3.81-2.58 12.3 12.3 0 0 1-2.58-3.81Q12 2.49 12 0q0 2.49-.96 4.68-.93 2.19-2.55 3.81a12.3 12.3 0 0 1-3.81 2.58Q2.49 12 0 12q2.49 0 4.68.96 2.19.93 3.81 2.55t2.55 3.81"/></svg></span><span>Gemini</span></div>
+    <div class="fc-tool"><span class="tile" style="background:#191A1A"><svg width="22" height="22" viewBox="0 0 24 24" fill="#20B8CD"><path d="M22.3977 7.0896h-2.3106V.0676l-7.5094 6.3542V.1577h-1.1554v6.1966L4.4904 0v7.0896H1.6023v10.3976h2.8882V24l6.932-6.3591v6.2005h1.1554v-6.0469l6.9318 6.1807v-6.4879h2.8882V7.0896zm-3.4657-4.531v4.531h-5.355l5.355-4.531zm-13.2862.0676 4.8691 4.4634H5.6458V2.6262zM2.7576 16.332V8.245h7.8476l-6.1149 6.1147v1.9723H2.7576zm2.8882 5.0404v-3.8852h.0001v-2.6488l5.7763-5.7764v7.0111l-5.7764 5.2993zm12.7086.0248-5.7766-5.1509V9.0618l5.7766 5.7766v6.5588zm2.8882-5.0652h-1.733v-1.9723L13.3948 8.245h7.8478v8.087z"/></svg></span><span>Perplexity</span></div>
+    <div class="fc-tool"><span class="tile" style="background:#fff"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#12233f" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18h16M6 18l1-8 7 8M13 18V4l5 9"/></svg></span><span>Midjourney</span></div>
+    <div class="fc-tool"><span class="tile" style="background:#fff"><svg width="24" height="24" viewBox="0 0 24 24" fill="#000"><path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.841-.046.935-.56.935-1.167V6.354c0-.606-.233-.933-.748-.887l-15.177.887c-.56.047-.747.327-.747.933zm14.337.745c.093.42 0 .84-.42.888l-.7.14v10.264c-.608.327-1.168.514-1.635.514-.748 0-.935-.234-1.495-.933l-4.577-7.186v6.952L12.21 19s0 .84-1.168.84l-3.222.186c-.093-.186 0-.653.327-.746l.84-.233V9.854L7.822 9.76c-.094-.42.14-1.026.793-1.073l3.456-.233 4.764 7.279v-6.44l-1.215-.139c-.093-.514.28-.887.747-.933zM1.936 1.035l13.31-.98c1.634-.14 2.055-.047 3.082.7l4.249 2.986c.7.513.934.653.934 1.213v16.378c0 1.026-.373 1.634-1.68 1.726l-15.458.934c-.98.047-1.448-.093-1.962-.747l-3.129-4.06c-.56-.747-.793-1.306-.793-1.96V2.667c0-.839.374-1.54 1.447-1.632z"/></svg></span><span>Notion</span></div>
+    <div class="fc-tool"><span class="tile" style="background:#FF4A00"><svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M4.157 0A4.151 4.151 0 0 0 0 4.161v15.678A4.151 4.151 0 0 0 4.157 24h15.682A4.152 4.152 0 0 0 24 19.839V4.161A4.152 4.152 0 0 0 19.839 0H4.157Zm10.61 8.761h.03a.577.577 0 0 1 .23.038.585.585 0 0 1 .201.124.63.63 0 0 1 .162.431.612.612 0 0 1-.162.435.58.58 0 0 1-.201.128.58.58 0 0 1-.23.042.529.529 0 0 1-.235-.042.585.585 0 0 1-.332-.328.559.559 0 0 1-.038-.235.613.613 0 0 1 .17-.431.59.59 0 0 1 .405-.162Zm2.853 1.572c.03.004.061.004.095.004.325-.011.646.064.937.219.238.144.431.355.552.609.128.279.189.582.185.888v.193a2 2 0 0 1 0 .219h-2.498c.003.227.075.45.204.642a.78.78 0 0 0 .646.265.714.714 0 0 0 .484-.136.642.642 0 0 0 .23-.318l.915.257a1.398 1.398 0 0 1-.28.537c-.14.159-.321.284-.521.355a2.234 2.234 0 0 1-.836.136 1.923 1.923 0 0 1-1.001-.245 1.618 1.618 0 0 1-.665-.703 2.221 2.221 0 0 1-.227-1.036 1.95 1.95 0 0 1 .48-1.398 1.9 1.9 0 0 1 1.3-.488Zm-9.607.023c.162.004.325.026.48.079.207.065.4.174.563.314.26.302.393.692.366 1.088v2.276H8.53l-.109-.711h-.065c-.064.163-.155.31-.272.439a1.122 1.122 0 0 1-.374.264 1.023 1.023 0 0 1-.453.083 1.334 1.334 0 0 1-.866-.264.965.965 0 0 1-.329-.801.993.993 0 0 1 .076-.431 1.02 1.02 0 0 1 .242-.363 1.478 1.478 0 0 1 1.043-.303h.952v-.181a.696.696 0 0 0-.136-.454.553.553 0 0 0-.438-.154.695.695 0 0 0-.378.086.48.48 0 0 0-.193.254l-.99-.144a1.26 1.26 0 0 1 .257-.563c.14-.174.321-.302.533-.378.261-.091.54-.136.82-.129.053-.003.106-.007.163-.007Zm4.384.007c.174 0 .347.038.506.114.182.083.34.211.458.374.257.423.377.911.351 1.406a2.53 2.53 0 0 1-.355 1.448 1.148 1.148 0 0 1-1.009.517c-.204 0-.401-.045-.582-.136a1.052 1.052 0 0 1-.48-.457 1.298 1.298 0 0 1-.114-.234h-.045l.004 1.784h-1.059v-4.713h.904l.117.805h.057c.068-.208.177-.401.328-.56a1.129 1.129 0 0 1 .843-.344h.076v-.004Zm7.559.084h.903l.113.805h.053a1.37 1.37 0 0 1 .235-.484.813.813 0 0 1 .313-.242.82.82 0 0 1 .39-.076h.234v1.051h-.401a.662.662 0 0 0-.313.008.623.623 0 0 0-.272.155.663.663 0 0 0-.174.26.683.683 0 0 0-.027.314v1.875h-1.054v-3.666Zm-17.515.003h3.262v.896L3.73 13.104l.034.113h1.973l.042.9H2.4v-.9l1.931-1.754-.045-.117H2.441v-.896Zm11.815 0h1.055v3.659h-1.055V10.45Zm3.443.684.019.016a.69.69 0 0 0-.351.045.756.756 0 0 0-.287.204c-.11.155-.174.336-.189.522h1.545c-.034-.526-.257-.787-.74-.787h.003Zm-5.718.163c-.026 0-.057 0-.083.004a.78.78 0 0 0-.31.053.746.746 0 0 0-.257.189 1.016 1.016 0 0 0-.204.695v.064c-.015.257.057.507.204.711a.634.634 0 0 0 .253.196.638.638 0 0 0 .314.061.644.644 0 0 0 .578-.265c.14-.223.204-.48.189-.74a1.216 1.216 0 0 0-.181-.711.677.677 0 0 0-.503-.257Zm-4.509 1.266a.464.464 0 0 0-.268.102.373.373 0 0 0-.114.276c0 .053.008.106.027.155a.375.375 0 0 0 .087.132.576.576 0 0 0 .397.11v.004a.863.863 0 0 0 .563-.182.573.573 0 0 0 .211-.457v-.14h-.903Z"/></svg></span><span>Zapier</span></div>
+    <div class="fc-tool"><span class="tile" style="background:#fff"><svg width="22" height="22" viewBox="0 0 24 24" fill="#4285F4"><path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg></span><span>Google</span></div>
+    <div class="fc-tool"><span class="tile" style="background:#e3edff;font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:15px;color:#0a3c8c">+2</span><span>& more</span></div>
+  </div>
+</section>
+
+<!-- §3 CREDIBILITY + BOOTCAMP CTA -->
+<section class="fc-section">
+  <div class="fc-credibility">
+    <p>Instructors with experience from</p>
+    <!-- Microsoft's icon is a real logo (Simple Icons, exact official mark). Deloitte/PwC/BMO
+         have no entry in that CC0 set — reproducing their exact registered marks without
+         a license is a real trademark risk for firms this size, so these three are a
+         colored badge + wordmark instead: recognizable, on-brand, not a logo trace.
+         TODO(Saad): if you have licensed/press-kit logo files for these, swap the badges below
+         for <img> tags pointing at them instead. -->
+    <div class="names">
+      <span class="co-badge"><i style="background:#86BC25"></i>Deloitte</span>
+      <span class="co-badge"><i style="background:#DA6A2C"></i>PwC</span>
+      <span class="co-badge"><i style="background:#0079C1"></i>BMO</span>
+      <span class="co-badge co-ms"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="0" y="0" width="11.4" height="11.4" fill="#F25022"/><rect x="12.6" y="0" width="11.4" height="11.4" fill="#7FBA00"/><rect x="0" y="12.6" width="11.4" height="11.4" fill="#00A4EF"/><rect x="12.6" y="12.6" width="11.4" height="11.4" fill="#FFB900"/></svg>Microsoft</span>
+    </div>
+  </div>
+  <div class="fc-bootcamp-cta">
+    <a href="/">Want to go further? See the full 8-Week Bootcamp <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+  </div>
+</section>
+
+<footer class="fc-foot">
+  © 2026 DeepLearnHQ Corp. <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a>
+</footer>
+
+<script src="chrome.js"></script>
+<script src="main.js"></script>
+<script>
+(function () {
+  "use strict";
+  var form = document.getElementById("fcForm");
+  var success = document.getElementById("fcSuccess");
+  var btn = form.querySelector(".fc-submit");
+  var err = form.querySelector(".fc-err");
+  var countrySelect = document.getElementById("fcCountry");
+
+  // Pinned first per Saad's request, then the rest alphabetically by name.
+  // [ISO 3166-1 alpha-2, name, dial code] — flag emoji is derived from the
+  // ISO code (regional-indicator trick) rather than hand-typed per row.
+  var PINNED = [
+    ["US", "United States", "+1"],
+    ["CA", "Canada", "+1"],
+    ["IN", "India", "+91"],
+    ["GB", "United Kingdom", "+44"],
+  ];
+  var COUNTRIES = [
+    ["AF", "Afghanistan", "+93"], ["AL", "Albania", "+355"], ["DZ", "Algeria", "+213"],
+    ["AR", "Argentina", "+54"], ["AU", "Australia", "+61"], ["AT", "Austria", "+43"],
+    ["BH", "Bahrain", "+973"], ["BD", "Bangladesh", "+880"], ["BE", "Belgium", "+32"],
+    ["BR", "Brazil", "+55"], ["BG", "Bulgaria", "+359"], ["KH", "Cambodia", "+855"],
+    ["CL", "Chile", "+56"], ["CN", "China", "+86"], ["CO", "Colombia", "+57"],
+    ["HR", "Croatia", "+385"], ["CZ", "Czech Republic", "+420"], ["DK", "Denmark", "+45"],
+    ["EG", "Egypt", "+20"], ["EE", "Estonia", "+372"], ["FI", "Finland", "+358"],
+    ["FR", "France", "+33"], ["DE", "Germany", "+49"], ["GH", "Ghana", "+233"],
+    ["GR", "Greece", "+30"], ["HK", "Hong Kong", "+852"], ["HU", "Hungary", "+36"],
+    ["IS", "Iceland", "+354"], ["ID", "Indonesia", "+62"], ["IR", "Iran", "+98"],
+    ["IQ", "Iraq", "+964"], ["IE", "Ireland", "+353"], ["IL", "Israel", "+972"],
+    ["IT", "Italy", "+39"], ["JP", "Japan", "+81"], ["JO", "Jordan", "+962"],
+    ["KE", "Kenya", "+254"], ["KW", "Kuwait", "+965"], ["LV", "Latvia", "+371"],
+    ["LB", "Lebanon", "+961"], ["LT", "Lithuania", "+370"], ["LU", "Luxembourg", "+352"],
+    ["MY", "Malaysia", "+60"], ["MT", "Malta", "+356"], ["MX", "Mexico", "+52"],
+    ["MA", "Morocco", "+212"], ["NP", "Nepal", "+977"], ["NL", "Netherlands", "+31"],
+    ["NZ", "New Zealand", "+64"], ["NG", "Nigeria", "+234"], ["NO", "Norway", "+47"],
+    ["OM", "Oman", "+968"], ["PK", "Pakistan", "+92"], ["PA", "Panama", "+507"],
+    ["PE", "Peru", "+51"], ["PH", "Philippines", "+63"], ["PL", "Poland", "+48"],
+    ["PT", "Portugal", "+351"], ["QA", "Qatar", "+974"], ["RO", "Romania", "+40"],
+    ["RU", "Russia", "+7"], ["SA", "Saudi Arabia", "+966"], ["RS", "Serbia", "+381"],
+    ["SG", "Singapore", "+65"], ["SK", "Slovakia", "+421"], ["SI", "Slovenia", "+386"],
+    ["ZA", "South Africa", "+27"], ["KR", "South Korea", "+82"], ["ES", "Spain", "+34"],
+    ["LK", "Sri Lanka", "+94"], ["SE", "Sweden", "+46"], ["CH", "Switzerland", "+41"],
+    ["TW", "Taiwan", "+886"], ["TZ", "Tanzania", "+255"], ["TH", "Thailand", "+66"],
+    ["TR", "Turkey", "+90"], ["UA", "Ukraine", "+380"], ["AE", "United Arab Emirates", "+971"],
+    ["UY", "Uruguay", "+598"], ["VE", "Venezuela", "+58"], ["VN", "Vietnam", "+84"],
+  ];
+
+  function flag(iso) {
+    return iso.replace(/./g, function (c) { return String.fromCodePoint(127397 + c.charCodeAt(0)); });
+  }
+  function opt(row) {
+    var o = document.createElement("option");
+    o.value = row[2];
+    o.textContent = flag(row[0]) + " " + row[2];
+    o.title = row[1] + " (" + row[2] + ")";
+    return o;
+  }
+  PINNED.forEach(function (row) { countrySelect.appendChild(opt(row)); });
+  var sep = document.createElement("option");
+  sep.disabled = true;
+  sep.textContent = "──────────";
+  countrySelect.appendChild(sep);
+  COUNTRIES.forEach(function (row) { countrySelect.appendChild(opt(row)); });
+
+  function validEmail(v) { return /^[^@\s]+@[^@\s.]+(\.[^@\s.]+)+$/.test(v.trim()); }
+  function validPhone(v) { return /^[0-9()+\-.\s]{7,24}$/.test(v.trim()); }
+
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    err.hidden = true;
+
+    var email = form.email.value.trim();
+    var localNumber = form.phone.value.trim();
+    var phone = countrySelect.value + " " + localNumber;
+    if (!validEmail(email)) {
+      err.textContent = "That email doesn't look right — check it and try again.";
+      err.hidden = false;
+      return;
+    }
+    if (localNumber.replace(/[^0-9]/g, "").length < 6 || !validPhone(phone)) {
+      err.textContent = "That mobile number doesn't look right — check it and try again.";
+      err.hidden = false;
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = "Sending…";
+    if (window.gtag) gtag("event", "free_course_submit", {});
+
+    try {
+      var r = await fetch("/api/free-course", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email,
+          phone: phone,
+          company: form.company.value,   // honeypot
+          sms_consent: form.sms_consent.checked,
+          source: "free_course_landing",
+          page_url: location.href,
+        }),
+      });
+      var j = await r.json().catch(function () { return {}; });
+
+      if (!r.ok || !j.ok) {
+        err.textContent =
+          j && j.error === "rate_limited"
+            ? "That's a few requests in a row — give it a minute and try again."
+            : "Something went wrong and nothing was saved — please try again.";
+        err.hidden = false;
+        btn.disabled = false;
+        btn.textContent = "Get free access";
+        return;
+      }
+
+      if (window.fbq) fbq("track", "Lead", { content_name: "Free AI Tools Course", value: 0, currency: "USD" });
+      form.hidden = true;
+      success.classList.add("show");
+    } catch (e2) {
+      err.textContent = "We couldn't reach the server. Nothing was saved — please try again.";
+      err.hidden = false;
+      btn.disabled = false;
+      btn.textContent = "Get free access";
+    }
+  });
+})();
+</script>
+</body>
+</html>

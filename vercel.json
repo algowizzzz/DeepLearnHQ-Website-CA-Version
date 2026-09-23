@@ -298,6 +298,10 @@
     {
       "source": "/thank-you-purchase",
       "destination": "/thank-you-purchase.html"
+    },
+    {
+      "source": "/free-course",
+      "destination": "/free-course.html"
     }
   ]
 }

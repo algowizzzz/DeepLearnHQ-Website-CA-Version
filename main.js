@@ -19,7 +19,7 @@
   const sticky = document.getElementById("stickyCta");
   const onScroll = () => {
     const y = window.scrollY;
-    nav.classList.toggle("scrolled", y > 40);
+    if (nav) nav.classList.toggle("scrolled", y > 40);
     if (sticky) sticky.classList.toggle("show", y > 700);
   };
   onScroll();
