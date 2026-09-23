@@ -901,21 +901,27 @@ a:focus-visible, button:focus-visible, .btn:focus-visible, summary:focus-visible
 }
 
 
-/* ---- Consent banner (ticket 7.1) ---- */
-#dlhq-consent{position:fixed;left:0;right:0;bottom:0;z-index:9999;display:flex;flex-wrap:wrap;
-  align-items:center;justify-content:center;gap:14px 22px;padding:16px 20px calc(16px + env(safe-area-inset-bottom));
-  background:rgba(6,8,15,.97);backdrop-filter:blur(14px);border-top:1px solid rgba(255,255,255,.14);
+/* ---- Consent banner (ticket 7.1) ----
+   Kept deliberately quiet and small: on a phone this used to run 153px tall
+   (23% of an iPhone 13 screen) with two stacked full-width buttons, one of
+   them sharing the same purple-pink gradient as the Enroll CTA — meaning the
+   first screen a cold ad-click ever saw had two identical-looking "main"
+   buttons competing with the offer itself. Both buttons are now the same
+   ghost style: neither should look more important than the other, and
+   neither should look like Enroll. */
+#dlhq-consent{position:fixed;left:0;right:0;bottom:0;z-index:9999;display:flex;flex-wrap:nowrap;
+  align-items:center;justify-content:space-between;gap:10px;
+  padding:8px 12px calc(8px + env(safe-area-inset-bottom));
+  background:rgba(6,8,15,.94);backdrop-filter:blur(10px);border-top:1px solid rgba(255,255,255,.10);
   /* Appended to <body> (light surface), so the inherited #0d0f15 ink was
      invisible on this dark bar. Same defect as .dlg. */
   color:var(--t-on-dark)}
-#dlhq-consent p{margin:0;font-size:.9rem;line-height:1.5;max-width:640px;opacity:.88}
+#dlhq-consent p{margin:0;font-size:.78rem;line-height:1.3;opacity:.75}
 #dlhq-consent a{text-decoration:underline}
-#dlhq-consent .dlhq-consent-btns{display:flex;gap:10px;flex-shrink:0}
-#dlhq-consent .btn{padding:10px 18px;font-size:.9rem}
+#dlhq-consent .dlhq-consent-btns{display:flex;gap:6px;flex-shrink:0}
+#dlhq-consent .btn{padding:6px 12px;font-size:.78rem;min-height:36px}
 /* Sits above the sticky buy bar, and lifts it so the two never overlap. */
-@media(max-width:780px){#dlhq-consent{flex-direction:column;align-items:stretch;text-align:center}
-  #dlhq-consent .dlhq-consent-btns .btn{flex:1;justify-content:center}
-  body:has(#dlhq-consent) .sticky-buy{bottom:150px}}
+body:has(#dlhq-consent) .sticky-buy{bottom:56px}
 
 /* ---- Discount modal (ticket 2.14) ---- */
 body.dlg-open{overflow:hidden}

@@ -1,4 +1,21 @@
 /* ============================================================
+   Vercel Web Analytics — cookieless, aggregate-only traffic counting.
+   Loads unconditionally, unlike GA4/Meta below: it's the only signal that
+   still sees a visitor who declines or ignores the consent banner, which is
+   the majority of cold ad traffic. Disclosed in privacy.html §9 as the one
+   exception to "loads only after consent" — see that section before
+   changing what this sends. Two literal <script> tags in the JS docs
+   become element creation here since this file itself loads as a script.
+   ============================================================ */
+(function () {
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  var s = document.createElement("script");
+  s.defer = true;
+  s.src = "/_vercel/insights/script.js";
+  document.head.appendChild(s);
+})();
+
+/* ============================================================
    Consent gate + analytics (tickets 7.1 / 7.2 / G18)
    PIPEDA and Quebec Law 25 require consent BEFORE non-essential
    tracking. GA4 used to load unconditionally here, which also
@@ -47,6 +64,10 @@
       if (navigator.sendBeacon) navigator.sendBeacon("/api/consent-event", new Blob([b], { type: "application/json" }));
       else fetch("/api/consent-event", { method: "POST", headers: { "Content-Type": "application/json" }, body: b, keepalive: true });
     } catch (e) {}
+    // Runtime logs (the /api/consent-event write above) expire before anyone
+    // reads them — this has produced zero usable rows since launch. Web
+    // Analytics is the actual, durable record of the accept/decline split.
+    try { window.va && va("event", { name: "consent_" + choice }); } catch (e) {}
   }
 
   function decide(choice, fromBanner) {
@@ -71,12 +92,10 @@
     d.setAttribute("role", "dialog");
     d.setAttribute("aria-label", "Cookie choices");
     d.innerHTML =
-      '<p>We use cookies to measure how this site is used and how well our ads work. ' +
-      'You can say no and the site works exactly the same. ' +
-      '<a href="/privacy.html">How we use them</a>.</p>' +
+      '<p>Cookies help us measure our ads. <a href="/privacy.html">Details</a></p>' +
       '<div class="dlhq-consent-btns">' +
       '<button type="button" data-c="denied" class="btn btn-ghost-d">No thanks</button>' +
-      '<button type="button" data-c="granted" class="btn btn-grad">Accept</button>' +
+      '<button type="button" data-c="granted" class="btn btn-ghost-d">Accept</button>' +
       "</div>";
     d.addEventListener("click", function (e) {
       var b = e.target.closest("button[data-c]");
