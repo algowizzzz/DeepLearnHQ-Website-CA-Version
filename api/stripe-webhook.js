@@ -1,31 +1,39 @@
-// Vercel serverless function — Stripe webhook → MailerLite buyer group,
-// Meta CAPI Purchase backstop, and a purchase notification to Saad.
+// Vercel serverless function — Stripe webhook: the purchase source of truth.
 //
-// Hardened per ticket 7.10 / finding SK-6+T4. The previous version wrapped the
-// MailerLite call in a try/catch that swallowed everything and always returned
-// 200, so a failed buyer-group add looked identical to success: Stripe never
-// retried, nobody was alerted, and the buyer stayed subscribed to the E1–E3
-// "your code is about to expire" series they had already paid to escape.
+// checkout.session.completed → first-party purchase record (Redis) joined to
+// the lead by client_reference_id → MailerLite buyer group → Meta CAPI
+// Purchase → GA4 Measurement Protocol purchase → owner notification.
 //
-// Now: MailerLite failure returns 5xx so Stripe retries (the add is an
-// idempotent upsert, so retries are safe). CAPI and notification failures are
-// alerted but do NOT fail the webhook — they must not block buyer fulfilment.
+// Hardened per ticket 7.10 / SK-6+T4 (MailerLite failure returns 5xx so
+// Stripe retries; CAPI/notify failures never block fulfilment), and in the
+// funnel-hardening pass (2026-10-01):
+//   - Idempotent. Stripe retries and dashboard "Resend" are no-ops: the
+//     event id and the session id are each claimed once in Redis. A replay
+//     used to re-fire CAPI and re-send the purchase alert.
+//   - client_reference_id is now USED, not just printed: dl_… resolves the
+//     lead (and its first/last touch), aq_… an anonymous acquisition, and
+//     the purchase record carries both so "which Reel produced this $99"
+//     is answerable. Email is the fallback join.
+//   - Server-side GA4 purchase (gated on GA4_API_SECRET) so revenue reaches
+//     GA4 even when the thank-you page never loads.
 //
 // Env vars (Vercel):
 //   STRIPE_WEBHOOK_SECRET   required
-//   MAILERLITE_API_KEY      required
-//   ML_GROUP_BUYERS         required — "99 Course Buyers" group id
 //   STRIPE_PAYMENT_LINK_99  required — plink_… for the $99 product (ticket 0.6)
-//   META_PIXEL_ID           optional — CAPI backstop
-//   META_CAPI_TOKEN         optional — CAPI backstop
-//   ALERT_WEBHOOK_URL       optional — purchase + failure notifications
-//   ALERT_WEBHOOK_KEY       required WITH Web3Forms — its access_key; without it
-//                           Web3Forms rejects the post and alerts silently no-op
+//   MAILERLITE_API_KEY, ML_GROUP_BUYERS   required
+//   MAILERLITE_GROUP_ID     optional — code-series group to remove buyers from
+//   KV_REST_API_URL/TOKEN   Upstash Redis — without it the webhook still
+//                           fulfils but cannot dedup or persist attribution
+//   META_CAPI_TOKEN, GA4_API_SECRET, ALERT_WEBHOOK_URL/KEY   optional
 import crypto from "node:crypto";
+import { claim, release, resolveBuyer, buildPurchase, recordPurchase } from "../lib/leads.js";
+import { upsertSubscriber, removeFromGroup } from "../lib/mailerlite.js";
+import { sendEvents, userData } from "../lib/capi.js";
+import { sendPurchase as sendGa4Purchase } from "../lib/ga4-mp.js";
+import { notify } from "../lib/notify.js";
+import { log, logError } from "../lib/log.js";
 
 export const config = { api: { bodyParser: false } };
-
-const PIXEL_ID = "656402296715617"; // D5 — reuse the existing pixel
 
 function readRawBody(req) {
   return new Promise((resolve, reject) => {
@@ -56,95 +64,7 @@ function verifySignature(rawBody, header, secret) {
   return true;
 }
 
-const sha256 = (s) => crypto.createHash("sha256").update(s).digest("hex");
-
-async function notify(subject, body) {
-  const url = process.env.ALERT_WEBHOOK_URL;
-  if (!url) return false;
-  // Web3Forms (the chosen sender, 0.10b) rejects any payload without access_key,
-  // and reads `message` as the email body. Generic webhooks ignore both extras.
-  const payload = { subject, body, message: body };
-  const key = process.env.ALERT_WEBHOOK_KEY;
-  if (key) payload.access_key = key;
-  try {
-    const r = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    return r.ok;
-  } catch (e) {
-    return false;
-  }
-}
-
-// Idempotent upsert — safe to repeat when Stripe retries.
-// Suppression (MAILERLITE-SETUP step 6): the Code Series trigger has
-// "exit when subscriber leaves the trigger group" enabled, so removing the
-// buyer from that group cancels any queued E2/E3 instantly. Best-effort —
-// a failure here must not fail the webhook (the buyer add is the critical op).
-async function removeFromCodeSeries(subscriberId) {
-  const codeGroup = process.env.MAILERLITE_GROUP_ID;
-  const KEY = process.env.MAILERLITE_API_KEY;
-  if (!codeGroup || !subscriberId || !KEY) return;
-  try {
-    await fetch(
-      `https://connect.mailerlite.com/api/subscribers/${subscriberId}/groups/${codeGroup}`,
-      { method: "DELETE", headers: { Authorization: "Bearer " + KEY } }
-    );
-  } catch (e) {}
-}
-
-async function addBuyerToGroup(email, groupId, fields) {
-  const KEY = process.env.MAILERLITE_API_KEY;
-  if (!KEY) throw new Error("mailerlite_not_configured");
-  const r = await fetch("https://connect.mailerlite.com/api/subscribers", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + KEY,
-    },
-    body: JSON.stringify({ email, groups: [groupId], fields }),
-  });
-  if (!r.ok) throw new Error("mailerlite_" + r.status);
-  const j = await r.json().catch(() => null);
-  return j && j.data && j.data.id;
-}
-
-// Server-side Purchase, deduplicated against the browser pixel via event_id.
-// The browser uses the same "purchase_<session_id>", so Meta counts one event
-// even when both fire — and we still get the event if the browser never does
-// (ad-blocker, consent decline, closed tab before the thank-you page loaded).
-async function sendCapiPurchase({ email, value, currency, eventId, sourceUrl, fbp, fbc }) {
-  const token = process.env.META_CAPI_TOKEN;
-  if (!token) return false;
-  const pixel = process.env.META_PIXEL_ID || PIXEL_ID;
-  const user_data = {};
-  if (email) user_data.em = [sha256(email.trim().toLowerCase())];
-  if (fbp) user_data.fbp = fbp;
-  if (fbc) user_data.fbc = fbc;
-
-  const r = await fetch(`https://graph.facebook.com/v21.0/${pixel}/events`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      access_token: token,
-      data: [
-        {
-          event_name: "Purchase",
-          event_time: Math.floor(Date.now() / 1000),
-          event_id: eventId,
-          action_source: "website",
-          event_source_url: sourceUrl || "https://www.deeplearnhq.ca/thank-you-purchase",
-          user_data,
-          custom_data: { value, currency, content_name: "The Generative AI 8-Week Bootcamp" },
-        },
-      ],
-    }),
-  });
-  return r.ok;
-}
+const DAY = 86400;
 
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ ok: false, error: "method" });
@@ -168,8 +88,14 @@ export default async function handler(req, res) {
     return res.status(200).json({ ok: true, ignored: event.type });
   }
 
+  // Idempotency 1 — the Stripe event id. Retries and "Resend" reuse it.
+  if (!(await claim("event", event.id, 30 * DAY))) {
+    log("stripe-webhook", { duplicate: "event", event_id: event.id });
+    return res.status(200).json({ ok: true, duplicate: "event" });
+  }
+
   const s = (event.data && event.data.object) || {};
-  const email = (s.customer_details && s.customer_details.email) || s.customer_email || "";
+  const email = ((s.customer_details && s.customer_details.email) || s.customer_email || "").trim().toLowerCase();
   const link99 = process.env.STRIPE_PAYMENT_LINK_99;
 
   // Only the $99 bootcamp link is ours. Anything else is ignored, but an
@@ -188,21 +114,47 @@ export default async function handler(req, res) {
     return res.status(200).json({ ok: true, ignored: "no_email" });
   }
 
+  // Idempotency 2 — the session. Two distinct events for one session
+  // (should not happen, but costs nothing to guard).
+  if (!(await claim("session", s.id, 365 * DAY))) {
+    log("stripe-webhook", { duplicate: "session", session: s.id });
+    return res.status(200).json({ ok: true, duplicate: "session" });
+  }
+
   const value = (s.amount_total || 0) / 100;
   const currency = (s.currency || "usd").toUpperCase();
 
-  // 1. Buyer group — MUST succeed. Failure => 5xx => Stripe retries.
-  //    A miss here means a paying customer keeps getting "your code dies
-  //    tonight" emails, so it is worth failing loudly for.
+  // 1. Attribution — who is this buyer, and what brought them? -------------
+  const { lead, aq, method, legacyRef } = await resolveBuyer(s.client_reference_id, email);
+  const purchase = buildPurchase({ session: s, lead, aq, method, legacyRef, email });
+  const recorded = await recordPurchase(purchase);
+
+  // 2. Buyer group — MUST succeed. Failure => release the claims so Stripe's
+  //    retry is a real retry, then 5xx. A miss here means a paying customer
+  //    keeps getting "your code dies tonight" emails.
   let buyerId = null;
   try {
-    buyerId = await addBuyerToGroup(email, process.env.ML_GROUP_BUYERS, {
+    const fields = {
       signup_source: "bootcamp_99_purchase",
       purchase_amount: value.toString(),
       purchase_currency: currency,
       stripe_session: s.id,
-    });
+      purchased_at: purchase.purchase_timestamp,
+    };
+    if (purchase.stripe_payment_intent) fields.stripe_payment_intent = purchase.stripe_payment_intent;
+    if (lead) {
+      fields.lead_id = lead.lead_id;
+      if (purchase.days_since_registration != null) fields.days_since_registration = String(purchase.days_since_registration);
+    }
+    for (const k of Object.keys(purchase)) {
+      if (k.startsWith("first_touch_") || k.startsWith("last_touch_")) fields[k] = purchase[k];
+    }
+    buyerId = await upsertSubscriber(email, fields, [process.env.ML_GROUP_BUYERS]);
+    if (!buyerId) throw new Error("mailerlite_no_id");
   } catch (e) {
+    await release("event", event.id);
+    await release("session", s.id);
+    await logError("stripe-webhook.mailerlite", e, { lead_id: lead && lead.lead_id, status: 500 });
     await notify(
       "URGENT: buyer not added to MailerLite",
       `${email} paid ${value} ${currency} (session ${s.id}) but the group add failed: ${e.message}.\n` +
@@ -212,32 +164,59 @@ export default async function handler(req, res) {
     return res.status(500).json({ ok: false, error: "mailerlite_failed" });
   }
 
-  // 1b. Pull the buyer out of the Code Series group. With the trigger's
+  // 2b. Pull the buyer out of the Code Series group. With the trigger's
   //     "exit when no longer in trigger group" setting on, this cancels any
   //     queued E2/E3 the moment they pay. Best-effort by design.
-  await removeFromCodeSeries(buyerId);
+  await removeFromGroup(buyerId, process.env.MAILERLITE_GROUP_ID);
 
-  // 2 + 3. CAPI and notification are best-effort: alert on failure, never
-  //        fail the webhook, because a retry would re-run step 1 for nothing.
+  // 3. Meta CAPI Purchase — same deterministic event_id the thank-you page
+  //    uses, so Meta counts one event when both fire.
   const eventId = "purchase_" + s.id;
-  const capiOk = await sendCapiPurchase({
-    email,
-    value,
-    currency,
-    eventId,
-    sourceUrl: s.success_url,
-    fbp: (s.metadata && s.metadata.fbp) || null,
-    fbc: (s.metadata && s.metadata.fbc) || null,
-  });
+  const capiOk = await sendEvents([{
+    event_name: "Purchase",
+    event_id: eventId,
+    event_source_url: s.success_url || "https://www.deeplearnhq.ca/thank-you-purchase",
+    user_data: userData({
+      email,
+      fbp: (s.metadata && s.metadata.fbp) || null,
+      fbc: (s.metadata && s.metadata.fbc) || null,
+      fbclid: lead && lead.fbclid,
+    }),
+    custom_data: { value, currency, content_name: "The Generative AI 8-Week Bootcamp" },
+  }]);
   if (!capiOk && process.env.META_CAPI_TOKEN) {
     await notify("Meta CAPI Purchase failed", `session ${s.id} · ${email} · ${value} ${currency}`);
   }
 
+  // 4. GA4 Measurement Protocol purchase — real client_id when the lead
+  //    consented to analytics before registering/clicking checkout; a
+  //    deterministic synthetic one otherwise (counted, not attributed).
+  const gaClientId = (lead && lead.ga_client_id) || (aq && aq.ga_client_id) || null;
+  const ga4Ok = await sendGa4Purchase({
+    clientId: gaClientId,
+    userId: lead ? lead.lead_id : (aq ? aq.aq_id : s.id),
+    transactionId: s.id,
+    value,
+    currency,
+    timestampMs: s.created ? s.created * 1000 : undefined,
+  });
+
+  // 5. Owner notification — now with the attribution answer in it.
+  const attribution = lead
+    ? `lead ${lead.lead_id} (${method}) · first touch ${lead.first_touch_source || "-"} / ${lead.first_touch_content || "-"} · last touch ${lead.last_touch_source || "-"} · ${purchase.days_since_registration ?? "?"} days from signup`
+    : aq
+      ? `acquisition ${aq.aq_id} · first touch ${aq.first_touch_source || "-"} / ${aq.first_touch_content || "-"}`
+      : `no attribution (ref ${s.client_reference_id || "-"})`;
   const notified = await notify(
     `New purchase: ${value} ${currency}`,
-    `${email}\nsession ${s.id}\nref ${s.client_reference_id || "-"}\n\n` +
+    `${email}\nsession ${s.id}\n${attribution}\n\n` +
     `ACTION: send login credentials within 24h (SLA), then log it in the reconciliation sheet.`
   );
 
-  return res.status(200).json({ ok: true, capi: capiOk, notified });
+  log("stripe-webhook", {
+    session: s.id, lead_id: lead ? lead.lead_id : null, aq_id: aq ? aq.aq_id : null, link_method: method,
+    recorded, capi: capiOk, ga4: ga4Ok, value, currency,
+  });
+
+  return res.status(200).json({ ok: true, recorded, link_method: method, capi: capiOk, ga4: ga4Ok, notified });
 }
