@@ -43,10 +43,15 @@ export default async function handler(req, res) {
       if (!lead) return res.status(204).end();
       const { first } = await markStep(id, type, lastTouch);
       if (gaClientId && !lead.ga_client_id) await updateLead(id, { ga_client_id: gaClientId });
-      // Mirror the milestone to MailerLite so segments can use it; best-effort.
+      // Mirror the milestone to MailerLite so segments can use it. Awaited on
+      // purpose: a fire-and-forget promise here is dropped when the function
+      // freezes after the response (verified on Preview — the field stayed
+      // null). Best-effort only in the sense that a failure is swallowed.
       if (first && type !== "consent") {
         const fields = { lead_id: id, [`${type}_at`]: new Date().toISOString(), ...flattenTouch("last_touch", lastTouch) };
-        upsertSubscriber(lead.email, fields).catch(() => {});
+        await upsertSubscriber(lead.email, fields).catch(() => {});
+      } else if (lastTouch && type !== "consent") {
+        await upsertSubscriber(lead.email, { lead_id: id, ...flattenTouch("last_touch", lastTouch) }).catch(() => {});
       }
     } else {
       await upsertAcquisition(id, { firstTouch, lastTouch, gaClientId, step: type === "consent" ? null : type });

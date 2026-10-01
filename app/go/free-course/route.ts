@@ -36,7 +36,9 @@ export async function GET(req: NextRequest) {
           email = lead.email;
           const { first } = await markStep(leadId, "free_course_outbound", null);
           if (first) {
-            upsertSubscriber(lead.email, { lead_id: leadId, free_course_outbound_at: new Date().toISOString() }).catch(() => {});
+            // Awaited: after() only keeps the function alive until this
+            // callback settles, so an un-awaited promise here is dropped.
+            await upsertSubscriber(lead.email, { lead_id: leadId, free_course_outbound_at: new Date().toISOString() }).catch(() => {});
           }
         }
       }
