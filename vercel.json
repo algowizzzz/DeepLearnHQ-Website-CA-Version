@@ -285,11 +285,11 @@
   "rewrites": [
     {
       "source": "/courses/free",
-      "destination": "/index.html"
+      "destination": "/bootcamp"
     },
     {
       "source": "/courses/free/",
-      "destination": "/index.html"
+      "destination": "/bootcamp"
     },
     {
       "source": "/thank-you-signup",

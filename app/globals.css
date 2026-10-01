@@ -1,0 +1,59 @@
+/* Design tokens carried over from the existing site's styles.css, so the new
+   React pages feel like the same brand, not a different product. */
+:root {
+  --blue: #1267d6;
+  --blue-deep: #0a3c8c;
+  --violet: #7c45e8;
+  --magenta: #e21f9c;
+  --grad: linear-gradient(115deg, #0a5cd6 0%, #6a31d6 52%, #e21f9c 100%);
+  --grad-soft: linear-gradient(115deg, rgba(10, 92, 214, 0.16), rgba(106, 49, 214, 0.14), rgba(226, 31, 156, 0.16));
+  --ink: #0b1220;
+  --paper: #ffffff;
+  --paper-2: #f7f9fc;
+  --line: #e6e9f0;
+  --muted: #5b6472;
+  /* Set by next/font in app/layout.tsx — self-hosted, not a Google Fonts
+     CDN reference at runtime, unlike the old site's <link> tag. */
+  --f-display: var(--f-display-font), sans-serif;
+  --f-body: var(--f-body-font), sans-serif;
+  --f-mono: var(--f-mono-font), monospace;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--f-body);
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--f-body); font-weight: 700; font-size: 1rem;
+  padding: 14px 26px; border-radius: 999px; border: 0; cursor: pointer;
+  text-decoration: none; min-height: 48px; justify-content: center;
+}
+.btn-grad { background: var(--grad); color: #fff; box-shadow: 0 10px 30px -8px rgba(124, 69, 232, 0.5); }
+.btn-grad:hover { box-shadow: 0 14px 36px -8px rgba(124, 69, 232, 0.65); }
+.btn-ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--line); }
+.btn-ghost:hover { border-color: var(--blue); color: var(--blue); }
+
+@media (max-width: 680px) {
+  .btn { min-height: 52px; width: 100%; }
+}
