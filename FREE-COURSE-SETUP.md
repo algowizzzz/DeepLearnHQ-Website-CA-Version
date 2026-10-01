@@ -98,9 +98,14 @@ deploy.
   been checked against what the free Udemy course actually covers. The page
   promises "10+ tools" — if any of these aren't in the course, that's the
   trust leak Saad flagged. I can't verify this; only the course owner can.
-- ⬜ **Reactivate the automation** (it was paused on 2026-10-01 to update
-  the course link to `/go/free-course`; MailerLite blocks API edits to active
-  automations).
+- ✅ **Automation email updated and reactivated (2026-10-01).** Course link
+  now goes through `/go/free-course` (tracked) and the body says "about
+  3 hours, at your own pace" — "45 minutes" is gone from the page and the
+  email. Both edits required pause → API edit → Activate in the dashboard.
+  Verified via the rendered preview (`preview.mailerlite.io`), **not** via
+  the API's `plain_text` field — that field kept echoing the old body after
+  both successful edits and appears to be a stale derived value. If a
+  text-only client ever shows old copy, that's where to look.
 
 - ⬜ **The automation is OFF, and re-entry is OFF.** Neither is settable via
   the API this was built with — both are a manual toggle in the dashboard
