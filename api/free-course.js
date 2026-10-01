@@ -1,16 +1,23 @@
-// Vercel serverless function — free-course lead capture (email + phone).
+// Vercel serverless function — free-course lead capture (email, phone optional).
 //
 // Distinct from api/subscribe.js on purpose: that endpoint mints a per-user,
 // time-limited Stripe promo code for the $99 sales page. This one has no
-// Stripe involvement at all — the free course link and the current coupon
-// text live inside the MailerLite automation email itself, so Saad can
-// rotate the coupon anytime by editing that email, with no deploy needed.
+// Stripe involvement at all — the free course link lives inside the
+// MailerLite automation email itself, so Saad can rotate it anytime by
+// editing that email, with no deploy needed.
 //
-// Order matters:
-//   1. Guard the request (honeypot, email + phone validation, rate limit).
-//   2. Upsert the MailerLite subscriber with phone + consent fields set.
-//   3. Remove-then-add to the group so a repeat signup re-enters the
-//      automation instead of silently dead-ending (same fix as subscribe.js).
+// Two request shapes, routed by `phone_only`:
+//   - Initial registration (phone_only absent/false): email required, phone
+//     optional (CRO fix — asking for a phone before any value is delivered
+//     measurably hurts top-of-funnel conversion). Upserts the subscriber,
+//     then removes-then-adds the group so a repeat signup re-enters the
+//     automation instead of silently dead-ending (same fix as subscribe.js).
+//   - Post-registration phone add (phone_only: true): the page asks for a
+//     phone number only AFTER the free-course success state, as an optional
+//     "also get it by text" add-on. This path upserts the phone field only
+//     and deliberately SKIPS the group rejoin — rejoining would re-trigger
+//     the automation and re-send the "your course is ready" email the
+//     visitor already has.
 //
 // Env vars (Vercel, never in this file):
 //   MAILERLITE_API_KEY          required — shared with api/subscribe.js
@@ -158,7 +165,7 @@ export default async function handler(req, res) {
   const email = (data.email || "").trim().toLowerCase();
   const phone = (data.phone || "").trim();
   if (!validEmail(email)) return res.status(400).json({ ok: false, error: "invalid_email" });
-  if (!validPhone(phone)) return res.status(400).json({ ok: false, error: "invalid_phone" });
+  if (phone && !validPhone(phone)) return res.status(400).json({ ok: false, error: "invalid_phone" });
 
   const ip =
     (req.headers["x-forwarded-for"] || "").split(",")[0].trim() ||
@@ -166,6 +173,18 @@ export default async function handler(req, res) {
     "unknown";
   if (rateLimited("e:" + email) || rateLimited("i:" + ip)) {
     return res.status(429).json({ ok: false, error: "rate_limited" });
+  }
+
+  // Post-registration "also get it by text" add-on: upsert the phone field
+  // only, never touch the group. See header comment for why.
+  if (data.phone_only === true) {
+    if (!phone) return res.status(400).json({ ok: false, error: "invalid_phone" });
+    try {
+      await upsertSubscriber(email, phone, { sms_consent: "yes" });
+    } catch (e) {
+      return res.status(502).json({ ok: false, error: "update_failed" });
+    }
+    return res.status(200).json({ ok: true });
   }
 
   const smsConsent = data.sms_consent === true;
@@ -176,6 +195,16 @@ export default async function handler(req, res) {
       sms_consent: smsConsent ? "yes" : "no",
       // MailerLite reserves the field name "source", so ours is signup_source.
       signup_source: (data.source || "free_course_landing").toString().slice(0, 60),
+      // Attribution — kept as discrete fields rather than relying on
+      // reconstructing them from page_url later, so the lead→bootcamp
+      // attribution chain (Instagram → Reel → registration → purchase
+      // weeks later) survives even if the URL-parsing logic ever changes.
+      utm_source: (data.utm_source || "").toString().slice(0, 100),
+      utm_medium: (data.utm_medium || "").toString().slice(0, 100),
+      utm_campaign: (data.utm_campaign || "").toString().slice(0, 100),
+      utm_content: (data.utm_content || "").toString().slice(0, 100),
+      referrer: (data.referrer || "").toString().slice(0, 300),
+      landing_page: (data.landing_page || "").toString().slice(0, 300),
     });
     if (!id) throw new Error("mailerlite_no_id");
     await rejoinGroup(id, process.env.MAILERLITE_GROUP_FREE_COURSE);

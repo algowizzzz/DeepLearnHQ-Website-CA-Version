@@ -43,7 +43,64 @@ you want to rotate the coupon. No redeploy needed for that part.
     now sit in Free Course Members CA; delete them from the dashboard
     whenever, they don't affect anything left running.
 
+## CRO pass — 2026-10-01 (after Saad's review of the first live version)
+
+Targeted conversion fixes, same visual direction, no redesign:
+
+- **Offer restored to the real 3-hour course** everywhere on the page (was
+  "~45 Minutes", which contradicted the Reel CTA / bio / strategy).
+- **Phone is no longer required.** Primary form = email only. Phone is asked
+  *after* the success state as an optional "also get it by text" add-on; that
+  submit goes to the same endpoint with `phone_only: true`, which upserts the
+  phone field and **deliberately skips the group rejoin** so the automation
+  does not re-send the course email.
+- **Success state sends people straight to the course** — "You're in. →
+  Start the Free Course" links to `/go/free-course` (tracked, 302 → Udemy
+  coupon). The automation email still fires simultaneously as the backup.
+- **Coupon pitch removed** from the success state. The $99 offer is now
+  introduced later in the lifecycle (email), not at the moment of capture.
+- **Header is logo-only** — Instagram icon and "Bootcamp →" link removed.
+  The bottom "see the full 8-Week Bootcamp" link is gone too.
+- **Mobile subhead is kept** (shortened), not hidden.
+- **Page gained the sections the spec called for:** what you'll be able to
+  do (3 cards) · tools · proof (stats line + 3 real testimonials — Ananya,
+  Farhan, Luis, carried from `COPY-v3.md` §6, the same verified set the old
+  bootcamp page published) · compact instructor block ("Industry experience
+  includes …" wording, not "Instructors with experience from") · 4-item FAQ ·
+  repeat email CTA.
+- **Analytics split into funnel steps:** `free_lp_view` · `free_form_start`
+  · `free_registration_attempt` · `free_registration_complete` ·
+  `free_course_start`. Meta `Lead` fires only after a successful registration
+  (unchanged). `free_course_submit` is retired.
+- **Attribution persisted as discrete MailerLite fields** — `utm_source`,
+  `utm_medium`, `utm_campaign`, `utm_content`, `referrer`, `landing_page`
+  (all six created in MailerLite on 2026-10-01). Captured on first touch,
+  stored in localStorage, and **also written to the shared `dlhq_ref` key**
+  that `track.js` / `app/lib/attribution.ts` read, so a later `/bootcamp`
+  purchase carries the same Reel/UTM through to Stripe's
+  `client_reference_id`.
+- **Motion:** reuses `main.js`'s existing `.reveal` / `[data-count]` system
+  (already `prefers-reduced-motion`-aware) plus a very slow CSS blob drift
+  and a desktop-only CTA hover lift. No new JS for motion.
+
+Verified locally (`next dev`, mobile 375×812 + desktop 1280): hero + form
+above the fold on mobile with no scroll, success state, optional phone
+add-on, FAQ toggles, scroll-to-form CTA, `/go/free-course` 302. The live
+MailerLite round-trip could not be exercised locally (`next dev` does not
+serve root `api/*.js`; Vercel does) — confirm with one real signup after
+deploy.
+
 ## Still only you can do
+
+- ⬜ 🔴 **Verify the tool list before sending traffic.** `.fc-tools` still
+  shows ChatGPT / Claude / Gemini / Perplexity / Midjourney / Notion / Zapier
+  / Google / "+2". That list was a *guess from bootcamp copy* and has never
+  been checked against what the free Udemy course actually covers. The page
+  promises "10+ tools" — if any of these aren't in the course, that's the
+  trust leak Saad flagged. I can't verify this; only the course owner can.
+- ⬜ **Reactivate the automation** (it was paused on 2026-10-01 to update
+  the course link to `/go/free-course`; MailerLite blocks API edits to active
+  automations).
 
 - ⬜ **The automation is OFF, and re-entry is OFF.** Neither is settable via
   the API this was built with — both are a manual toggle in the dashboard
