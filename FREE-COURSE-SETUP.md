@@ -71,6 +71,23 @@ and its `vercel.json` rewrite are gone. Same copy, layout and CSS; one
   export in the "I read every review" post — genuine quotes, punctuation only.
 - Social-proof numbers come from `app/lib/social-proof.ts` ("learners
   taught", never "in this course").
+- **Stripe webhook is covered by `npm test`** (`tests/stripe-webhook.test.mjs`,
+  17 cases, no network, no secrets): the real handler is driven with
+  HMAC-signed synthetic `checkout.session.completed` events against an
+  in-process Upstash emulator (`tests/helpers/fake-upstash.mjs`) with
+  MailerLite / Meta CAPI / GA4 / alerts stubbed. Proven: bad or stale
+  signature → 400 and nothing written; other payment links ignored + alert;
+  `dl_` reference joins the purchase to the lead's **first** touch and
+  counters land under that content id; Stripe retry / dashboard "Resend" is
+  a no-op (one CAPI event, one GA4 hit, one alert); MailerLite 500 → webhook
+  500 with both claims released so Stripe's retry is real, and the retry does
+  not double-count the purchase; `aq_`, email-only, legacy `fb--` and
+  Redis-outage paths behave as documented in `ATTRIBUTION.md`. The live
+  endpoint (`we_1TvUSI…` → `/api/stripe-webhook`, event
+  `checkout.session.completed`, link `plink_1U9q8H…`) is configured
+  correctly in Stripe; the first real $99 purchase after 2026-10-01 is the
+  live confirmation — check `/api/admin/export?kind=purchases` for a record
+  with `link_method` and the Vercel function log line `route:"stripe-webhook"`.
 
 ## CRO pass — 2026-10-01 (after Saad's review of the first live version)
 
@@ -136,18 +153,18 @@ deploy.
   both successful edits and appears to be a stale derived value. If a
   text-only client ever shows old copy, that's where to look.
 
-- ⬜ **The automation is OFF, and re-entry is OFF.** Neither is settable via
-  the API this was built with — both are a manual toggle in the dashboard
-  (link above). **Turn re-entry ON before turning the automation ON** — the
-  endpoint removes then re-adds a repeat signup specifically so it re-enters,
-  and without re-entry that does nothing silently.
-- ⬜ **Two placeholders are sitting in the email**, in ALL CAPS so they can't
-  be missed: `[[PASTE THE FREE COURSE LINK HERE]]` and
-  `[[PASTE YOUR CURRENT COUPON CODE HERE]]`. Only you know where the free
-  course actually lives and what the current coupon is.
-- ⬜ Replace the tool-pill list in `free-course.html` (`.fc-tools`) if the
-  free course doesn't actually cover ChatGPT/Claude/Gemini/Perplexity/
+- ✅ **Automation is active** (2026-10-01) and the email's placeholders are
+  gone — the button is `/go/free-course?lid={$lead_id}` and the destination
+  is the `FREE_COURSE_DESTINATION_URL` env var (currently the Udemy coupon
+  URL; swap that one value when the course moves). Re-entry must stay ON:
+  the endpoint removes then re-adds a repeat signup specifically so the
+  automation re-enters, and without re-entry that does nothing silently.
+- ⬜ Replace the tool-pill list in `app/free-course/page.tsx` (`.fc-tools`)
+  if the free course doesn't actually cover ChatGPT/Claude/Gemini/Perplexity/
   Midjourney/Notion/Zapier/Google.
+- ⬜ **GA4 key events:** star `free_registration_complete` and
+  `checkout_start` in GA4 Admin → Events once they have been seen (GA4 only
+  lists an event after the first hit). `purchase` is already a key event.
 
 ## Whenever you rotate the coupon
 
