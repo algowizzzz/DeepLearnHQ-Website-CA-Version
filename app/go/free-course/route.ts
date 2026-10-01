@@ -1,60 +1,62 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, after } from "next/server";
 import crypto from "node:crypto";
+import { getLead, markStep } from "@/lib/leads";
+import { isLeadId } from "@/lib/ids";
+import { sendEvents, userData } from "@/lib/capi";
+import { upsertSubscriber } from "@/lib/mailerlite";
+import { logError } from "@/lib/log";
 
-/* Tracked redirect for the free-course delivery email — see migration plan.
-   Udemy exposes no progress/click data of its own, so this is the only way
-   to observe "did they actually click through" at all. Fires a Meta CAPI
-   event server-side (reusing the same pattern as api/free-course.js's
-   sendCapiLead), then 302s to the real Udemy coupon URL.
+/* Tracked redirect to the free course.
+   The destination is ONE config value (FREE_COURSE_DESTINATION_URL) so moving
+   off the temporary Udemy coupon later is an env-var change, not a deploy.
 
-   NOTE: no GA4 server-side event here — that would need a GA4 Measurement
-   Protocol API secret, which isn't configured for this project (only
-   META_CAPI_TOKEN exists). Documented gap, not a silent omission; add a
-   GA4 secret later if this event needs to show up in GA4 too. */
+   With ?lid=<lead_id> (the success-state CTA and the delivery email both add
+   it) this records `free_course_outbound` on the lead — first-party, so it
+   counts even when analytics consent was declined. It is deliberately NOT
+   called "activated": we can only prove the click, not that learning
+   happened on the other side. All recording runs in after(), so the 302 is
+   never delayed by Redis/MailerLite/Meta. */
 
-const UDEMY_COUPON_URL = "https://www.udemy.com/course/generative-ai-chatgpt/?couponCode=26BBPAC2MX";
-const PIXEL_ID = "656402296715617";
-
-async function sendCapiEvent(req: NextRequest) {
-  const token = process.env.META_CAPI_TOKEN;
-  if (!token) return;
-
-  const ip = (req.headers.get("x-forwarded-for") || "").split(",")[0].trim() || undefined;
-  const ua = req.headers.get("user-agent") || undefined;
-  const cookie = req.headers.get("cookie") || "";
-  const fbcMatch = cookie.match(/(?:^|;\s*)_fbc=([^;]*)/);
-  const fbpMatch = cookie.match(/(?:^|;\s*)_fbp=([^;]*)/);
-
-  const user_data: Record<string, unknown> = {};
-  if (ip) user_data.client_ip_address = ip;
-  if (ua) user_data.client_user_agent = ua;
-  if (fbcMatch) user_data.fbc = decodeURIComponent(fbcMatch[1]);
-  if (fbpMatch) user_data.fbp = decodeURIComponent(fbpMatch[1]);
-
-  try {
-    await fetch(`https://graph.facebook.com/v21.0/${PIXEL_ID}/events`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        access_token: token,
-        data: [
-          {
-            event_name: "free_course_link_click",
-            event_id: "fclc_" + crypto.randomBytes(8).toString("hex"),
-            event_time: Math.floor(Date.now() / 1000),
-            action_source: "website",
-            event_source_url: "https://www.deeplearnhq.ca/go/free-course",
-            user_data,
-          },
-        ],
-      }),
-    });
-  } catch {
-    // Never block the redirect on a tracking failure.
-  }
-}
+const DEFAULT_DESTINATION = "https://www.udemy.com/course/generative-ai-chatgpt/?couponCode=26BBPAC2MX";
 
 export async function GET(req: NextRequest) {
-  await sendCapiEvent(req);
-  return NextResponse.redirect(UDEMY_COUPON_URL, { status: 302 });
+  const lid = req.nextUrl.searchParams.get("lid") || "";
+  const leadId = isLeadId(lid) ? lid : null;
+  const ip = (req.headers.get("x-forwarded-for") || "").split(",")[0].trim() || undefined;
+  const ua = req.headers.get("user-agent") || undefined;
+  const cookieHeader = req.headers.get("cookie") || "";
+  const sourceUrl = req.url;
+
+  after(async () => {
+    try {
+      let email: string | undefined;
+      if (leadId) {
+        const lead = await getLead(leadId);
+        if (lead) {
+          email = lead.email;
+          const { first } = await markStep(leadId, "free_course_outbound", null);
+          if (first) {
+            upsertSubscriber(lead.email, { lead_id: leadId, free_course_outbound_at: new Date().toISOString() }).catch(() => {});
+          }
+        }
+      }
+      await sendEvents([
+        {
+          event_name: "free_course_link_click",
+          // Deterministic per lead so repeat clicks dedupe inside Meta's window.
+          event_id: leadId ? "fco_" + leadId : "fclc_" + crypto.randomBytes(8).toString("hex"),
+          event_source_url: sourceUrl,
+          user_data: userData({ email, ip, ua, cookieHeader }),
+        },
+      ]);
+    } catch (e) {
+      await logError("go.free-course", e, { lead_id: leadId || undefined });
+    }
+  });
+
+  const res = NextResponse.redirect(process.env.FREE_COURSE_DESTINATION_URL || DEFAULT_DESTINATION, { status: 302 });
+  if (leadId) {
+    res.cookies.set("dlhq_lid", leadId, { maxAge: 31536000, sameSite: "lax", path: "/", secure: true });
+  }
+  return res;
 }

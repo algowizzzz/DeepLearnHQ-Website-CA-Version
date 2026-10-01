@@ -1,15 +1,24 @@
 "use client";
 
 /* ============================================================
-   Consent gate + analytics for the NEW React pages.
+   Consent gate + analytics for the React pages.
    Ported from public/chrome.js's logic (same GA_ID, PIXEL_ID, same
    "dlhq_consent" localStorage key, same compact-banner copy/behavior from
    the consent-banner fix shipped earlier) so a visitor's choice and the
    legal behavior described in privacy.html §9 are identical whether they're
    on an old static page or a new React one. Do not fork this logic —
    if the banner copy or analytics IDs change, change both places.
+
+   Funnel-hardening additions:
+   - After a grant, the GA4 client_id is captured (attribution.ts) so a
+     server-side purchase can be attributed in GA4.
+   - window.__dlhqConsent + the "dlhq:consent" CustomEvent — the contract
+     chrome.js already exposes — so page scripts can react to the choice.
+   - --consent-h on <html> while the banner is visible, so fixed-bottom UI
+     (the bootcamp sticky CTA) can sit above it instead of under it.
    ============================================================ */
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { captureGaClientId } from "../lib/attribution";
 
 const GA_ID = "G-154Y1RBED7";
 const PIXEL_ID = "656402296715617";
@@ -44,6 +53,15 @@ function loadAnalytics() {
   })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
   window.fbq?.("init", PIXEL_ID);
   window.fbq?.("track", "PageView");
+
+  captureGaClientId(GA_ID);
+}
+
+function announce(choice: "granted" | "denied") {
+  (window as unknown as { __dlhqConsent?: string }).__dlhqConsent = choice;
+  try {
+    window.dispatchEvent(new CustomEvent("dlhq:consent", { detail: choice }));
+  } catch {}
 }
 
 function record(choice: "granted" | "denied") {
@@ -62,6 +80,7 @@ function record(choice: "granted" | "denied") {
 
 export default function ConsentAnalytics() {
   const [visible, setVisible] = useState(false);
+  const bannerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     // Vercel Web Analytics: cookieless, loads unconditionally — identical
@@ -76,9 +95,30 @@ export default function ConsentAnalytics() {
     try {
       prior = localStorage.getItem(KEY);
     } catch {}
-    if (prior === "granted") loadAnalytics();
-    else if (prior !== "denied") setVisible(true);
+    if (prior === "granted") { loadAnalytics(); announce("granted"); }
+    else if (prior === "denied") announce("denied");
+    else setVisible(true);
   }, []);
+
+  // Publish the banner's height so fixed-bottom UI can avoid it.
+  useEffect(() => {
+    const root = document.documentElement;
+    if (!visible || !bannerRef.current) {
+      root.style.setProperty("--consent-h", "0px");
+      return;
+    }
+    const el = bannerRef.current;
+    const sync = () => root.style.setProperty("--consent-h", el.offsetHeight + "px");
+    sync();
+    const ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(sync) : null;
+    ro?.observe(el);
+    window.addEventListener("resize", sync);
+    return () => {
+      ro?.disconnect();
+      window.removeEventListener("resize", sync);
+      root.style.setProperty("--consent-h", "0px");
+    };
+  }, [visible]);
 
   function decide(choice: "granted" | "denied") {
     try {
@@ -86,6 +126,7 @@ export default function ConsentAnalytics() {
     } catch {}
     record(choice);
     if (choice === "granted") loadAnalytics();
+    announce(choice);
     setVisible(false);
   }
 
@@ -93,6 +134,7 @@ export default function ConsentAnalytics() {
 
   return (
     <div
+      ref={bannerRef}
       role="dialog"
       aria-label="Cookie choices"
       style={{

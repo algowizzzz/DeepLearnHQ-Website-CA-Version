@@ -94,5 +94,24 @@
   })();
 </script>
 <script src="/track.js"></script>
+<script>
+  // Prefer the first-party lead_id as Stripe's client_reference_id when the
+  // visitor registered for the free course first. Runs after track.js has
+  // written its (legacy fb--…) ref, so this overrides it and keeps the
+  // promo-code prefill intact.
+  document.addEventListener('DOMContentLoaded', function () {
+    var lid = null;
+    try { lid = localStorage.getItem('dlhq_lead_id'); } catch (e) {}
+    if (!lid || !/^dl_[0-9A-Za-z]{10}$/.test(lid)) return;
+    document.querySelectorAll('[data-buy]').forEach(function (a) {
+      try {
+        var u = new URL(a.getAttribute('href'), location.href);
+        if (u.hostname !== 'buy.stripe.com') return;
+        u.searchParams.set('client_reference_id', lid);
+        a.setAttribute('href', u.toString());
+      } catch (e) {}
+    });
+  });
+</script>
 </body>
 </html>

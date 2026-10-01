@@ -9,31 +9,40 @@ import FourProjects from "./components/FourProjects";
 import WhoThisIsFor from "./components/WhoThisIsFor";
 import CurriculumTimeline from "./components/CurriculumTimeline";
 import FAQAccordion from "./components/FAQAccordion";
-import { captureFbclid, captureRef, bootcampCheckoutUrl } from "../lib/attribution";
+import { captureTouch, checkoutUrl as buildCheckoutUrl, beacon } from "../lib/attribution";
+import { track, fbTrack } from "../lib/track";
+
+const PRODUCT = { item_id: "build_with_ai_8_week", item_name: "Build With AI — 8-Week Program", price: 99 };
 
 export default function BootcampPage() {
-  const [checkoutUrl, setCheckoutUrl] = useState("https://buy.stripe.com/8x23cw8NA7p76o56skejK0b");
+  // SSR renders the bare payment link; the effect swaps in the attribution-
+  // aware URL (client_reference_id = lead_id, or an acquisition id for a
+  // visitor who never registered) once localStorage is readable.
+  const [checkoutUrl, setCheckoutUrl] = useState(buildCheckoutUrl());
 
   useEffect(() => {
-    captureFbclid();
-    captureRef();
-    setCheckoutUrl(bootcampCheckoutUrl());
-    window.gtag?.("event", "bootcamp_lp_view", {});
-    window.fbq?.("track", "ViewContent", { content_name: "The Generative AI 8-Week Bootcamp", value: 99, currency: "USD" });
+    captureTouch();
+    setCheckoutUrl(buildCheckoutUrl());
+    track("bootcamp_lp_view", {});
+    fbTrack("ViewContent", { content_name: "The Generative AI 8-Week Bootcamp", value: 99, currency: "USD" });
+    beacon("bootcamp_visit");
   }, []);
 
-  function onCheckoutClick() {
-    window.gtag?.("event", "checkout_start", {});
-    window.fbq?.("track", "InitiateCheckout", { value: 99, currency: "USD" });
-  }
-
-  function onCtaClick() {
-    window.gtag?.("event", "bootcamp_cta_click", {});
+  // One handler for all six $99 CTAs. checkout_start carries the value so
+  // GA4 can report it as revenue intent; the first-party beacon records it
+  // on the lead regardless of analytics consent.
+  function onCheckout(location: string) {
+    return () => {
+      track("bootcamp_cta_click", { location });
+      track("checkout_start", { value: 99, currency: "USD", items: [PRODUCT] });
+      fbTrack("InitiateCheckout", { value: 99, currency: "USD", content_name: PRODUCT.item_name });
+      beacon("checkout_start", { location });
+    };
   }
 
   return (
     <>
-      <Nav ctaLabel="Join for $99" ctaHref={checkoutUrl} />
+      <Nav ctaLabel="Join for $99" ctaHref={checkoutUrl} onCtaClick={onCheckout("nav")} />
 
       {/* 1. HERO */}
       <section style={{ padding: "64px 0 40px", textAlign: "center" }}>
@@ -52,7 +61,7 @@ export default function BootcampPage() {
           <BootcampHero />
 
           <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap", margin: "32px 0 16px" }}>
-            <a href={checkoutUrl} onClick={onCheckoutClick} className="btn btn-grad">
+            <a href={checkoutUrl} onClick={onCheckout("hero")} className="btn btn-grad">
               Join the Program — $99 →
             </a>
           </div>
@@ -120,7 +129,7 @@ export default function BootcampPage() {
           </Reveal>
           <FourProjects />
           <div style={{ textAlign: "center", marginTop: 32 }}>
-            <a href={checkoutUrl} onClick={onCheckoutClick} className="btn btn-grad">
+            <a href={checkoutUrl} onClick={onCheckout("projects")} className="btn btn-grad">
               I Want to Build These →
             </a>
           </div>
@@ -239,7 +248,7 @@ export default function BootcampPage() {
               ))}
             </ul>
             <div style={{ fontFamily: "var(--f-display)", fontWeight: 700, fontSize: 48, marginBottom: 20 }}>$99</div>
-            <a href={checkoutUrl} onClick={onCheckoutClick} className="btn btn-grad">
+            <a href={checkoutUrl} onClick={onCheckout("pricing")} className="btn btn-grad">
               Start Building →
             </a>
           </Reveal>
@@ -283,7 +292,7 @@ export default function BootcampPage() {
             <p style={{ color: "rgba(255,255,255,.85)", marginBottom: 28 }}>
               Or you can have eight more weeks of saved AI videos.
             </p>
-            <a href={checkoutUrl} onClick={onCheckoutClick} className="btn" style={{ background: "#fff", color: "var(--blue-deep)" }}>
+            <a href={checkoutUrl} onClick={onCheckout("final")} className="btn" style={{ background: "#fff", color: "var(--blue-deep)" }}>
               Join the 8-Week Program — $99 →
             </a>
           </Reveal>
@@ -323,14 +332,16 @@ export default function BootcampPage() {
         }}
         className="mobile-sticky-cta"
       >
-        <a href={checkoutUrl} onClick={onCheckoutClick} className="btn btn-grad" style={{ width: "100%" }}>
+        <a href={checkoutUrl} onClick={onCheckout("sticky")} className="btn btn-grad" style={{ width: "100%" }}>
           Join for $99
         </a>
       </div>
       <style>{`
         @media (max-width: 780px) {
-          .mobile-sticky-cta { display: block !important; }
-          body { padding-bottom: 76px; }
+          /* --consent-h is set by ConsentAnalytics while its banner is on
+             screen, so the sticky bar sits above it instead of under it. */
+          .mobile-sticky-cta { display: block !important; bottom: var(--consent-h, 0px) !important; }
+          body { padding-bottom: calc(76px + var(--consent-h, 0px)); }
         }
       `}</style>
     </>

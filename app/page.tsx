@@ -5,12 +5,12 @@ import { useEffect } from "react";
 import Nav from "./components/Nav";
 import Reveal from "./components/Reveal";
 import AnimatedCounter from "./components/AnimatedCounter";
-import { captureFbclid, captureRef } from "./lib/attribution";
+import { captureTouch } from "./lib/attribution";
+import { track } from "./lib/track";
 
 export default function HomePage() {
   useEffect(() => {
-    captureFbclid();
-    captureRef();
+    captureTouch();
   }, []);
 
   return (
@@ -40,11 +40,11 @@ export default function HomePage() {
             <a
               href="/free-course"
               className="btn btn-grad"
-              onClick={() => window.gtag?.("event", "free_cta_click", { location: "homepage_hero" })}
+              onClick={() => track("free_cta_click", { location: "homepage_hero" })}
             >
               Start Free — 3-Hour AI Course
             </a>
-            <Link href="/bootcamp" className="btn btn-ghost">
+            <Link href="/bootcamp" className="btn btn-ghost" onClick={() => track("bootcamp_cta_click", { location: "homepage_hero" })}>
               Explore the 8-Week Program
             </Link>
           </div>
@@ -72,7 +72,7 @@ export default function HomePage() {
                 <p style={{ color: "var(--muted)", lineHeight: 1.6, marginBottom: 24 }}>
                   Learn the essential tools and build a practical foundation — no coding, no cost.
                 </p>
-                <a href="/free-course" className="btn btn-grad" style={{ width: "100%" }}>
+                <a href="/free-course" className="btn btn-grad" style={{ width: "100%" }} onClick={() => track("free_cta_click", { location: "homepage_card" })}>
                   Start Free
                 </a>
               </div>
@@ -86,7 +86,7 @@ export default function HomePage() {
                 <p style={{ color: "var(--muted)", lineHeight: 1.6, marginBottom: 24 }}>
                   Turn AI knowledge into workflows, products and agents — $99, lifetime access.
                 </p>
-                <Link href="/bootcamp" className="btn btn-ghost" style={{ width: "100%" }}>
+                <Link href="/bootcamp" className="btn btn-ghost" style={{ width: "100%" }} onClick={() => track("bootcamp_cta_click", { location: "homepage_card" })}>
                   Explore Program
                 </Link>
               </div>
@@ -147,7 +147,7 @@ export default function HomePage() {
             <h2 style={{ fontFamily: "var(--f-display)", color: "#fff", fontSize: "clamp(24px,3.4vw,36px)", marginBottom: 24 }}>
               Ready to stop just watching AI?
             </h2>
-            <a href="/free-course" className="btn" style={{ background: "#fff", color: "var(--blue-deep)" }}>
+            <a href="/free-course" className="btn" style={{ background: "#fff", color: "var(--blue-deep)" }} onClick={() => track("free_cta_click", { location: "homepage_final" })}>
               Start the Free Course →
             </a>
           </Reveal>
