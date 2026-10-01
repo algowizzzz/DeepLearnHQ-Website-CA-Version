@@ -3,8 +3,13 @@
 // Ticket 7.1 / finding G18. Visitors who decline are invisible to GA4 and the
 // Meta pixel, so without a count of them we cannot tell a badly converting page
 // from a large measurement blind spot. This deliberately stores NOTHING that
-// identifies a person: no IP, no user agent, no id, no cookie. It writes one
-// line to the Vercel log, which is queryable per deploy.
+// identifies a person: no IP, no user agent, no id, no cookie.
+//
+// Funnel-hardening pass: besides the log line, the choice now increments a
+// per-day counter in Redis (dlhq:stats:consent:YYYY-MM-DD → granted/denied),
+// so accept vs decline rate is a queryable number rather than a log grep.
+import { incrConsent } from "../lib/leads.js";
+
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).end();
   let d = req.body;
@@ -13,5 +18,6 @@ export default async function handler(req, res) {
   const choice = d.choice === "granted" ? "granted" : "denied";
   const path = String(d.path || "/").slice(0, 120);
   console.log(JSON.stringify({ evt: "consent", choice, path, at: new Date().toISOString() }));
+  await incrConsent(choice);
   return res.status(204).end();
 }

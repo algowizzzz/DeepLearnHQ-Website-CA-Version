@@ -9,41 +9,30 @@
 //   4. Remove-then-add to the group so a repeat signup re-enters the
 //      automation and gets a FRESH code instead of silently dead-ending.
 //
+// Funnel-hardening pass (2026-10-01): helpers moved to lib/; if the browser
+// holds a lead_id (free-course registrant), it is written to the MailerLite
+// record and the code is noted on the lead so the $49 path joins the same
+// attribution chain as the $99 purchase.
+//
 // Env vars (Vercel, never in this file):
 //   STRIPE_SECRET_KEY     required — restricted key: promotion_codes write
 //   STRIPE_COUPON_ID      required — the "$50 off" coupon the codes attach to
 //   MAILERLITE_API_KEY    required
 //   MAILERLITE_GROUP_ID   required — the code-series group that fires E1
-//   ALERT_WEBHOOK_URL     optional — Web3Forms/Resend endpoint for failure alerts
-//   META_PIXEL_ID         optional — CAPI Lead backstop
+//   ALERT_WEBHOOK_URL/KEY optional — failure alerts
 //   META_CAPI_TOKEN       optional — CAPI Lead backstop; absent = silently off
-import crypto from "node:crypto";
+import { upsertSubscriber, rejoinGroup } from "../lib/mailerlite.js";
+import { sendEvents, userData } from "../lib/capi.js";
+import { rateLimited, clientIp } from "../lib/ratelimit.js";
+import { notify } from "../lib/notify.js";
+import { logError } from "../lib/log.js";
+import { updateLead } from "../lib/leads.js";
+import { isLeadId } from "../lib/ids.js";
 
 const CODE_TTL_HOURS = 72;
-const PIXEL_ID = "656402296715617";    // D5 — same pixel as the Purchase backstop
 const LEAD_VALUE = 49;                 // discounted price, matches track.js PRICE_CODE
-const RATE_LIMIT_MAX = 3;              // signups per identity per window
-const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
-
-// Best-effort, per-instance rate limiting. Serverless instances are not shared,
-// so this throttles the common case (one bot, one warm instance) but is not a
-// hard guarantee. A KV store would be required for that; noted in DECISIONS.
-const hits = new Map();
-
-function rateLimited(key) {
-  const now = Date.now();
-  const rec = hits.get(key);
-  if (!rec || now - rec.start > RATE_LIMIT_WINDOW_MS) {
-    hits.set(key, { start: now, n: 1 });
-    return false;
-  }
-  rec.n += 1;
-  if (hits.size > 5000) hits.clear();   // crude memory ceiling
-  return rec.n > RATE_LIMIT_MAX;
-}
 
 function validEmail(e) {
-  // Deliberately strict-ish: one @, a dot in the domain, no spaces, sane length.
   return typeof e === "string" && e.length <= 254 && /^[^@\s]+@[^@\s.]+(\.[^@\s.]+)+$/.test(e);
 }
 
@@ -58,20 +47,6 @@ function form(params) {
   return Object.entries(params)
     .map(([k, v]) => encodeURIComponent(k) + "=" + encodeURIComponent(v))
     .join("&");
-}
-
-async function alertSaad(subject, body) {
-  const url = process.env.ALERT_WEBHOOK_URL;
-  if (!url) return;
-  try {
-    await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ subject, body }),
-    });
-  } catch (e) {
-    /* alerting must never break the request path */
-  }
 }
 
 // --- Stripe -----------------------------------------------------------------
@@ -111,120 +86,6 @@ async function createPromotionCode(expiresAt) {
   throw new Error("stripe_code_collision");
 }
 
-// --- MailerLite -------------------------------------------------------------
-
-const ML = "https://connect.mailerlite.com/api";
-
-function mlHeaders() {
-  return {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-    Authorization: "Bearer " + process.env.MAILERLITE_API_KEY,
-  };
-}
-
-async function upsertSubscriber(email, fields) {
-  // MailerLite's POST /subscribers is an upsert keyed on email.
-  const r = await fetch(ML + "/subscribers", {
-    method: "POST",
-    headers: mlHeaders(),
-    body: JSON.stringify({ email, fields }),
-  });
-  if (!r.ok) throw new Error("mailerlite_upsert_" + r.status);
-  const j = await r.json();
-  return j && j.data && j.data.id;
-}
-
-// Remove then add, so MailerLite treats it as a fresh group join and the
-// automation re-enters. Without this a returning signup gets a new code in the
-// database but no email — a silent dead end (finding T5).
-async function rejoinGroup(subscriberId, groupId) {
-  await fetch(`${ML}/subscribers/${subscriberId}/groups/${groupId}`, {
-    method: "DELETE",
-    headers: mlHeaders(),
-  }).catch(() => {});
-  const r = await fetch(`${ML}/subscribers/${subscriberId}/groups/${groupId}`, {
-    method: "POST",
-    headers: mlHeaders(),
-  });
-  if (!r.ok) throw new Error("mailerlite_group_" + r.status);
-}
-
-// --- Meta CAPI --------------------------------------------------------------
-
-const sha256 = (s) => crypto.createHash("sha256").update(s).digest("hex");
-
-function readCookie(header, name) {
-  if (!header) return null;
-  const m = String(header).match(new RegExp("(?:^|;\\s*)" + name + "=([^;]*)"));
-  return m ? decodeURIComponent(m[1]) : null;
-}
-
-// _fbc is written by the browser pixel, which on this site is consent-gated
-// (chrome.js) — so for most signups the cookie does not exist. Rebuild it from
-// the fbclid the ad click left in the URL, in the same format the pixel would
-// have used. Without this, ad-clicked signups reach Meta with an email hash
-// and nothing else, and match quality suffers exactly where it matters most.
-function deriveFbc(cookieHeader, fbclid) {
-  const fromCookie = readCookie(cookieHeader, "_fbc");
-  if (fromCookie) return fromCookie;
-  const clean = String(fbclid || "").replace(/[^A-Za-z0-9_.-]/g, "").slice(0, 400);
-  return clean ? `fb.1.${Date.now()}.${clean}` : null;
-}
-
-// Server-side signup events, deduplicated against the browser pixel via
-// event_id: the browser sends the same ids as eventID, so Meta counts one of
-// each when both fire, and we still get them when the browser never does.
-// On this site the browser usually never does — the pixel only loads after the
-// visitor accepts the consent banner, so a decline or a bounce past the banner
-// is invisible to it. Signup-time CAPI use is disclosed in privacy.html §9.
-//
-// TWO events describe the same signup, deliberately:
-//   Lead                 — kept for reporting continuity; verified working.
-//   CompleteRegistration — what the ad set actually optimises on. Meta reserves
-//                          LEAD for OUTCOME_LEADS campaigns and rejects it on
-//                          this OUTCOME_SALES campaign ("Conversion event
-//                          unavailable"), so COMPLETE_REGISTRATION is the
-//                          optimisable event for the same action.
-// Both go in one request; Meta treats distinct event_names as distinct events,
-// so this is not double-counting a conversion.
-async function sendCapiSignup({ email, eventIds, sourceUrl, fbp, fbc, ip, ua }) {
-  const token = process.env.META_CAPI_TOKEN;
-  if (!token) return false;
-  const pixel = process.env.META_PIXEL_ID || PIXEL_ID;
-
-  const user_data = { em: [sha256(email)] };   // email already trimmed+lowercased
-  if (fbp) user_data.fbp = fbp;
-  if (fbc) user_data.fbc = fbc;
-  if (ip && ip !== "unknown") user_data.client_ip_address = ip;
-  if (ua) user_data.client_user_agent = ua;
-
-  const base = {
-    event_time: Math.floor(Date.now() / 1000),
-    action_source: "website",
-    event_source_url: sourceUrl || "https://www.deeplearnhq.ca/",
-    user_data,
-    custom_data: {
-      value: LEAD_VALUE,
-      currency: "USD",
-      content_name: "The Generative AI 8-Week Bootcamp",
-    },
-  };
-
-  const r = await fetch(`https://graph.facebook.com/v21.0/${pixel}/events`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      access_token: token,
-      data: [
-        { ...base, event_name: "Lead", event_id: eventIds.lead },
-        { ...base, event_name: "CompleteRegistration", event_id: eventIds.registration },
-      ],
-    }),
-  });
-  return r.ok;
-}
-
 // --- handler ----------------------------------------------------------------
 
 export default async function handler(req, res) {
@@ -235,7 +96,6 @@ export default async function handler(req, res) {
   data = data || {};
 
   // 1. Guards ---------------------------------------------------------------
-  // Honeypot: a field hidden from humans. Anything filling it is a bot.
   if (data.company) return res.status(200).json({ ok: true, code: null, spam: true });
 
   const email = (data.email || "").trim().toLowerCase();
@@ -243,23 +103,22 @@ export default async function handler(req, res) {
     return res.status(400).json({ ok: false, error: "invalid_email" });
   }
 
-  const ip =
-    (req.headers["x-forwarded-for"] || "").split(",")[0].trim() ||
-    req.socket?.remoteAddress ||
-    "unknown";
-  if (rateLimited("e:" + email) || rateLimited("i:" + ip)) {
+  const ip = clientIp(req);
+  if ((await rateLimited("sub_email", email, 3)) || (await rateLimited("sub_ip", ip, 3))) {
     return res.status(429).json({ ok: false, error: "rate_limited" });
   }
 
   const marketingOptIn = data.marketing === true;
   const expiresAt = Math.floor(Date.now() / 1000) + CODE_TTL_HOURS * 3600;
+  const leadId = isLeadId(data.lead_id) ? data.lead_id : null;
 
   // 2. Stripe promo code FIRST — no code, no signup, no fake success ---------
   let code;
   try {
     code = await createPromotionCode(expiresAt);
   } catch (e) {
-    await alertSaad("Signup failed: Stripe promo code", `${email} — ${e.message}`);
+    await logError("subscribe.stripe", e, { lead_id: leadId, status: 502 });
+    await notify("Signup failed: Stripe promo code", `${email} — ${e.message}`);
     return res.status(502).json({ ok: false, error: "code_creation_failed" });
   }
 
@@ -277,35 +136,36 @@ export default async function handler(req, res) {
       marketing_opt_in: marketingOptIn ? "yes" : "no",
       // MailerLite reserves the field name "source", so ours is signup_source.
       signup_source: (data.source || "site").toString().slice(0, 60),
+      ...(leadId ? { lead_id: leadId } : {}),
     });
     if (!id) throw new Error("mailerlite_no_id");
     await rejoinGroup(id, process.env.MAILERLITE_GROUP_ID);
   } catch (e) {
     // The code exists in Stripe but the email won't send. Tell the user the
     // truth and alert Saad — this is the case that silently lost signups before.
-    await alertSaad("Signup failed: MailerLite", `${email} — code ${code} — ${e.message}`);
+    await logError("subscribe.mailerlite", e, { lead_id: leadId, status: 502 });
+    await notify("Signup failed: MailerLite", `${email} — code ${code} — ${e.message}`);
     return res.status(502).json({ ok: false, error: "email_delivery_failed", code });
   }
 
-  // 5. Meta CAPI Lead — best-effort, after the signup is real. Never fail the
-  //    request on it: the user has their code and the email is sending, and a
-  //    5xx here would tell the UI the signup failed when it did not.
+  if (leadId) await updateLead(leadId, { discount_code: code, discount_requested_at: new Date().toISOString() });
+
+  // 5. Meta CAPI — best-effort, after the signup is real. Two events describe
+  //    the same signup deliberately: Lead (reporting continuity) and
+  //    CompleteRegistration (what the OUTCOME_SALES ad set can optimise on —
+  //    Meta rejects Lead there). Distinct event_names are not double-counting.
   const eventIds = { lead: "lead_" + code, registration: "cr_" + code };
-  try {
-    const capiOk = await sendCapiSignup({
-      email,
-      eventIds,
-      sourceUrl: data.page_url || "https://www.deeplearnhq.ca/",
-      fbp: readCookie(req.headers.cookie, "_fbp"),
-      fbc: deriveFbc(req.headers.cookie, data.fbclid),
-      ip,
-      ua: req.headers["user-agent"] || null,
-    });
-    if (!capiOk && process.env.META_CAPI_TOKEN) {
-      await alertSaad("Meta CAPI signup failed", `${email} — code ${code}`);
-    }
-  } catch (e) {
-    await alertSaad("Meta CAPI signup error", `${email} — code ${code} — ${e.message}`);
+  const base = {
+    event_source_url: data.page_url || "https://www.deeplearnhq.ca/",
+    user_data: userData({ email, ip, ua: req.headers["user-agent"], cookieHeader: req.headers.cookie, fbclid: data.fbclid }),
+    custom_data: { value: LEAD_VALUE, currency: "USD", content_name: "The Generative AI 8-Week Bootcamp" },
+  };
+  const capiOk = await sendEvents([
+    { ...base, event_name: "Lead", event_id: eventIds.lead },
+    { ...base, event_name: "CompleteRegistration", event_id: eventIds.registration },
+  ]);
+  if (!capiOk && process.env.META_CAPI_TOKEN) {
+    await logError("subscribe.capi", new Error("capi_signup_failed"), { lead_id: leadId });
   }
 
   return res.status(200).json({

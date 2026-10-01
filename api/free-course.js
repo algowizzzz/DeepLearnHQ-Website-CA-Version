@@ -1,236 +1,186 @@
-// Vercel serverless function — free-course lead capture (email, phone optional).
+// Vercel serverless function — free-course registration.
 //
-// Distinct from api/subscribe.js on purpose: that endpoint mints a per-user,
-// time-limited Stripe promo code for the $99 sales page. This one has no
-// Stripe involvement at all — the free course link lives inside the
-// MailerLite automation email itself, so Saad can rotate it anytime by
-// editing that email, with no deploy needed.
-//
-// Two request shapes, routed by `phone_only`:
-//   - Initial registration (phone_only absent/false): email required, phone
-//     optional (CRO fix — asking for a phone before any value is delivered
-//     measurably hurts top-of-funnel conversion). Upserts the subscriber,
-//     then removes-then-adds the group so a repeat signup re-enters the
-//     automation instead of silently dead-ending (same fix as subscribe.js).
-//   - Post-registration phone add (phone_only: true): the page asks for a
-//     phone number only AFTER the free-course success state, as an optional
-//     "also get it by text" add-on. This path upserts the phone field only
-//     and deliberately SKIPS the group rejoin — rejoining would re-trigger
-//     the automation and re-send the "your course is ready" email the
-//     visitor already has.
+// Contract (funnel-hardening pass, 2026-10-01):
+//   - Email is the only required input. Marketing consent is a separate,
+//     optional, unchecked box; phone is optional and only asked AFTER the
+//     success state (`phone_only:true`).
+//   - Registration is real the moment the lead is written to Redis (lib/leads.js),
+//     which also mints the stable first-party `lead_id`. MailerLite is the
+//     email delivery layer, NOT the system of record: if it fails the lead
+//     is kept, the failure is queued for retry, and the visitor still gets
+//     the on-page course link. The response says `email_delivery:false` so
+//     the UI can adjust its copy.
+//   - A repeat signup never errors: it returns the existing lead_id with
+//     `already_registered:true` and re-enters the MailerLite automation so a
+//     visitor on a second device gets the email again.
 //
 // Env vars (Vercel, never in this file):
-//   MAILERLITE_API_KEY          required — shared with api/subscribe.js
-//   MAILERLITE_GROUP_FREE_COURSE required — the group that fires the free-course automation
-//   ALERT_WEBHOOK_URL           optional — Web3Forms/Resend endpoint for failure alerts
-//   META_PIXEL_ID               optional — CAPI Lead backstop
-//   META_CAPI_TOKEN             optional — CAPI Lead backstop; absent = silently off
-import crypto from "node:crypto";
-
-const PIXEL_ID = "656402296715617";   // same pixel as the rest of the site
-const RATE_LIMIT_MAX = 3;             // signups per identity per window
-const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
-
-// Best-effort, per-instance rate limiting — see api/subscribe.js for why this
-// is not a hard guarantee across serverless instances.
-const hits = new Map();
-
-function rateLimited(key) {
-  const now = Date.now();
-  const rec = hits.get(key);
-  if (!rec || now - rec.start > RATE_LIMIT_WINDOW_MS) {
-    hits.set(key, { start: now, n: 1 });
-    return false;
-  }
-  rec.n += 1;
-  if (hits.size > 5000) hits.clear();
-  return rec.n > RATE_LIMIT_MAX;
-}
+//   KV_REST_API_URL / KV_REST_API_TOKEN   Upstash Redis (Marketplace)
+//   MAILERLITE_API_KEY, MAILERLITE_GROUP_FREE_COURSE
+//   META_CAPI_TOKEN (optional), ALERT_WEBHOOK_URL + ALERT_WEBHOOK_KEY (optional)
+import { createLead, getLead, getLeadByEmail, updateLead, queueEmailRetry, popEmailRetry } from "../lib/leads.js";
+import { sanitizeTouch } from "../lib/attribution-server.js";
+import { upsertSubscriber, rejoinGroup, leadToFields } from "../lib/mailerlite.js";
+import { sendEvents, userData } from "../lib/capi.js";
+import { rateLimited, clientIp } from "../lib/ratelimit.js";
+import { notify } from "../lib/notify.js";
+import { log, logError } from "../lib/log.js";
+import { isLeadId, isAqId } from "../lib/ids.js";
 
 function validEmail(e) {
   return typeof e === "string" && e.length <= 254 && /^[^@\s]+@[^@\s.]+(\.[^@\s.]+)+$/.test(e);
 }
-
 function validPhone(p) {
-  // Up to 24, not 20: the page now sends "<country dial code> <local number>"
-  // (e.g. "+44 7911 123456") as a single string.
   return typeof p === "string" && /^[0-9()+\-.\s]{7,24}$/.test(p.trim());
 }
+function pathOf(url) {
+  try { const u = new URL(String(url), "https://www.deeplearnhq.ca"); return (u.pathname + u.search).slice(0, 300); }
+  catch { return "/free-course"; }
+}
 
-async function alertSaad(subject, body) {
-  const url = process.env.ALERT_WEBHOOK_URL;
-  if (!url) return;
-  try {
-    await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ subject, body }),
-    });
-  } catch (e) {
-    /* alerting must never break the request path */
+async function syncToMailerLite(lead, { rejoin }) {
+  const id = await upsertSubscriber(lead.email, leadToFields(lead));
+  if (!id) throw new Error("mailerlite_no_id");
+  if (rejoin) await rejoinGroup(id, process.env.MAILERLITE_GROUP_FREE_COURSE);
+  return id;
+}
+
+// Opportunistic retry for leads whose MailerLite sync failed earlier. Bounded
+// to one per request so it never meaningfully delays a live registration;
+// api/retry-email.js drains the rest on demand.
+async function drainRetries(max = 1) {
+  for (let i = 0; i < max; i++) {
+    const id = await popEmailRetry();
+    if (!id) return;
+    const lead = await getLead(id);
+    if (!lead || lead.ml_status === "synced") continue;
+    const attempts = Number(lead.ml_attempts || 0) + 1;
+    try {
+      await syncToMailerLite(lead, { rejoin: true });
+      await updateLead(id, { ml_status: "synced", ml_attempts: String(attempts) });
+    } catch (e) {
+      await updateLead(id, { ml_attempts: String(attempts) });
+      if (attempts < 3) await queueEmailRetry(id);
+      await logError("free-course.retry", e, { lead_id: id });
+    }
   }
 }
-
-// --- MailerLite -------------------------------------------------------------
-
-const ML = "https://connect.mailerlite.com/api";
-
-function mlHeaders() {
-  return {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-    Authorization: "Bearer " + process.env.MAILERLITE_API_KEY,
-  };
-}
-
-async function upsertSubscriber(email, phone, fields) {
-  // MailerLite's POST /subscribers is an upsert keyed on email. "phone" is one
-  // of MailerLite's built-in fields, so unlike the custom fields below it does
-  // not need to be created in the dashboard first.
-  const r = await fetch(ML + "/subscribers", {
-    method: "POST",
-    headers: mlHeaders(),
-    body: JSON.stringify({ email, fields: { phone, ...fields } }),
-  });
-  if (!r.ok) throw new Error("mailerlite_upsert_" + r.status);
-  const j = await r.json();
-  return j && j.data && j.data.id;
-}
-
-// Remove then add, so MailerLite treats it as a fresh group join and the
-// automation re-enters (finding T5 in api/subscribe.js applies here too).
-async function rejoinGroup(subscriberId, groupId) {
-  await fetch(`${ML}/subscribers/${subscriberId}/groups/${groupId}`, {
-    method: "DELETE",
-    headers: mlHeaders(),
-  }).catch(() => {});
-  const r = await fetch(`${ML}/subscribers/${subscriberId}/groups/${groupId}`, {
-    method: "POST",
-    headers: mlHeaders(),
-  });
-  if (!r.ok) throw new Error("mailerlite_group_" + r.status);
-}
-
-// --- Meta CAPI (Lead only — this is a free opt-in, not a purchase funnel) ---
-
-const sha256 = (s) => crypto.createHash("sha256").update(s).digest("hex");
-
-function readCookie(header, name) {
-  if (!header) return null;
-  const m = String(header).match(new RegExp("(?:^|;\\s*)" + name + "=([^;]*)"));
-  return m ? decodeURIComponent(m[1]) : null;
-}
-
-async function sendCapiLead({ email, eventId, sourceUrl, fbp, ip, ua }) {
-  const token = process.env.META_CAPI_TOKEN;
-  if (!token) return false;
-  const pixel = process.env.META_PIXEL_ID || PIXEL_ID;
-
-  const user_data = { em: [sha256(email)] };
-  if (fbp) user_data.fbp = fbp;
-  if (ip && ip !== "unknown") user_data.client_ip_address = ip;
-  if (ua) user_data.client_user_agent = ua;
-
-  const r = await fetch(`https://graph.facebook.com/v21.0/${pixel}/events`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      access_token: token,
-      data: [{
-        event_name: "Lead",
-        event_id: eventId,
-        event_time: Math.floor(Date.now() / 1000),
-        action_source: "website",
-        event_source_url: sourceUrl || "https://www.deeplearnhq.ca/free-course",
-        user_data,
-        custom_data: { value: 0, currency: "USD", content_name: "Free AI Tools Course" },
-      }],
-    }),
-  });
-  return r.ok;
-}
-
-// --- handler ----------------------------------------------------------------
 
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ ok: false, error: "method" });
 
   let data = req.body;
-  if (typeof data === "string") { try { data = JSON.parse(data); } catch (e) { data = {}; } }
+  if (typeof data === "string") { try { data = JSON.parse(data); } catch { data = {}; } }
   data = data || {};
 
   // 1. Guards ---------------------------------------------------------------
   if (data.company) return res.status(200).json({ ok: true, spam: true });
 
   const email = (data.email || "").trim().toLowerCase();
-  const phone = (data.phone || "").trim();
   if (!validEmail(email)) return res.status(400).json({ ok: false, error: "invalid_email" });
-  if (phone && !validPhone(phone)) return res.status(400).json({ ok: false, error: "invalid_phone" });
 
-  const ip =
-    (req.headers["x-forwarded-for"] || "").split(",")[0].trim() ||
-    req.socket?.remoteAddress ||
-    "unknown";
-  if (rateLimited("e:" + email) || rateLimited("i:" + ip)) {
+  const ip = clientIp(req);
+  if ((await rateLimited("fc_email", email, 5)) || (await rateLimited("fc_ip", ip, 10))) {
     return res.status(429).json({ ok: false, error: "rate_limited" });
   }
 
-  // Post-registration "also get it by text" add-on: upsert the phone field
-  // only, never touch the group. See header comment for why.
+  const now = new Date().toISOString();
+
+  // 2. Optional post-registration phone add-on -------------------------------
+  //    Upsert the phone only; never touch the group (rejoining would re-send
+  //    the "your course is ready" email the visitor already has).
   if (data.phone_only === true) {
-    if (!phone) return res.status(400).json({ ok: false, error: "invalid_phone" });
+    const phone = (data.phone || "").trim();
+    if (!validPhone(phone)) return res.status(400).json({ ok: false, error: "invalid_phone" });
+    const lead = (isLeadId(data.lead_id) && (await getLead(data.lead_id))) || (await getLeadByEmail(email));
+    if (lead) await updateLead(lead.lead_id, { phone, sms_consent: "1", sms_consent_at: now });
     try {
-      await upsertSubscriber(email, phone, { sms_consent: "yes" });
+      await upsertSubscriber(email, { phone, sms_consent: "yes", ...(lead ? { lead_id: lead.lead_id } : {}) });
     } catch (e) {
+      await logError("free-course.phone", e, { lead_id: lead && lead.lead_id, status: 502 });
       return res.status(502).json({ ok: false, error: "update_failed" });
     }
-    return res.status(200).json({ ok: true });
+    return res.status(200).json({ ok: true, lead_id: lead ? lead.lead_id : null });
   }
 
-  const smsConsent = data.sms_consent === true;
+  // 3. Registration ---------------------------------------------------------
+  //    Legacy shape (the static free-course page, until the Next port lands):
+  //    flat utm_* fields and a single pre-checked `sms_consent` box that read
+  //    "course access and occasional updates by email". Mapped here so no
+  //    attribution is lost during the cutover; the port sends the new shape.
+  const legacyTouch = !data.first_touch && (data.utm_source || data.utm_campaign || data.utm_content || data.referrer)
+    ? { source: data.utm_source, medium: data.utm_medium, campaign: data.utm_campaign, content: data.utm_content,
+        referrer: data.referrer === "direct" ? undefined : data.referrer, landing_page: data.landing_page, ts: now }
+    : null;
+  const firstTouch = sanitizeTouch(data.first_touch) || sanitizeTouch(legacyTouch);
+  const lastTouch = sanitizeTouch(data.last_touch) || firstTouch;
+  const marketingConsent = data.marketing_consent === true || (data.marketing_consent === undefined && data.sms_consent === true);
 
-  // 2 + 3. MailerLite upsert, then force automation re-entry ----------------
+  const { lead, created, persisted } = await createLead({
+    email,
+    firstTouch,
+    lastTouch,
+    registrationPage: pathOf(data.page_url),
+    marketingConsent,
+    gaClientId: typeof data.ga_client_id === "string" ? data.ga_client_id : null,
+    fbclid: typeof data.fbclid === "string" ? data.fbclid : null,
+    aqId: isAqId(data.aq_id) ? data.aq_id : null,
+    source: (data.source || "free_course_landing").toString().slice(0, 60),
+  });
+
+  // Consent can only be upgraded by a repeat submit, never silently revoked.
+  if (!created && marketingConsent && lead.marketing_consent !== "1") {
+    await updateLead(lead.lead_id, { marketing_consent: "1", marketing_consent_at: now });
+    lead.marketing_consent = "1";
+    lead.marketing_consent_at = now;
+  }
+
+  // 4. Email delivery (MailerLite) — separate from registration success -----
+  let emailDelivery = true;
   try {
-    const id = await upsertSubscriber(email, phone, {
-      sms_consent: smsConsent ? "yes" : "no",
-      // MailerLite reserves the field name "source", so ours is signup_source.
-      signup_source: (data.source || "free_course_landing").toString().slice(0, 60),
-      // Attribution — kept as discrete fields rather than relying on
-      // reconstructing them from page_url later, so the lead→bootcamp
-      // attribution chain (Instagram → Reel → registration → purchase
-      // weeks later) survives even if the URL-parsing logic ever changes.
-      utm_source: (data.utm_source || "").toString().slice(0, 100),
-      utm_medium: (data.utm_medium || "").toString().slice(0, 100),
-      utm_campaign: (data.utm_campaign || "").toString().slice(0, 100),
-      utm_content: (data.utm_content || "").toString().slice(0, 100),
-      referrer: (data.referrer || "").toString().slice(0, 300),
-      landing_page: (data.landing_page || "").toString().slice(0, 300),
-    });
-    if (!id) throw new Error("mailerlite_no_id");
-    await rejoinGroup(id, process.env.MAILERLITE_GROUP_FREE_COURSE);
+    await syncToMailerLite(lead, { rejoin: true });
+    if (persisted) await updateLead(lead.lead_id, { ml_status: "synced", ml_attempts: String(Number(lead.ml_attempts || 0) + 1) });
   } catch (e) {
-    await alertSaad("Free-course signup failed: MailerLite", `${email} — ${e.message}`);
-    return res.status(502).json({ ok: false, error: "email_delivery_failed" });
-  }
-
-  // 4. Meta CAPI Lead — best-effort, after the signup is real. Never fail the
-  //    request on it: the lead is captured and the email is sending.
-  const eventId = "lead_fc_" + crypto.randomBytes(8).toString("hex");
-  try {
-    const capiOk = await sendCapiLead({
-      email,
-      eventId,
-      sourceUrl: data.page_url || "https://www.deeplearnhq.ca/free-course",
-      fbp: readCookie(req.headers.cookie, "_fbp"),
-      ip,
-      ua: req.headers["user-agent"] || null,
-    });
-    if (!capiOk && process.env.META_CAPI_TOKEN) {
-      await alertSaad("Meta CAPI free-course lead failed", email);
+    emailDelivery = false;
+    if (persisted) {
+      await updateLead(lead.lead_id, { ml_status: "failed", ml_attempts: String(Number(lead.ml_attempts || 0) + 1) });
+      await queueEmailRetry(lead.lead_id);
     }
-  } catch (e) {
-    await alertSaad("Meta CAPI free-course lead error", `${email} — ${e.message}`);
+    await logError("free-course.mailerlite", e, { lead_id: lead.lead_id });
+    await notify(
+      "Free-course signup: MailerLite failed (lead kept)",
+      `${email} — ${lead.lead_id} — ${e.message}\nThe visitor still got the on-page course link.` +
+        (persisted ? " Queued for retry." : " NOT persisted (Redis unavailable) — add them to Free Course Members CA manually.")
+    );
   }
 
-  return res.status(200).json({ ok: true, event_id: eventId });
+  // 5. Meta CAPI Lead — only for a genuinely new registration, deterministic
+  //    event_id so the browser pixel (same id as eventID) dedups against it.
+  const eventId = "lead_fc_" + lead.lead_id;
+  if (created) {
+    const ok = await sendEvents([{
+      event_name: "Lead",
+      event_id: eventId,
+      event_source_url: data.page_url || "https://www.deeplearnhq.ca/free-course",
+      user_data: userData({ email, ip, ua: req.headers["user-agent"], cookieHeader: req.headers.cookie, fbclid: data.fbclid }),
+      custom_data: { value: 0, currency: "USD", content_name: "Free AI Tools Course" },
+    }]);
+    if (!ok && process.env.META_CAPI_TOKEN) await logError("free-course.capi", new Error("capi_lead_failed"), { lead_id: lead.lead_id });
+  }
+
+  await drainRetries();
+
+  log("free-course", {
+    lead_id: lead.lead_id, created, persisted, email_delivery: emailDelivery,
+    source: lead.first_touch_source || null, content: lead.first_touch_content || null,
+  });
+
+  return res.status(200).json({
+    ok: true,
+    lead_id: lead.lead_id,
+    already_registered: !created,
+    email_delivery: emailDelivery,
+    persisted,
+    event_id: eventId,
+  });
 }
