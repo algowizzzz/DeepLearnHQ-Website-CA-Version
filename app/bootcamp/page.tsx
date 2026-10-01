@@ -9,6 +9,8 @@ import FourProjects from "./components/FourProjects";
 import WhoThisIsFor from "./components/WhoThisIsFor";
 import CurriculumTimeline from "./components/CurriculumTimeline";
 import FAQAccordion from "./components/FAQAccordion";
+import FreeVsProgram from "./components/FreeVsProgram";
+import { SOCIAL_PROOF, SP } from "../lib/social-proof";
 import { captureTouch, checkoutUrl as buildCheckoutUrl, beacon } from "../lib/attribution";
 import { track, fbTrack } from "../lib/track";
 
@@ -69,7 +71,7 @@ export default function BootcampPage() {
             One payment &middot; Lifetime access &middot; Weekly live Q&amp;A &middot; 30-day guarantee
           </p>
           <p style={{ marginTop: 10, fontFamily: "var(--f-mono)", fontSize: 13, color: "var(--muted)" }}>
-            40K+ learners &middot; 13K+ reviews &middot; 4.5★
+            {SP.line}
           </p>
         </div>
       </section>
@@ -182,18 +184,18 @@ export default function BootcampPage() {
             <div style={{ display: "flex", justifyContent: "center", gap: "40px 56px", flexWrap: "wrap", marginBottom: 48 }}>
               <div>
                 <div style={{ fontFamily: "var(--f-display)", fontWeight: 700, fontSize: 36 }}>
-                  <AnimatedCounter value={40000} suffix="+" />
+                  <AnimatedCounter value={SOCIAL_PROOF.learners} suffix="+" />
                 </div>
-                <div style={{ fontFamily: "var(--f-mono)", fontSize: 11, color: "var(--muted)", textTransform: "uppercase" }}>Learners</div>
+                <div style={{ fontFamily: "var(--f-mono)", fontSize: 11, color: "var(--muted)", textTransform: "uppercase" }}>Learners taught</div>
               </div>
               <div>
                 <div style={{ fontFamily: "var(--f-display)", fontWeight: 700, fontSize: 36 }}>
-                  <AnimatedCounter value={13000} suffix="+" />
+                  <AnimatedCounter value={SOCIAL_PROOF.reviews} suffix="+" />
                 </div>
                 <div style={{ fontFamily: "var(--f-mono)", fontSize: 11, color: "var(--muted)", textTransform: "uppercase" }}>Reviews</div>
               </div>
               <div>
-                <div style={{ fontFamily: "var(--f-display)", fontWeight: 700, fontSize: 36 }}>4.5★</div>
+                <div style={{ fontFamily: "var(--f-display)", fontWeight: 700, fontSize: 36 }}>{SP.rating}</div>
                 <div style={{ fontFamily: "var(--f-mono)", fontSize: 11, color: "var(--muted)", textTransform: "uppercase" }}>Rating</div>
               </div>
             </div>
@@ -206,6 +208,25 @@ export default function BootcampPage() {
               AI. This program combines those two experiences: practical systems from the workplace, taught for
               people who don&apos;t need a computer-science degree.
             </p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* 7b. FREE COURSE vs THE PROGRAM — sets up "Why $99?" */}
+      <section style={{ padding: "64px 0", background: "var(--paper-2)" }}>
+        <div className="wrap">
+          <Reveal>
+            <div style={{ textAlign: "center", maxWidth: 640, margin: "0 auto 32px" }}>
+              <h2 style={{ fontFamily: "var(--f-display)", fontSize: "clamp(22px,3vw,30px)", marginBottom: 12 }}>
+                Free course vs Build With AI
+              </h2>
+              <p style={{ color: "var(--muted)", lineHeight: 1.6 }}>
+                The free course teaches you how to use AI. The 8-week program teaches you how to build with it.
+              </p>
+            </div>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <FreeVsProgram checkoutUrl={checkoutUrl} onCheckout={onCheckout("compare")} />
           </Reveal>
         </div>
       </section>

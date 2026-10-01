@@ -43,6 +43,35 @@ you want to rotate the coupon. No redeploy needed for that part.
     now sit in Free Course Members CA; delete them from the dashboard
     whenever, they don't affect anything left running.
 
+## Funnel-hardening pass — 2026-10-01 (second iteration, same day)
+
+The page is now a Next route (`app/free-course/`) — `public/free-course.html`
+and its `vercel.json` rewrite are gone. Same copy, layout and CSS; one
+`FreeCourseSignup` component renders both forms. What changed underneath:
+
+- **Stable `lead_id`** (`dl_…`) minted server-side at registration, stored in
+  Redis (Upstash, the system of record) and MailerLite, persisted in the
+  browser, carried as `?lid=` on `/go/free-course` and as Stripe's
+  `client_reference_id`, joined back in the webhook. See `ATTRIBUTION.md`.
+- **First/last-touch attribution** as discrete fields; the source is whatever
+  the URL/referrer said — the old unconditional `fb` prefix is gone.
+- **Consent split:** course email is transactional (no checkbox); marketing
+  updates are a separate unchecked `marketing_consent`. The old pre-checked
+  `sms_consent` box is gone from the main form; SMS consent lives only on the
+  optional post-signup phone step (now with a country picker).
+- **Success state:** same-tab "Start the Free Course →" (`/go/free-course?lid=`),
+  a 3-step roadmap, no coupon. Duplicate signups get "You're already enrolled
+  — here's your course." A MailerLite failure keeps the lead and still shows
+  the CTA (`email_delivery:false` → adjusted copy; retry queued).
+- **Events:** `free_course_outbound` replaces the earlier `free_course_start`
+  name — we can prove the click, not that learning started.
+- **Social card:** `app/free-course/opengraph-image.tsx` (1200×630, vendored
+  Space Grotesk, OFL) replaces the generic blog image.
+- **Testimonials:** Ananya kept; Kaushal and Carlos added from the Udemy
+  export in the "I read every review" post — genuine quotes, punctuation only.
+- Social-proof numbers come from `app/lib/social-proof.ts` ("learners
+  taught", never "in this course").
+
 ## CRO pass — 2026-10-01 (after Saad's review of the first live version)
 
 Targeted conversion fixes, same visual direction, no redesign:

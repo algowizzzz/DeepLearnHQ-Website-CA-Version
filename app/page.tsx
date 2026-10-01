@@ -7,6 +7,7 @@ import Reveal from "./components/Reveal";
 import AnimatedCounter from "./components/AnimatedCounter";
 import { captureTouch } from "./lib/attribution";
 import { track } from "./lib/track";
+import { SOCIAL_PROOF, SP } from "./lib/social-proof";
 
 export default function HomePage() {
   useEffect(() => {
@@ -49,7 +50,7 @@ export default function HomePage() {
             </Link>
           </div>
           <p style={{ fontFamily: "var(--f-mono)", fontSize: 13, letterSpacing: ".03em", color: "var(--muted)", textTransform: "uppercase" }}>
-            40K+ learners &middot; 13K+ reviews &middot; 4.5★
+            {SP.line}
           </p>
         </div>
       </section>
@@ -119,8 +120,8 @@ export default function HomePage() {
       <section style={{ padding: "64px 0" }}>
         <div className="wrap" style={{ display: "flex", justifyContent: "center", gap: "48px 64px", flexWrap: "wrap", textAlign: "center" }}>
           {[
-            [40000, "+", "Learners Taught"],
-            [13000, "+", "Reviews"],
+            [SOCIAL_PROOF.learners, "+", "Learners Taught"],
+            [SOCIAL_PROOF.reviews, "+", "Reviews"],
           ].map(([value, suffix, label]) => (
             <div key={label as string}>
               <div style={{ fontFamily: "var(--f-display)", fontWeight: 700, fontSize: 40 }}>
@@ -132,7 +133,7 @@ export default function HomePage() {
             </div>
           ))}
           <div>
-            <div style={{ fontFamily: "var(--f-display)", fontWeight: 700, fontSize: 40 }}>4.5★</div>
+            <div style={{ fontFamily: "var(--f-display)", fontWeight: 700, fontSize: 40 }}>{SP.rating}</div>
             <div style={{ fontFamily: "var(--f-mono)", fontSize: 12, letterSpacing: ".05em", color: "var(--muted)", textTransform: "uppercase", marginTop: 6 }}>
               Average Rating
             </div>

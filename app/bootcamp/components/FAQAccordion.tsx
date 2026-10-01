@@ -14,6 +14,7 @@ const FAQS: [string, string][] = [
   ["Is this a live cohort?", "No. Self-paced curriculum, plus a live weekly Q&A every Saturday."],
   ["Do I need paid AI tools?", "No — the course is built around free-tier access wherever practical."],
   ["How much time do I need per week?", "The 8 weeks are a suggested pace, not a deadline — you have lifetime access and can move faster or slower."],
+  ["What's the difference between the free AI course and the 8-week program?", "The free course gives you a practical foundation in the major AI tools. The 8-week program is implementation-focused: you build an automation, an AI product, an AI agent and a project you can actually ship, with weekly live Q&A and structured project guidance."],
 ];
 
 export default function FAQAccordion() {
