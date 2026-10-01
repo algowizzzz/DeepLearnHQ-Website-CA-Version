@@ -16,8 +16,8 @@ const ROWS: [string, string][] = [
 export default function FreeVsProgram({ checkoutUrl, onCheckout }: { checkoutUrl: string; onCheckout: () => void }) {
   return (
     <div style={{ maxWidth: 760, margin: "0 auto" }}>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-        <div style={{ border: "1px solid var(--line)", borderRadius: 16, padding: "18px 18px 8px", background: "#fff" }}>
+      <div className="fvp-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        <div className="fvp-col" style={{ border: "1px solid var(--line)", borderRadius: 16, padding: "18px 18px 8px", background: "#fff" }}>
           <div style={{ fontFamily: "var(--f-mono)", fontSize: 11, letterSpacing: ".06em", textTransform: "uppercase", color: "var(--muted)", marginBottom: 10 }}>
             Free 3-Hour Course
           </div>
@@ -27,7 +27,7 @@ export default function FreeVsProgram({ checkoutUrl, onCheckout }: { checkoutUrl
             </div>
           ))}
         </div>
-        <div style={{ border: "1px solid var(--blue)", borderRadius: 16, padding: "18px 18px 8px", background: "#fff" }}>
+        <div className="fvp-col" style={{ border: "1px solid var(--blue)", borderRadius: 16, padding: "18px 18px 8px", background: "#fff" }}>
           <div style={{ fontFamily: "var(--f-mono)", fontSize: 11, letterSpacing: ".06em", textTransform: "uppercase", color: "var(--blue-deep)", marginBottom: 10 }}>
             $99 Build With AI
           </div>
@@ -47,8 +47,8 @@ export default function FreeVsProgram({ checkoutUrl, onCheckout }: { checkoutUrl
         @media (max-width: 640px) {
           /* Two columns kept on purpose — stacking loses the side-by-side
              contrast that is the whole point of this section. */
-          .wrap div[style*="grid-template-columns: 1fr 1fr"] > div { padding: 14px 12px 6px !important; }
-          .wrap div[style*="grid-template-columns: 1fr 1fr"] > div > div { font-size: 13px !important; }
+          .fvp-col { padding: 14px 12px 6px !important; }
+          .fvp-col > div { font-size: 13px !important; }
         }
       `}</style>
     </div>

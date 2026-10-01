@@ -11,7 +11,7 @@ import CurriculumTimeline from "./components/CurriculumTimeline";
 import FAQAccordion from "./components/FAQAccordion";
 import FreeVsProgram from "./components/FreeVsProgram";
 import { SOCIAL_PROOF, SP } from "../lib/social-proof";
-import { captureTouch, checkoutUrl as buildCheckoutUrl, beacon } from "../lib/attribution";
+import { captureTouch, checkoutUrl as buildCheckoutUrl, beacon, PAYMENT_LINK } from "../lib/attribution";
 import { track, fbTrack } from "../lib/track";
 
 const PRODUCT = { item_id: "build_with_ai_8_week", item_name: "Build With AI — 8-Week Program", price: 99 };
@@ -19,8 +19,9 @@ const PRODUCT = { item_id: "build_with_ai_8_week", item_name: "Build With AI —
 export default function BootcampPage() {
   // SSR renders the bare payment link; the effect swaps in the attribution-
   // aware URL (client_reference_id = lead_id, or an acquisition id for a
-  // visitor who never registered) once localStorage is readable.
-  const [checkoutUrl, setCheckoutUrl] = useState(buildCheckoutUrl());
+  // visitor who never registered) once localStorage is readable. Seeded
+  // with the constant on purpose — see PAYMENT_LINK in attribution.ts.
+  const [checkoutUrl, setCheckoutUrl] = useState(PAYMENT_LINK);
 
   useEffect(() => {
     captureTouch();
