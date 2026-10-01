@@ -2,13 +2,11 @@
 
 import { useState } from "react";
 
-/* Objection-handling FAQ, per spec section 11. One answer is a placeholder
-   (clearly marked) rather than a guess: "what's different from your Udemy
-   content" is a factual claim about the relationship between this program
-   and existing Udemy content, which only Saad can answer honestly — the
-   plan explicitly flags this as something to confirm before shipping,
-   same policy already applied to the free-course email's course-link and
-   coupon placeholders earlier this project. */
+/* Objection-handling FAQ, per spec section 11. The "what's different from
+   your Udemy content" item was dropped rather than shipped as a guess — it's
+   a factual claim about the relationship between this program and existing
+   Udemy content that only Saad can answer, and he chose to remove it instead
+   of supplying the answer for now. Re-add it if/when there's a real answer. */
 const FAQS: [string, string][] = [
   ["I can learn this for free on YouTube.", "You can — the difference is structure, four real projects, and live weekly support instead of a pile of disconnected videos."],
   ["Is this a coding course?", "No. No programming required at any point."],
@@ -16,10 +14,6 @@ const FAQS: [string, string][] = [
   ["Is this a live cohort?", "No. Self-paced curriculum, plus a live weekly Q&A every Saturday."],
   ["Do I need paid AI tools?", "No — the course is built around free-tier access wherever practical."],
   ["How much time do I need per week?", "The 8 weeks are a suggested pace, not a deadline — you have lifetime access and can move faster or slower."],
-  [
-    "What's different from your Udemy content?",
-    "[[PLACEHOLDER — Saad to confirm exact relationship between this program and the Udemy course before this FAQ ships. Don't guess at this one; it's a factual claim about your own product.]]",
-  ],
 ];
 
 export default function FAQAccordion() {
