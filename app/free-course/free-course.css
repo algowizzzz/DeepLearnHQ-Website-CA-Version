@@ -1,0 +1,180 @@
+/* /free-course — ported from public/free-course.html's inline stylesheet,
+   class names unchanged so the page is pixel-identical to the static
+   version it replaces. Self-contained light theme; the page owns its own
+   compact header instead of the shared nav because every extra pixel of
+   chrome pushes the signup form below the fold on a phone.
+
+   .fc-page carries the resets the old page inherited from styles.css
+   (margin/padding zero, block images, inherit-colour links) because
+   globals.css does not provide them. Fonts come from next/font via the
+   --f-* variables instead of literal family names. */
+.fc-page{min-height:100vh;background:linear-gradient(180deg,#eaf1ff 0%,#f6f9ff 42%,#ffffff 100%);color:#0b1220;line-height:1.55;font-family:var(--f-body);padding-bottom:var(--consent-h,0px);-webkit-text-size-adjust:100%}
+.fc-page *{margin:0;padding:0}
+.fc-page img{display:block;max-width:100%}
+.fc-page a{color:inherit;text-decoration:none}
+.fc-page ::selection{background:rgba(18,103,214,.2)}
+.fc-page button,.fc-page input,.fc-page select{font:inherit}
+
+.fc-topbar{display:flex;align-items:center;justify-content:center;padding:16px 20px;max-width:680px;margin:0 auto}
+.fc-topbar img{height:24px;display:block}
+
+.fc-hero{padding:2px 20px 30px;text-align:center;position:relative;overflow:hidden}
+.fc-blob{position:absolute;border-radius:50%;filter:blur(50px);opacity:.5;z-index:0;pointer-events:none}
+.fc-blob.b1{width:280px;height:280px;background:#bcd6ff;top:-120px;left:-80px}
+.fc-blob.b2{width:260px;height:260px;background:#e6cfff;top:-60px;right:-100px}
+.fc-hero>*:not(.fc-blob){position:relative;z-index:1}
+/* Extremely slow, barely-there drift — "don't go crazy" on this page.
+   Pure CSS with no JS hook, so the media query is the only gate (globals.css
+   additionally collapses all animation durations under reduced motion). */
+@media (prefers-reduced-motion: no-preference){
+  .fc-blob.b1{animation:fcDrift1 26s ease-in-out infinite alternate}
+  .fc-blob.b2{animation:fcDrift2 22s ease-in-out infinite alternate}
+}
+@keyframes fcDrift1{from{transform:translate(0,0)}to{transform:translate(18px,14px)}}
+@keyframes fcDrift2{from{transform:translate(0,0)}to{transform:translate(-16px,10px)}}
+
+.fc-eyebrow{display:inline-flex;align-items:center;gap:6px;background:#e3edff;color:#0a3c8c;font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:6px 12px;border-radius:999px;margin-bottom:14px}
+.fc-h1{font-family:var(--f-display);font-weight:700;font-size:clamp(27px,6.2vw,42px);line-height:1.14;letter-spacing:-.02em;color:#0b1220;margin:0 auto 10px;max-width:600px}
+.fc-h1 .grad{background:linear-gradient(115deg,#0a3c8c,#1267d6 55%,#7C45E8);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.fc-sub{font-family:var(--f-body);font-size:15.5px;line-height:1.55;color:#586173;max-width:440px;margin:0 auto 18px}
+.fc-sub-compact{display:none}
+
+/* Stats carry the trust signal above the fold, so they get real visual
+   weight — bigger numbers, bigger icon, a bit more air than the form. */
+.fc-stats{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:22px}
+.fc-stat{display:flex;align-items:center;gap:11px;background:#fff;border:1.5px solid #cddffb;border-radius:16px;padding:13px 18px;box-shadow:0 6px 18px rgba(18,103,214,.1)}
+.fc-stat .ic{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#e3edff,#dbe7ff);display:grid;place-items:center;color:#0a3c8c;flex-shrink:0}
+.fc-stat .ic svg{width:17px;height:17px}
+.fc-stat b{display:block;font-family:var(--f-display);font-size:19px;font-weight:700;line-height:1.15;color:#0b1220;text-align:left;letter-spacing:-.01em}
+.fc-stat i{display:block;font-style:normal;font-weight:600;font-size:10.5px;color:#5c7ba8;letter-spacing:.05em;text-transform:uppercase;text-align:left}
+
+/* Form card is a utility, not the hero — deliberately smaller and quieter
+   than the stats above it. */
+.fc-card{background:#fff;border:1px solid #dfe8fa;border-radius:18px;padding:17px;box-shadow:0 14px 34px -14px rgba(18,103,214,.2);max-width:380px;margin:0 auto;text-align:left}
+.fc-card.fc-card-final{box-shadow:none;border-color:#dfe8fa}
+.fc-field{margin-bottom:9px}
+.fc-field label{display:block;font-family:var(--f-mono);font-size:9.5px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:#7b8494;margin-bottom:5px}
+.fc-field input{width:100%;padding:10px 12px;border-radius:10px;border:1.5px solid #dfe8fa;background:#f8faff;color:#0b1220;font:inherit;font-size:13.5px}
+.fc-field input::placeholder{color:#a6afbd}
+.fc-field input:focus{outline:none;border-color:#1267d6;box-shadow:0 0 0 4px rgba(18,103,214,.12)}
+.fc-note{margin-top:6px;font-family:var(--f-body);font-size:10.5px;line-height:1.35;color:#9aa3b1}
+.fc-consent{display:flex;gap:7px;align-items:flex-start;margin:10px 0;font-family:var(--f-body);font-size:10.5px;line-height:1.38;color:#7b8494}
+.fc-consent input{margin-top:2px;flex-shrink:0;accent-color:#1267d6;width:14px;height:14px}
+.fc-consent input:focus-visible{outline:2px solid #1267d6;outline-offset:2px}
+.fc-consent label{cursor:pointer}
+.fc-consent a{color:#0a3c8c;font-weight:600}
+.fc-submit{width:100%;justify-content:center;background:linear-gradient(135deg,#0a3c8c,#1267d6);border:0;color:#fff;font-family:var(--f-body);font-weight:700;font-size:13.5px;padding:11.5px;border-radius:11px;cursor:pointer;display:flex;align-items:center;gap:7px;box-shadow:0 10px 22px -10px rgba(18,103,214,.55);transition:transform .15s ease,filter .15s ease}
+.fc-submit[disabled]{opacity:.6;cursor:progress}
+.fc-submit:hover:not([disabled]){filter:brightness(1.06)}
+@media (hover:hover){ .fc-submit:hover:not([disabled]){transform:translateY(-2px)} }
+.fc-err{margin-top:10px;font-family:var(--f-body);font-size:12px;line-height:1.4;color:#b3261e;background:rgba(179,38,30,.08);border:1px solid rgba(179,38,30,.25);border-radius:9px;padding:9px 11px}
+.fc-fine{margin-top:10px;font-family:var(--f-body);font-size:10px;color:#9aa3b1;text-align:center}
+.fc-fine a{color:#9aa3b1;text-decoration:underline;text-underline-offset:2px}
+
+.fc-success{display:none;text-align:center;padding:8px 4px}
+.fc-success.show{display:block}
+.fc-success .ck{width:52px;height:52px;border-radius:50%;margin:0 auto 14px;display:grid;place-items:center;background:rgba(16,163,127,.12);border:1px solid rgba(16,163,127,.35);color:#0e8f6f}
+.fc-success h3{font-family:var(--f-display);font-size:1.2rem;margin-bottom:8px;color:#0b1220;line-height:1.3}
+.fc-success p{font-family:var(--f-body);font-size:13px;line-height:1.5;color:#586173;margin:0 0 14px}
+.fc-start-btn{display:flex;justify-content:center;align-items:center;gap:7px;width:100%;background:linear-gradient(135deg,#0a3c8c,#1267d6);color:#fff;text-decoration:none;font-family:var(--f-body);font-weight:700;font-size:14px;padding:12.5px;border-radius:11px;box-shadow:0 10px 22px -10px rgba(18,103,214,.55)}
+.fc-start-btn:hover{filter:brightness(1.06)}
+.fc-path{list-style:none;margin:14px 0 0;padding:12px 0 0;border-top:1px solid #eef1f6;text-align:left;font-family:var(--f-body);font-size:12.5px;color:#586173;display:grid;gap:6px}
+.fc-path li{display:flex;gap:8px;align-items:center}
+.fc-path li b{font-family:var(--f-mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:#7b8494;font-weight:500}
+.fc-path li span{width:18px;height:18px;border-radius:50%;background:#e3edff;color:#0a3c8c;font-family:var(--f-mono);font-size:10px;display:grid;place-items:center;flex-shrink:0}
+.fc-backup{font-size:11.5px!important;color:#9aa3b1!important;margin-top:12px!important}
+.fc-phone-ask{margin-top:16px;padding-top:14px;border-top:1px solid #eef1f6;text-align:left}
+.fc-phone-ask p{font-family:var(--f-body);font-size:11.5px;color:#7b8494;margin:0 0 8px}
+.fc-phone-ask-row{display:flex;gap:6px}
+.fc-phone-ask-row input{flex:1;min-width:0;padding:9px 11px;border-radius:9px;border:1.5px solid #dfe8fa;background:#f8faff;color:#0b1220;font:inherit;font-size:13px}
+.fc-phone-ask-row input:focus{outline:none;border-color:#1267d6}
+.fc-cc{flex:0 0 auto;width:82px;padding:9px 6px;border-radius:9px;border:1.5px solid #dfe8fa;background:#f8faff;color:#0b1220;font:inherit;font-size:13px}
+.fc-cc:focus{outline:none;border-color:#1267d6}
+.fc-phone-ask-row button{flex:0 0 auto;background:#fff;border:1.5px solid #cddffb;color:#0a3c8c;font-family:var(--f-body);font-weight:700;font-size:12.5px;padding:0 14px;border-radius:9px;cursor:pointer}
+.fc-phone-ask-row button:hover:not([disabled]){background:#f0f6ff}
+.fc-phone-ask-row button[disabled]{opacity:.45;cursor:not-allowed}
+.fc-sms-consent{margin:8px 0 0}
+.fc-phone-ask.done p{color:#0e8f6f;font-weight:600}
+
+/* ---- below the fold ---- */
+.fc-section{padding:48px 20px;text-align:center}
+.fc-section.alt{background:#fff}
+.fc-section h2{font-family:var(--f-display);font-weight:700;font-size:clamp(21px,3.4vw,30px);color:#0b1220;margin:14px 0 10px}
+.fc-section .fc-lede{font-family:var(--f-body);font-size:15px;line-height:1.6;color:#586173;max-width:560px;margin:0 auto}
+
+.fc-learn{display:grid;gap:16px;max-width:860px;margin:30px auto 0;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.fc-learn-card{background:#fff;border:1px solid #e5e9f2;border-radius:16px;padding:22px 20px;text-align:left;box-shadow:0 6px 18px rgba(18,40,80,.06);height:100%}
+.fc-learn-card h3{font-family:var(--f-display);font-size:16px;margin:0 0 8px;color:#0b1220}
+.fc-learn-card p{font-family:var(--f-body);font-size:13.5px;line-height:1.55;color:#586173;margin:0}
+.fc-learn-cta{margin-top:26px}
+.fc-learn-cta a{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-body);font-weight:700;font-size:14.5px;color:#fff;text-decoration:none;background:linear-gradient(135deg,#0a3c8c,#1267d6);padding:11px 22px;border-radius:999px;box-shadow:0 10px 22px -10px rgba(18,103,214,.55)}
+.fc-learn-cta a:hover{filter:brightness(1.06)}
+
+.fc-tools{display:flex;flex-wrap:wrap;gap:18px 16px;justify-content:center;margin:30px auto 0;max-width:640px}
+.fc-tool{display:flex;flex-direction:column;align-items:center;gap:8px;width:76px}
+.fc-tool .tile{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;border:1px solid #e5e9f2;box-shadow:0 4px 14px rgba(18,40,80,.08)}
+.fc-tool span{font-family:var(--f-body);font-size:11.5px;font-weight:600;color:#3d4451}
+.fc-tool .tile.more{background:#e3edff;font-family:var(--f-display);font-weight:700;font-size:15px;color:#0a3c8c}
+
+.fc-testimonials{display:grid;gap:16px;max-width:860px;margin:26px auto 0;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));text-align:left}
+.fc-testimonial{background:#fff;border:1px solid #e5e9f2;border-radius:16px;padding:18px 20px;box-shadow:0 6px 18px rgba(18,40,80,.06);height:100%}
+.fc-testimonial .stars{color:#f5a524;font-size:13px;margin-bottom:8px;letter-spacing:1px}
+.fc-testimonial p{font-family:var(--f-body);font-size:14px;line-height:1.55;color:#2b3340;margin:0 0 10px}
+.fc-testimonial cite{font-style:normal;font-family:var(--f-mono);font-size:11px;color:#8b93a3;text-transform:uppercase;letter-spacing:.04em}
+
+.fc-instructor{max-width:600px;margin:0 auto;display:flex;gap:18px;align-items:center;text-align:left;background:#fff;border:1px solid #e5e9f2;border-radius:18px;padding:22px;flex-wrap:wrap}
+.fc-instructor img{width:64px;height:64px;border-radius:50%;object-fit:cover;flex-shrink:0}
+.fc-instructor .bio{flex:1;min-width:200px}
+.fc-instructor .bio p{font-family:var(--f-body);font-size:14px;line-height:1.55;color:#3d4451;margin:0}
+.fc-instructor .bio p strong{color:#0b1220}
+.fc-instructor .names{margin-top:12px;font-family:var(--f-display);font-weight:700;font-size:13px;color:#0b1220;display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center}
+.fc-instructor .names-label{display:block;width:100%;font-family:var(--f-mono);font-size:10px;letter-spacing:.07em;color:#7b8494;margin-bottom:8px;text-transform:uppercase;font-weight:500}
+.co-badge{display:inline-flex;align-items:center;gap:6px;background:#f4f8ff;border:1px solid #dfe8fa;border-radius:999px;padding:5px 11px 5px 8px;font-size:13px}
+.co-badge i{display:block;width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+.fc-faq{max-width:620px;margin:30px auto 0;text-align:left}
+.fc-faq details{border-top:1px solid #e5e9f2;padding:16px 2px}
+.fc-faq summary{cursor:pointer;font-family:var(--f-display);font-weight:700;font-size:15px;color:#0b1220;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.fc-faq summary::-webkit-details-marker{display:none}
+.fc-faq summary::after{content:"+";font-weight:400;opacity:.45;flex-shrink:0}
+.fc-faq details[open] summary::after{content:"–"}
+.fc-faq p{font-family:var(--f-body);font-size:14px;line-height:1.6;color:#586173;margin:10px 0 0}
+
+.fc-final{max-width:380px;margin:30px auto 0}
+
+.fc-foot{padding:24px 20px 44px;text-align:center;font-family:var(--f-body);font-size:12.5px;color:#9aa3b1}
+.fc-foot a{color:#9aa3b1;text-decoration:underline;text-underline-offset:2px;margin:0 8px}
+
+/* ---- phone-width: protect the no-scroll hero above all else ---- */
+@media(max-width:640px){
+  .fc-sub{display:none}
+  .fc-sub-compact{display:block}
+  .fc-topbar{padding:12px 16px}
+  .fc-topbar img{height:20px}
+  .fc-hero{padding-top:0;padding-bottom:22px}
+  .fc-eyebrow{margin-bottom:10px;font-size:9.5px;padding:5px 10px}
+  .fc-h1{margin-bottom:14px;font-size:clamp(23px,7vw,30px)}
+  .fc-stats{gap:7px;margin-bottom:16px}
+  .fc-stat{padding:9px 11px;gap:8px}
+  .fc-stat .ic{width:26px;height:26px}
+  .fc-stat .ic svg{width:13px;height:13px}
+  .fc-stat b{font-size:14.5px}
+  .fc-stat i{font-size:8px}
+  .fc-card{padding:13px;max-width:100%}
+  .fc-field{margin-bottom:7px}
+  .fc-field label{margin-bottom:3px}
+  /* 16px, not smaller — anything under 16px triggers iOS Safari's auto-zoom
+     on focus, which would yank the viewport away from the button below it. */
+  .fc-field input{padding:9px 11px;font-size:16px}
+  .fc-phone-ask-row input,.fc-cc{font-size:16px}
+  .fc-cc{width:74px;padding:9px 4px}
+  .fc-consent{margin:8px 0;font-size:9.8px}
+  .fc-submit{padding:11px;font-size:13.5px}
+  .fc-fine{margin-top:7px;font-size:9.5px}
+  .fc-section{padding:38px 16px}
+}
+@media(max-width:360px){
+  .fc-h1{font-size:clamp(21px,7vw,28px)}
+  .fc-stats{gap:5px}
+  .fc-stat i{display:none}
+}

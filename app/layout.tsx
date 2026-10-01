@@ -24,6 +24,10 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  // Absolute base for og:image / canonical URLs. Without it Next falls back
+  // to VERCEL_URL, i.e. the deployment host, and share previews point at
+  // *.vercel.app instead of the real domain.
+  metadataBase: new URL("https://www.deeplearnhq.ca"),
   title: "DeepLearnHQ — Learn AI by Building With It",
   description:
     "Practical AI education for people who want to use modern tools at work, build useful things and stay relevant.",
