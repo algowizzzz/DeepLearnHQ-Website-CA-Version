@@ -180,7 +180,7 @@ export default function FreeCoursePage() {
           <Reveal>
             <details>
               <summary>Is the course really free?</summary>
-              <p>Yes — no card required, no hidden steps. Sign up with your email and you&apos;re in.</p>
+              <p>Yes — no card required. Enter your email and we&apos;ll send you the course link with a coupon that makes it free on Udemy.</p>
             </details>
           </Reveal>
           <Reveal>

@@ -11,7 +11,15 @@ import PhoneAddOn from "./PhoneAddOn";
 
    Consent model: the course-access email is transactional (the visitor
    asked for the course), so it needs no checkbox. Marketing updates are a
-   separate, unchecked, optional box. Registration succeeds either way. */
+   separate, unchecked, optional box. Registration succeeds either way.
+
+   Delivery model (2026-10-10): the course link + Udemy coupon is sent ONLY
+   by email — the success state no longer links to the course. That makes
+   the email address the price of the coupon: a typo or a throwaway address
+   gets nothing, which is the point (the on-screen link let 15% hard-bounce
+   addresses through). The one exception is our own failure: when the
+   MailerLite sync fails (`email_delivery:false`) the visitor did nothing
+   wrong, so the page falls back to the direct link rather than dead-ending. */
 
 type Result = {
   lead_id: string;
@@ -32,6 +40,7 @@ export default function FreeCourseSignup({ variant }: { variant: "hero" | "final
   const [phase, setPhase] = useState<"form" | "sending" | "success">("form");
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<Result | null>(null);
+  const [resend, setResend] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
   const id = variant === "hero" ? "fcEmail" : "fcEmailFinal";
   const mktId = variant === "hero" ? "fcMkt" : "fcMktFinal";
@@ -42,6 +51,47 @@ export default function FreeCourseSignup({ variant }: { variant: "hero" | "final
       formStarted = true;
       track("free_form_start", {});
     }
+  }
+
+  // Same request for the first submit and for "Resend": a repeat for a known
+  // email returns already_registered and re-enters the MailerLite group,
+  // which re-sends the course email (requires automation re-entry ON).
+  function register(value: string) {
+    const { first, last } = getTouches();
+    return fetch("/api/free-course", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: value,
+        company: "", // honeypot (bots fill it; humans never see it)
+        marketing_consent: marketing,
+        source: "free_course_landing",
+        page_url: location.href,
+        first_touch: first,
+        last_touch: last,
+        fbclid: getFbclid() || undefined,
+        aq_id: getLeadId() ? undefined : getOrCreateAqId(),
+      }),
+    });
+  }
+
+  async function resendEmail() {
+    setResend("sending");
+    track("free_email_resend", {});
+    try {
+      const r = await register(email.trim());
+      const j = (await r.json().catch(() => ({}))) as { ok?: boolean; error?: string };
+      setResend(r.ok && j.ok ? "sent" : "error");
+    } catch {
+      setResend("error");
+    }
+  }
+
+  function startOver() {
+    setResult(null);
+    setResend("idle");
+    setError(null);
+    setPhase("form");
   }
 
   async function submit(e: React.FormEvent) {
@@ -55,23 +105,8 @@ export default function FreeCourseSignup({ variant }: { variant: "hero" | "final
     setPhase("sending");
     track("free_registration_attempt", {});
 
-    const { first, last } = getTouches();
     try {
-      const r = await fetch("/api/free-course", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: value,
-          company: "", // honeypot (bots fill it; humans never see it)
-          marketing_consent: marketing,
-          source: "free_course_landing",
-          page_url: location.href,
-          first_touch: first,
-          last_touch: last,
-          fbclid: getFbclid() || undefined,
-          aq_id: getLeadId() ? undefined : getOrCreateAqId(),
-        }),
-      });
+      const r = await register(value);
       const j = (await r.json().catch(() => ({}))) as Partial<Result> & { ok?: boolean; error?: string };
 
       if (!r.ok || !j.ok || !j.lead_id) {
@@ -104,30 +139,46 @@ export default function FreeCourseSignup({ variant }: { variant: "hero" | "final
   }
 
   if (phase === "success" && result) {
+    // Our failure, not theirs: hand over the link rather than dead-end.
+    if (!result.email_delivery) {
+      return (
+        <div className="fc-success show">
+          <h3>You&apos;re in — here&apos;s your course.</h3>
+          <a className="fc-start-btn" href={`/go/free-course?lid=${encodeURIComponent(result.lead_id)}`}>
+            Start the Free Course
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+          </a>
+          <p className="fc-backup">Our email system is having a moment, so we couldn&apos;t email you a copy — use the button above to start now.</p>
+        </div>
+      );
+    }
     return (
       <div className="fc-success show">
         <div className="ck">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 7l9 6 9-6" /></svg>
         </div>
-        <h3>{result.already_registered ? "You're already enrolled — here's your course." : "You're in."}</h3>
-        <a
-          className="fc-start-btn"
-          href={`/go/free-course?lid=${encodeURIComponent(result.lead_id)}`}
-          onClick={() => track("free_course_outbound", { lead_id: result.lead_id })}
-        >
-          Start the Free Course
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
-        </a>
-        <ol className="fc-path" aria-label="Your 3-hour path">
-          <li><b>Your 3-hour path</b></li>
-          <li><span>1</span>Understand the AI landscape</li>
-          <li><span>2</span>Learn the tools that matter</li>
-          <li><span>3</span>Put AI to work</li>
+        <h3>Check your inbox.</h3>
+        <p className="fc-sent">
+          {result.already_registered ? "We've re-sent your free course link and coupon to" : "Your free course link and coupon are on the way to"}
+          <br />
+          <b>{email.trim()}</b>
+        </p>
+        <ol className="fc-path fc-steps" aria-label="What to do next">
+          <li><span>1</span><div>Open the email from <b>saadahmed@deeplearnhq.ca</b></div></li>
+          <li><span>2</span><div>Tap <b>Start the free course</b> — the coupon is already applied</div></li>
+          <li><span>3</span><div>Enroll free on Udemy and start your 3-hour path</div></li>
         </ol>
         <p className="fc-backup">
-          {result.email_delivery
-            ? "We've also emailed your course link, just in case."
-            : "Your link is above — bookmark it. If the backup email doesn't arrive, reply to any DeepLearnHQ email and we'll resend it."}
+          Not there in 2 minutes? Check Promotions or Spam.{" "}
+          {resend === "sent" ? (
+            <span className="fc-link-done">Sent again ✓</span>
+          ) : (
+            <button type="button" className="fc-link" onClick={resendEmail} disabled={resend === "sending"}>
+              {resend === "sending" ? "Sending…" : resend === "error" ? "Couldn't resend — try again" : "Resend email"}
+            </button>
+          )}
+          {" · "}
+          <button type="button" className="fc-link" onClick={startOver}>Wrong email?</button>
         </p>
         <PhoneAddOn email={email.trim()} leadId={result.lead_id} />
       </div>
@@ -149,7 +200,7 @@ export default function FreeCourseSignup({ variant }: { variant: "hero" | "final
           value={email}
           onChange={(e) => onInput(e.target.value)}
         />
-        <p className="fc-note">We&apos;ll email your course link so you can come back to it anytime.</p>
+        <p className="fc-note">We&apos;ll email you the course link with your free-access coupon.</p>
       </div>
 
       <div className="fc-consent">
@@ -158,7 +209,7 @@ export default function FreeCourseSignup({ variant }: { variant: "hero" | "final
       </div>
 
       <button className="fc-submit" type="submit" disabled={phase === "sending"}>
-        {phase === "sending" ? "Sending…" : "Start the Free Course"}
+        {phase === "sending" ? "Sending…" : "Email Me the Free Course"}
         {phase !== "sending" && (
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
         )}
