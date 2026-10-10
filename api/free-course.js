@@ -2,8 +2,8 @@
 //
 // Contract (funnel-hardening pass, 2026-10-01):
 //   - Email is the only required input. Marketing consent is a separate,
-//     optional, unchecked box; phone is optional and only asked AFTER the
-//     success state (`phone_only:true`).
+//     optional, unchecked box; phone is optional, on the main form, and saved
+//     by a follow-up `phone_only:true` call after registration succeeds.
 //   - Registration is real the moment the lead is written to Redis (lib/leads.js),
 //     which also mints the stable first-party `lead_id`. MailerLite is the
 //     email delivery layer, NOT the system of record: if it fails the lead
@@ -89,13 +89,18 @@ export default async function handler(req, res) {
   // 2. Optional post-registration phone add-on -------------------------------
   //    Upsert the phone only; never touch the group (rejoining would re-send
   //    the "your course is ready" email the visitor already has).
+  //    Since 2026-10-10 the phone is collected on the main form, where the
+  //    SMS box is separate and optional — so consent is recorded only when
+  //    it was actually given. A number without consent is kept as contact
+  //    data but must never be texted (sms_consent stays "no").
   if (data.phone_only === true) {
     const phone = (data.phone || "").trim();
     if (!validPhone(phone)) return res.status(400).json({ ok: false, error: "invalid_phone" });
+    const sms = data.sms_consent === true;
     const lead = (isLeadId(data.lead_id) && (await getLead(data.lead_id))) || (await getLeadByEmail(email));
-    if (lead) await updateLead(lead.lead_id, { phone, sms_consent: "1", sms_consent_at: now });
+    if (lead) await updateLead(lead.lead_id, sms ? { phone, sms_consent: "1", sms_consent_at: now } : { phone, sms_consent: "0" });
     try {
-      await upsertSubscriber(email, { phone, sms_consent: "yes", ...(lead ? { lead_id: lead.lead_id } : {}) });
+      await upsertSubscriber(email, { phone, sms_consent: sms ? "yes" : "no", ...(lead ? { lead_id: lead.lead_id } : {}) });
     } catch (e) {
       await logError("free-course.phone", e, { lead_id: lead && lead.lead_id, status: 502 });
       return res.status(502).json({ ok: false, error: "update_failed" });

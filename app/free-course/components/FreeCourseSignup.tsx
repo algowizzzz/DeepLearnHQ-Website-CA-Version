@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { getTouches, getFbclid, getLeadId, setLeadId, getOrCreateAqId } from "../../lib/attribution";
 import { track, fbTrack } from "../../lib/track";
-import PhoneAddOn from "./PhoneAddOn";
+import { PINNED, COUNTRIES, flag } from "../lib/countries";
 
 /* The one signup form, rendered twice (hero + final CTA). Same validation,
    endpoint, attribution, consent behaviour, events and success state —
@@ -40,7 +40,9 @@ export default function FreeCourseSignup({ variant }: { variant: "hero" | "final
   const [phase, setPhase] = useState<"form" | "sending" | "success">("form");
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<Result | null>(null);
-  const [resend, setResend] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [dial, setDial] = useState("+1");
+  const [local, setLocal] = useState("");
+  const [sms, setSms] = useState(false);
 
   const id = variant === "hero" ? "fcEmail" : "fcEmailFinal";
   const mktId = variant === "hero" ? "fcMkt" : "fcMktFinal";
@@ -53,9 +55,6 @@ export default function FreeCourseSignup({ variant }: { variant: "hero" | "final
     }
   }
 
-  // Same request for the first submit and for "Resend": a repeat for a known
-  // email returns already_registered and re-enters the MailerLite group,
-  // which re-sends the course email (requires automation re-entry ON).
   function register(value: string) {
     const { first, last } = getTouches();
     return fetch("/api/free-course", {
@@ -75,21 +74,8 @@ export default function FreeCourseSignup({ variant }: { variant: "hero" | "final
     });
   }
 
-  async function resendEmail() {
-    setResend("sending");
-    track("free_email_resend", {});
-    try {
-      const r = await register(email.trim());
-      const j = (await r.json().catch(() => ({}))) as { ok?: boolean; error?: string };
-      setResend(r.ok && j.ok ? "sent" : "error");
-    } catch {
-      setResend("error");
-    }
-  }
-
   function startOver() {
     setResult(null);
-    setResend("idle");
     setError(null);
     setPhase("form");
   }
@@ -100,6 +86,12 @@ export default function FreeCourseSignup({ variant }: { variant: "hero" | "final
     const value = email.trim();
     if (!EMAIL_RE.test(value)) {
       setError("That email doesn't look right — check it and try again.");
+      return;
+    }
+    const phone = `${dial} ${local.trim()}`;
+    const hasPhone = local.trim().length > 0;
+    if (hasPhone && !(local.replace(/[^0-9]/g, "").length >= 6 && /^[0-9()+\-.\s]{7,24}$/.test(phone))) {
+      setError("That phone number doesn't look right — fix it or leave it blank.");
       return;
     }
     setPhase("sending");
@@ -126,6 +118,16 @@ export default function FreeCourseSignup({ variant }: { variant: "hero" | "final
         event_id: j.event_id,
       };
       setLeadId(res.lead_id);
+      // Phone rides the existing upsert-only path so it can never re-trigger
+      // the course email. Best-effort: the course is already on its way.
+      if (hasPhone) {
+        await fetch("/api/free-course", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: value, lead_id: res.lead_id, phone, sms_consent: sms, phone_only: true }),
+        }).catch(() => {});
+        track("free_phone_added", { sms_consent: sms });
+      }
       track("free_registration_complete", { duplicate: res.already_registered });
       if (!res.already_registered) {
         fbTrack("Lead", { content_name: "Free AI Tools Course", value: 0, currency: "USD" }, res.event_id);
@@ -159,28 +161,15 @@ export default function FreeCourseSignup({ variant }: { variant: "hero" | "final
         </div>
         <h3>Check your inbox.</h3>
         <p className="fc-sent">
-          {result.already_registered ? "We've re-sent your free course link and coupon to" : "Your free course link and coupon are on the way to"}
+          Your free course is on its way to
           <br />
           <b>{email.trim()}</b>
         </p>
-        <ol className="fc-path fc-steps" aria-label="What to do next">
-          <li><span>1</span><div>Open the email from <b>saadahmed@deeplearnhq.ca</b></div></li>
-          <li><span>2</span><div>Tap <b>Start the free course</b> — the coupon is already applied</div></li>
-          <li><span>3</span><div>Enroll free on Udemy and start your 3-hour path</div></li>
-        </ol>
+        <p className="fc-from">It&apos;s from <b>DeepLearnHQ</b> (saadahmed@deeplearnhq.ca) — open it and tap <b>Start the free course</b>.</p>
         <p className="fc-backup">
           Not there in 2 minutes? Check Promotions or Spam.{" "}
-          {resend === "sent" ? (
-            <span className="fc-link-done">Sent again ✓</span>
-          ) : (
-            <button type="button" className="fc-link" onClick={resendEmail} disabled={resend === "sending"}>
-              {resend === "sending" ? "Sending…" : resend === "error" ? "Couldn't resend — try again" : "Resend email"}
-            </button>
-          )}
-          {" · "}
           <button type="button" className="fc-link" onClick={startOver}>Wrong email?</button>
         </p>
-        <PhoneAddOn email={email.trim()} leadId={result.lead_id} />
       </div>
     );
   }
@@ -200,8 +189,40 @@ export default function FreeCourseSignup({ variant }: { variant: "hero" | "final
           value={email}
           onChange={(e) => onInput(e.target.value)}
         />
-        <p className="fc-note">We&apos;ll email you the course link with your free-access coupon.</p>
+        <p className="fc-note">We&apos;ll email you free access to the course.</p>
       </div>
+
+      <div className="fc-field">
+        <label htmlFor={id + "Phone"}>Phone <span className="fc-opt">(optional)</span></label>
+        <div className="fc-phone-row">
+          <select className="fc-cc" aria-label="Country code" value={dial} onChange={(e) => setDial(e.target.value)}>
+            {PINNED.map(([iso, name, code]) => (
+              <option key={"p" + iso} value={code} title={`${name} (${code})`}>{flag(iso)} {code}</option>
+            ))}
+            <option disabled>──────</option>
+            {COUNTRIES.map(([iso, name, code]) => (
+              <option key={iso} value={code} title={`${name} (${code})`}>{flag(iso)} {code}</option>
+            ))}
+          </select>
+          <input
+            id={id + "Phone"}
+            name="phone"
+            type="tel"
+            inputMode="tel"
+            autoComplete="tel-national"
+            placeholder="Mobile number"
+            value={local}
+            onChange={(e) => setLocal(e.target.value)}
+          />
+        </div>
+      </div>
+
+      {local.trim().length > 0 && (
+        <div className="fc-consent">
+          <input id={id + "Sms"} type="checkbox" checked={sms} onChange={(e) => setSms(e.target.checked)} />
+          <label htmlFor={id + "Sms"}>Text me course reminders. Reply STOP to opt out.</label>
+        </div>
+      )}
 
       <div className="fc-consent">
         <input id={mktId} type="checkbox" name="marketing_consent" checked={marketing} onChange={(e) => setMarketing(e.target.checked)} />
@@ -216,7 +237,7 @@ export default function FreeCourseSignup({ variant }: { variant: "hero" | "final
       </button>
       {error && <p className="fc-err" role="alert">{error}</p>}
       <p className="fc-fine">
-        Free forever · No credit card · Unsubscribe anytime · <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a>
+        Free · No credit card · Unsubscribe anytime · <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a>
       </p>
     </form>
   );

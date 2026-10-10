@@ -182,11 +182,16 @@
 /* Email-gated success state (2026-10-10): the coupon arrives by email only. */
 .fc-success .fc-sent{font-size:14px;color:#3b4456;margin-bottom:16px}
 .fc-success .fc-sent b{color:#0b1220;overflow-wrap:anywhere}
-.fc-steps{text-align:left}
 .fc-link{background:none;border:0;padding:0;font:inherit;color:#1267d6;text-decoration:underline;cursor:pointer}
 .fc-link:disabled{opacity:.6;cursor:default}
 .fc-link:focus-visible{outline:2px solid #1267d6;outline-offset:2px;border-radius:3px}
-.fc-link-done{color:#0e8f6f;font-weight:600}
-.fc-steps li{align-items:flex-start}
-.fc-steps li div{line-height:1.45}
-.fc-steps li b{font-family:inherit;font-size:inherit;letter-spacing:0;text-transform:none;color:#0b1220;font-weight:600;overflow-wrap:anywhere}
+
+/* Phone on the main form (2026-10-10). */
+.fc-opt{text-transform:none;letter-spacing:0;color:#a6afbd}
+.fc-phone-row{display:flex;gap:6px}
+.fc-phone-row .fc-cc{flex:0 0 auto}
+.fc-phone-row input{flex:1;min-width:0}
+.fc-success .fc-from{font-size:13px;color:#3b4456}
+.fc-success .fc-from b{color:#0b1220}
+.fc-phone-row .fc-cc{padding:10px 6px;border-radius:10px;font-size:13.5px}
+@media (max-width:480px){.fc-phone-row .fc-cc{font-size:16px;padding:9px 4px}}
