@@ -43,7 +43,7 @@ export default function HomePage() {
               className="btn btn-grad"
               onClick={() => track("free_cta_click", { location: "homepage_hero" })}
             >
-              Start Free — 3-Hour AI Course
+              Start Free — AI Course
             </a>
             <Link href="/bootcamp" className="btn btn-ghost" onClick={() => track("bootcamp_cta_click", { location: "homepage_hero" })}>
               Explore the 8-Week Program
@@ -69,7 +69,7 @@ export default function HomePage() {
                 <span style={{ fontFamily: "var(--f-mono)", fontSize: 12, letterSpacing: ".06em", color: "var(--blue-deep)", textTransform: "uppercase" }}>
                   I&apos;m starting with AI
                 </span>
-                <h3 style={{ fontFamily: "var(--f-display)", fontSize: 22, margin: "12px 0" }}>Free 3-Hour AI Course</h3>
+                <h3 style={{ fontFamily: "var(--f-display)", fontSize: 22, margin: "12px 0" }}>Free AI Course</h3>
                 <p style={{ color: "var(--muted)", lineHeight: 1.6, marginBottom: 24 }}>
                   Learn the essential tools and build a practical foundation — no coding, no cost.
                 </p>

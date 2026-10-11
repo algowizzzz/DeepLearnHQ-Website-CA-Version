@@ -13,8 +13,8 @@ import "./free-course.css";
    before they have registered. The social card is app/free-course/
    opengraph-image.tsx (file convention), so openGraph.images is omitted. */
 
-const TITLE = "Free 3-Hour AI Course | DeepLearnHQ";
-const DESCRIPTION = `A free, practical 3-hour course covering ChatGPT, Claude, Gemini and 10+ modern AI tools. From the instructor behind a ${SP.rating} bootcamp with ${SOCIAL_PROOF.learners.toLocaleString("en-US")}+ learners taught. No card required.`;
+const TITLE = "Free AI Course | DeepLearnHQ";
+const DESCRIPTION = `A free, practical course covering ChatGPT, Claude, Gemini and 10+ modern AI tools. From the instructor behind a ${SP.rating} bootcamp with ${SOCIAL_PROOF.learners.toLocaleString("en-US")}+ learners taught. No card required.`;
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -47,7 +47,7 @@ export default function FreeCoursePage() {
       <section className="fc-hero">
         <div className="fc-blob b1" /><div className="fc-blob b2" />
 
-        <span className="fc-eyebrow">Free 3-Hour AI Course</span>
+        <span className="fc-eyebrow">Free AI Course</span>
         <h1 className="fc-h1">Learn the AI skills that actually <span className="grad">matter.</span></h1>
         <p className="fc-sub">ChatGPT, Claude, Gemini and 10+ modern AI tools. Practical, beginner-friendly, and no coding required.</p>
         <p className="fc-sub fc-sub-compact">ChatGPT, Claude, Gemini + more. Practical, beginner-friendly and no coding required.</p>
@@ -192,7 +192,7 @@ export default function FreeCoursePage() {
           <Reveal>
             <details>
               <summary>How long does it take?</summary>
-              <p>About 3 hours, at your own pace — come back whenever works for you.</p>
+              <p>It&apos;s self-paced — go at your own speed and come back whenever works for you.</p>
             </details>
           </Reveal>
           <Reveal>

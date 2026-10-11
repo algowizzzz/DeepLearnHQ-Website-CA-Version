@@ -8,7 +8,7 @@ import { SP, SOCIAL_PROOF } from "../lib/social-proof";
    File-convention route: Next injects og:image / twitter:image with the
    right size and caches the PNG. The font is vendored (OFL) so the build
    never fetches Google Fonts. */
-export const alt = "Free 3-Hour AI Course — ChatGPT, Claude, Gemini and 10+ AI tools — DeepLearnHQ";
+export const alt = "Free AI Course — ChatGPT, Claude, Gemini and 10+ AI tools — DeepLearnHQ";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -40,7 +40,7 @@ export default async function Image() {
               color: "rgba(255,255,255,0.85)",
             }}
           >
-            Free 3-Hour AI Course
+            Free AI Course
           </div>
           <div style={{ display: "flex", fontSize: 76, lineHeight: 1.08, marginTop: 22, maxWidth: 1000 }}>
             Learn the AI skills that actually matter.

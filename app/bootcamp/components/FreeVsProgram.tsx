@@ -19,7 +19,7 @@ export default function FreeVsProgram({ checkoutUrl, onCheckout }: { checkoutUrl
       <div className="fvp-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
         <div className="fvp-col" style={{ border: "1px solid var(--line)", borderRadius: 16, padding: "18px 18px 8px", background: "#fff" }}>
           <div style={{ fontFamily: "var(--f-mono)", fontSize: 11, letterSpacing: ".06em", textTransform: "uppercase", color: "var(--muted)", marginBottom: 10 }}>
-            Free 3-Hour Course
+            Free Course
           </div>
           {ROWS.map(([free], i) => (
             <div key={i} style={{ padding: "9px 0", borderTop: "1px solid var(--line)", fontSize: 14, color: free === "—" ? "var(--line)" : "var(--ink)" }}>
